@@ -17,10 +17,10 @@ function Home() {
           bottom: '-20px',
           left: '0',
           width: '140%',
-          height: '8px',
+          height: '2vh',
           background: pageColors.home,
           transform: 'rotate(-0.5deg)',
-          borderRadius: '2px',
+          borderRadius: '2vh',
         }} />
       </div>
 
