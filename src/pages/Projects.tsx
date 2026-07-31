@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { pageColors } from '../styles/colors'
+import { pageColors, postitColors } from '../styles/colors'
 import Postit from '../components/Postit'
+import PageTitle from '../components/PageTitle'
 
+// Meine Projekte.
 const projects = [
   { id: 1, name: 'Java Project 1', language: 'Java', scene: 'gibb', description: 'A backend application built with Java.' },
   { id: 2, name: 'Java Project 2', language: 'Java', scene: 'private', description: 'A personal Java project WITH MY BUDDY THIERRY.' },
@@ -9,6 +11,7 @@ const projects = [
   { id: 4, name: 'C# App', language: 'C#', scene: 'gibb', description: 'A school project in C#.' },
 ]
 
+// Die Auswahl in den Filtern.
 const languages = ['All', 'Java', 'CSS', 'C#', 'Python']
 const scenes = ['All', 'private', 'gibb', 'smt', 'else']
 
@@ -18,52 +21,33 @@ function Projects() {
   const [selectedScene, setSelectedScene] = useState('All')
   const [showFilter, setShowFilter] = useState(false)
 
-  const filtered = projects.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase())
-    const matchLang = selectedLanguage === 'All' || p.language === selectedLanguage
-    const matchScene = selectedScene === 'All' || p.scene === selectedScene
-    return matchSearch && matchLang && matchScene
+  // Behalte nur die Projekte die zur Suche und zu beiden Filtern passen.
+  const filtered = projects.filter(project => {
+    const matchSearch = project.name.toLowerCase().includes(search.toLowerCase())
+    const matchLanguage = selectedLanguage === 'All' || project.language === selectedLanguage
+    const matchScene = selectedScene === 'All' || project.scene === selectedScene
+    return matchSearch && matchLanguage && matchScene
   })
 
   return (
     <div className="px-8 py-16 max-w-4xl mx-auto">
-      <h1 className="text-7xl sniglet-bold leading-tight">
-        My Projects
-      </h1>
-      <div style={{
-        height: '2vh',
-        width: '70%',
-        background: pageColors.projects,
-        transform: 'rotate(-0.5deg)',
-        borderRadius: '2vh',
-        marginTop: '8px',
-        marginBottom: '48px',
-      }} />
+      <PageTitle title="My Projects" color={pageColors.projects} />
 
-      {/* Search */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+      {/* Suchfeld und der Knopf der die Filter auf- und zuklappt */}
+      <div className="flex items-center gap-4 mb-4">
         <input
           type="text"
           placeholder="Search..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
-          style={{
-            flex: 1,
-            border: '1.5px solid #333',
-            borderRadius: '8px',
-            padding: '0.5rem 1rem',
-            background: 'transparent',
-            fontFamily: 'inherit',
-          }}
+          onChange={event => setSearch(event.target.value)}
+          className="box flex-1 px-4 py-2"
+          style={{ background: 'transparent', fontFamily: 'inherit' }}
         />
         <button
           onClick={() => setShowFilter(!showFilter)}
+          className="box px-4 py-2 cursor-pointer"
           style={{
-            border: '1.5px solid #333',
-            borderRadius: '8px',
-            padding: '0.5rem 1rem',
             background: showFilter ? pageColors.projects : 'transparent',
-            cursor: 'pointer',
             fontFamily: 'inherit',
           }}
         >
@@ -71,94 +55,51 @@ function Projects() {
         </button>
       </div>
 
-      {/* Filter */}
+      {/* Die Filter sieht man nur wenn showFilter true ist */}
       {showFilter && (
-        <div style={{
-          border: '1.5px solid #333',
-          borderRadius: '8px',
-          padding: '1rem',
-          marginBottom: '1.5rem',
-          display: 'flex',
-          gap: '2rem',
-        }}>
+        <div className="box flex gap-8 p-4 mb-6">
           <div>
             <p className="text-sm text-gray-400 mb-2">Language</p>
-            {languages.map(l => (
+            {languages.map(language => (
               <button
-                key={l}
-                onClick={() => setSelectedLanguage(l)}
-                style={{
-                  display: 'block',
-                  marginBottom: '4px',
-                  border: '1.5px solid #333',
-                  borderRadius: '999px',
-                  padding: '2px 12px',
-                  fontSize: '12px',
-                  background: selectedLanguage === l ? pageColors.projects : 'transparent',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                }}
+                key={language}
+                onClick={() => setSelectedLanguage(language)}
+                className="pill block mb-1"
+                style={{ background: selectedLanguage === language ? pageColors.projects : 'transparent' }}
               >
-                {l}
+                {language}
               </button>
             ))}
           </div>
           <div>
             <p className="text-sm text-gray-400 mb-2">Scene</p>
-            {scenes.map(s => (
+            {scenes.map(scene => (
               <button
-                key={s}
-                onClick={() => setSelectedScene(s)}
-                style={{
-                  display: 'block',
-                  marginBottom: '4px',
-                  border: '1.5px solid #333',
-                  borderRadius: '999px',
-                  padding: '2px 12px',
-                  fontSize: '12px',
-                  background: selectedScene === s ? pageColors.projects : 'transparent',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                }}
+                key={scene}
+                onClick={() => setSelectedScene(scene)}
+                className="pill block mb-1"
+                style={{ background: selectedScene === scene ? pageColors.projects : 'transparent' }}
               >
-                {s}
+                {scene}
               </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Project Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '1.5rem',
-      }}>
+      {/* Fuer jedes gefundene Projekt ein Post-it */}
+      <div className="grid grid-cols-2 gap-6">
         {filtered.map((project, i) => (
           <Postit
             key={project.id}
-            color={pageColors.projects}
-            shadowColor="#c8a000"
-            cornerColor="#8a6500"
+            colors={postitColors.yellow}
             rotate={i % 2 === 0 ? -0.8 : 0.8}
           >
             <p className="sniglet-bold text-lg mb-2">{project.name}</p>
             <p className="text-sm text-gray-600 mb-4">{project.description}</p>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <span style={{
-                border: '1.5px solid #333',
-                borderRadius: '999px',
-                padding: '2px 10px',
-                fontSize: '11px',
-                background: 'white',
-              }}>{project.language}</span>
-              <span style={{
-                border: '1.5px solid #333',
-                borderRadius: '999px',
-                padding: '2px 10px',
-                fontSize: '11px',
-                background: 'white',
-              }}>{project.scene}</span>
+            <div className="flex gap-2">
+              <span className="pill" style={{ background: 'white' }}>{project.language}</span>
+              <span className="pill" style={{ background: 'white' }}>{project.scene}</span>
             </div>
           </Postit>
         ))}

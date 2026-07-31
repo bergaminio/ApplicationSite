@@ -1,48 +1,28 @@
 import { pageColors } from '../styles/colors'
+import PageTitle from '../components/PageTitle'
 
 function Contact() {
   return (
     <div className="px-8 py-16 max-w-3xl mx-auto">
-      <h1 className="text-7xl sniglet-bold leading-tight">
-        Contact
-      </h1>
-      <div style={{
-        height: '3px',
-        width: '140px',
-        background: pageColors.contact,
-        transform: 'rotate(-0.5deg)',
-        borderRadius: '2px',
-        marginTop: '8px',
-        marginBottom: '48px',
-      }} />
+      <PageTitle title="Contact" color={pageColors.contact} />
 
-      <div style={{
-        border: '1.5px solid #333',
-        borderRadius: '16px',
-        padding: '2rem',
-        display: 'flex',
-        gap: '2rem',
-        alignItems: 'flex-start',
-      }}>
+      <div className="box flex gap-8 items-start p-8" style={{ borderRadius: '16px' }}>
 
-        {/* Foto */}
-        <div style={{
-          width: '100px',
-          height: '100px',
-          borderRadius: '8px',
-          background: pageColors.contact,
-          border: '1.5px solid #333',
-          flexShrink: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '2rem',
-        }}>
+        {/* Platzhalter fuers Foto */}
+        <div
+          className="box flex items-center justify-center text-3xl"
+          style={{
+            width: '100px',
+            height: '100px',
+            background: pageColors.contact,
+            flexShrink: 0,
+          }}
+        >
           MB
         </div>
 
-        {/* Infos */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        {/* Die Kontakt-Infos */}
+        <div className="flex flex-col gap-3">
           <div>
             <p className="text-gray-400 text-xs mb-1">Name</p>
             <p className="sniglet-bold">Michael Bergamin</p>
