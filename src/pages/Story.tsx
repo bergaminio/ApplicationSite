@@ -6,7 +6,7 @@ import PageTitle from '../components/PageTitle'
 const events = [
   { id: 1, year: '2022', title: 'IMS Start', description: 'Beginn der Ausbildung an der Informations-Mittelschule in Bern.' },
   { id: 2, year: '2023', title: 'Erste Projekte', description: 'Erste Java und Web-Projekte an der gibb.' },
-  { id: 3, year: '2024', title: 'Portfolio', description: 'Aufbau meiner persoenlichen Portfolio-Website.' },
+  { id: 3, year: '2024', title: 'Portfolio', description: 'Aufbau meiner persönlichen Portfolio-Website.' },
   { id: 4, year: '2025', title: 'Now', description: 'Auf der Suche nach einem spannenden Praktikum.' },
 ]
 
