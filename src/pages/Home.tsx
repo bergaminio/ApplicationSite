@@ -27,21 +27,21 @@ function Home() {
       </div>
 
       <p className="text-gray-500 mt-8 text-lg" style={{ transform: 'rotate(-0.3deg)' }}>
-        Developer Student at BWD Bern
+        Entwickler in Ausbildung an der BWD Bern
       </p>
 
       {/* Post-it mit dem Knopf zu den Projekten */}
       <div className="mt-16" style={{ maxWidth: '320px' }}>
         <Postit colors={postitColors.yellow} rotate={-1}>
           <p className="text-gray-700 mb-6 text-lg">
-            Browse through my projects
+            Schau dir meine Projekte an
           </p>
           <Link
             to="/projects"
             className="pill"
             style={{ background: 'white', padding: '8px 24px', fontSize: '14px' }}
           >
-            Projects →
+            Projekte →
           </Link>
         </Postit>
       </div>

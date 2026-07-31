@@ -2,7 +2,7 @@
 // Jede Seite braucht das - darum steht der Code hier nur einmal.
 
 interface PageTitleProps {
-  title: string   // z.B. "My Skills"
+  title: string   // z.B. "Meine Projekte"
   color: string   // die Farbe der Seite, kommt aus colors.ts
 }
 
