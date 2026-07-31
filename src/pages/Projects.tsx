@@ -19,7 +19,7 @@ const myProjects: Project[] = [
     learned: ['React', 'TypeScript', 'HTML', 'CSS', 'Tailwind', 'Vite'],
     language: 'TypeScript',
     scene: 'privat',
-    image: '/demos/platzhalter.svg',
+    image: '/demos/bewerbungsseite.png',
   },
   {
     name: 'Bolt — Sprint-App',
@@ -28,7 +28,7 @@ const myProjects: Project[] = [
     learned: ['Flutter', 'Dart', 'GPS', 'Android'],
     language: 'Dart',
     scene: 'privat',
-    image: '/demos/platzhalter.svg',
+    image: '/demos/bolt.png',
   },
   {
     name: 'Aschenreich — 3D-Rollenspiel',
@@ -37,7 +37,7 @@ const myProjects: Project[] = [
     learned: ['JavaScript', 'Three.js', 'Electron', '3D'],
     language: 'JavaScript',
     scene: 'privat',
-    image: '/demos/platzhalter.svg',
+    image: '/demos/aschenreich.png',
   },
   {
     name: 'Bomberman',

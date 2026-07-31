@@ -66,7 +66,16 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
             alt={`Screenshot von ${project.name}`}
             onError={event => { event.currentTarget.src = '/demos/platzhalter.svg' }}
             className="box mb-6"
-            style={{ width: '100%', display: 'block' }}
+            style={{
+              width: '100%',
+              // Hochkant-Screenshots (z.B. vom Handy) wuerden sonst
+              // riesig hoch werden. objectFit passt das Bild ein,
+              // ohne es zu verzerren.
+              maxHeight: '55vh',
+              objectFit: 'contain',
+              background: 'white',
+              display: 'block',
+            }}
           />
         )}
 
