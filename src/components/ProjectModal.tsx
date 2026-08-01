@@ -1,5 +1,7 @@
 import { pageColors } from '../styles/colors'
 import { GITHUB_USER } from '../api/github'
+import { useSprache } from '../context/LanguageContext'
+import { ui } from '../texts'
 import type { Project } from '../types'
 
 // Das Fenster das aufgeht wenn man auf ein Projekt klickt.
@@ -12,6 +14,8 @@ interface ProjectModalProps {
 }
 
 function ProjectModal({ project, onClose }: ProjectModalProps) {
+  const { t } = useSprache()
+
   // Den GitHub-Link bauen wir aus dem Repo-Namen zusammen.
   const githubUrl = project.repo
     ? `https://github.com/${GITHUB_USER}/${project.repo}`
@@ -48,13 +52,13 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
 
         {/* Titel und der Schliessen-Knopf */}
         <div className="flex items-start justify-between gap-3 mb-4">
-          <p className="sniglet-bold text-xl sm:text-2xl">{project.name}</p>
+          <p className="sniglet-bold text-xl sm:text-2xl">{t(project.name)}</p>
           <button
             onClick={onClose}
             className="pill"
             style={{ cursor: 'pointer', background: 'white', flexShrink: 0 }}
           >
-            Schliessen ✕
+            {t(ui.close)}
           </button>
         </div>
 
@@ -62,7 +66,7 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
         {project.image && (
           <img
             src={project.image}
-            alt={`Screenshot von ${project.name}`}
+            alt={t(project.name)}
             onError={event => { event.currentTarget.src = '/demos/platzhalter.svg' }}
             className="box mb-6"
             style={{
@@ -78,12 +82,12 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
           />
         )}
 
-        <p className="text-gray-700 mb-6">{project.text}</p>
+        <p className="text-gray-700 mb-6">{t(project.text)}</p>
 
         {/* Was ich dabei gelernt habe - in der Skills-Farbe Orange */}
         {project.learned.length > 0 && (
           <div className="mb-6">
-            <p className="text-gray-400 text-xs mb-2">Dabei gelernt</p>
+            <p className="text-gray-400 text-xs mb-2">{t(ui.learned)}</p>
             <div className="flex flex-wrap gap-2">
               {project.learned.map(skill => (
                 <span
@@ -107,7 +111,7 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
             className="pill"
             style={{ background: 'white', padding: '8px 20px', fontSize: '14px' }}
           >
-            Auf GitHub ansehen →
+            {t(ui.viewOnGithub)}
           </a>
         )}
 

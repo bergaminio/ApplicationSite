@@ -1,19 +1,22 @@
 import { Link, useLocation } from 'react-router-dom'
 import { pageColors } from '../styles/colors'
+import { useSprache } from '../context/LanguageContext'
+import { ui } from '../texts'
 
 // Die Navigation ganz oben.
 // Die Seite auf der man gerade ist, bekommt ein Oval in ihrer Farbe.
 
 const links = [
-  { to: '/', label: 'Start', color: pageColors.home },
-  { to: '/projects', label: 'Projekte', color: pageColors.projects },
-  { to: '/cv', label: 'Lebenslauf', color: pageColors.story },
-  { to: '/contact', label: 'Kontakt', color: pageColors.contact },
+  { to: '/', label: ui.navHome, color: pageColors.home },
+  { to: '/projects', label: ui.navProjects, color: pageColors.projects },
+  { to: '/cv', label: ui.navCV, color: pageColors.story },
+  { to: '/contact', label: ui.navContact, color: pageColors.contact },
 ]
 
 function Navbar() {
   // useLocation sagt uns auf welcher Seite wir gerade sind.
   const location = useLocation()
+  const { sprache, setSprache, t } = useSprache()
 
   return (
     <nav className="flex items-center justify-between gap-3 px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200">
@@ -31,18 +34,39 @@ function Navbar() {
                   : 'underline hover:text-gray-500'
               }`}
             >
-              {link.label}
+              {t(link.label)}
             </Link>
           )
         })}
       </div>
 
-      <Link
-        to="/login"
-        className="text-xs sm:text-sm border border-gray-300 px-3 sm:px-4 py-1.5 sm:py-2 rounded hover:bg-gray-50 transition-colors shrink-0"
-      >
-        Login
-      </Link>
+      <div className="flex items-center gap-2 shrink-0">
+        {/* Sprach-Umschalter: die gewaehlte Sprache ist dunkel */}
+        <div className="flex gap-1">
+          {(['de', 'en'] as const).map(kuerzel => (
+            <button
+              key={kuerzel}
+              onClick={() => setSprache(kuerzel)}
+              className="pill"
+              style={{
+                cursor: 'pointer',
+                background: sprache === kuerzel ? '#333' : 'transparent',
+                color: sprache === kuerzel ? 'white' : '#999',
+                borderColor: sprache === kuerzel ? '#333' : '#ccc',
+              }}
+            >
+              {kuerzel.toUpperCase()}
+            </button>
+          ))}
+        </div>
+
+        <Link
+          to="/login"
+          className="text-xs sm:text-sm border border-gray-300 px-3 sm:px-4 py-1.5 sm:py-2 rounded hover:bg-gray-50 transition-colors"
+        >
+          {t(ui.navLogin)}
+        </Link>
+      </div>
     </nav>
   )
 }

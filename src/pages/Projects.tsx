@@ -4,6 +4,8 @@ import Postit from '../components/Postit'
 import PageTitle from '../components/PageTitle'
 import ProjectModal from '../components/ProjectModal'
 import { loadRepos } from '../api/github'
+import { useSprache } from '../context/LanguageContext'
+import { ui, type Text } from '../texts'
 import type { Project } from '../types'
 
 // Meine gepflegten Projekte.
@@ -13,45 +15,65 @@ import type { Project } from '../types'
 // und trage hier '/demos/bolt.png' ein - dann erscheint er im Fenster.
 const myProjects: Project[] = [
   {
-    name: 'Diese Portfolio-Website',
+    id: 'portfolio',
+    name: { de: 'Diese Portfolio-Website', en: 'This portfolio website' },
     repo: 'ApplicationSite',
-    text: 'Von Null gebaut, ohne Vorlage. Jede Seite hat ihre eigene Farbe und einen handgezeichneten Look.',
+    text: {
+      de: 'Von Null gebaut, ohne Vorlage. Jede Seite hat ihre eigene Farbe und einen handgezeichneten Look.',
+      en: 'Built from scratch, no template. Every page has its own colour and a hand-drawn look.',
+    },
     learned: ['React', 'TypeScript', 'HTML', 'CSS', 'Tailwind', 'Vite'],
     language: 'TypeScript',
     scene: 'privat',
     image: '/demos/bewerbungsseite.png',
   },
   {
-    name: 'Bolt — Sprint-App',
+    id: 'bolt',
+    name: { de: 'Bolt — Sprint-App', en: 'Bolt — sprint app' },
     repo: '',
-    text: 'Misst Sprints. Die App startet automatisch und stoppt per GPS nach einer festen Distanz, zum Beispiel 100 oder 400 Meter.',
+    text: {
+      de: 'Misst Sprints. Die App startet automatisch und stoppt per GPS nach einer festen Distanz, zum Beispiel 100 oder 400 Meter.',
+      en: 'Measures sprints. The app starts automatically and stops via GPS after a set distance, for example 100 or 400 metres.',
+    },
     learned: ['Flutter', 'Dart', 'GPS', 'Android'],
     language: 'Dart',
     scene: 'privat',
     image: '/demos/bolt.png',
   },
   {
-    name: 'Aschenreich — 3D-Rollenspiel',
+    id: 'aschenreich',
+    name: { de: 'Aschenreich — 3D-Rollenspiel', en: 'Aschenreich — 3D role-playing game' },
     repo: '',
-    text: 'Ein Dark-Fantasy-Rollenspiel, das direkt im Browser läuft.',
+    text: {
+      de: 'Ein Dark-Fantasy-Rollenspiel, das direkt im Browser läuft.',
+      en: 'A dark fantasy role-playing game that runs right in the browser.',
+    },
     learned: ['JavaScript', 'Three.js', 'Electron', '3D'],
     language: 'JavaScript',
     scene: 'privat',
     image: '/demos/aschenreich.jpg',
   },
   {
-    name: 'Bomberman',
+    id: 'bomberman',
+    name: { de: 'Bomberman', en: 'Bomberman' },
     repo: 'Bomberman',
-    text: 'Das Spiel nachgebaut, um objektorientiertes Programmieren zu üben.',
+    text: {
+      de: 'Das Spiel nachgebaut, um objektorientiertes Programmieren zu üben.',
+      en: 'Rebuilt the game to practise object-oriented programming.',
+    },
     learned: ['Java', 'OOP'],
     language: 'Java',
     scene: 'gibb',
     image: '/demos/platzhalter.svg',
   },
   {
-    name: 'agentDecider',
+    id: 'agentdecider',
+    name: { de: 'agentDecider', en: 'agentDecider' },
     repo: 'agentDecider',
-    text: 'Ein kleines Programm mit Fenster, das zufällig einen Valorant-Agenten auswählt und den Hintergrund passend einfärbt.',
+    text: {
+      de: 'Ein kleines Programm mit Fenster, das zufällig einen Valorant-Agenten auswählt und den Hintergrund passend einfärbt.',
+      en: 'A small windowed program that picks a random Valorant agent and colours the background to match.',
+    },
     learned: ['Python', 'Tkinter', 'Git'],
     language: 'Python',
     scene: 'privat',
@@ -59,10 +81,21 @@ const myProjects: Project[] = [
   },
 ]
 
+// Die Bereiche heissen auf Englisch anders. Was hier nicht steht
+// (z.B. GitHub-Topics) wird einfach unveraendert angezeigt.
+const bereichNamen: Record<string, Text> = {
+  privat: ui.scenePrivate,
+  anderes: ui.sceneOther,
+}
+
+const ALLE = 'Alle'   // interner Wert fuer "kein Filter"
+
 function Projects() {
+  const { t } = useSprache()
+
   const [search, setSearch] = useState('')
-  const [selectedLanguage, setSelectedLanguage] = useState('Alle')
-  const [selectedScene, setSelectedScene] = useState('Alle')
+  const [selectedLanguage, setSelectedLanguage] = useState(ALLE)
+  const [selectedScene, setSelectedScene] = useState(ALLE)
   const [showFilter, setShowFilter] = useState(false)
 
   // Welches Projekt gerade im Fenster offen ist. null = keines.
@@ -79,9 +112,12 @@ function Projects() {
           // Repos die schon oben in der Liste stehen ueberspringen.
           .filter(repo => !myProjects.some(mine => mine.repo === repo.name))
           .map(repo => ({
-            name: repo.name,
+            id: repo.name,
+            name: { de: repo.name, en: repo.name },
             repo: repo.name,
-            text: repo.description ?? 'Noch keine Beschreibung auf GitHub.',
+            text: repo.description
+              ? { de: repo.description, en: repo.description }
+              : ui.noDescription,
             learned: [],
             language: repo.language ?? 'Anderes',
             // GitHub-Topics wie "gibb" nutzen wir als Bereich.
@@ -98,31 +134,36 @@ function Projects() {
 
   // Die Filter-Knoepfe bauen wir aus dem was es wirklich gibt.
   // So kann in der Auswahl nie etwas stehen das es gar nicht mehr gibt.
-  const languages = ['Alle', ...Array.from(new Set(allProjects.map(p => p.language)))]
-  const scenes = ['Alle', ...Array.from(new Set(allProjects.map(p => p.scene)))]
+  const languages = [ALLE, ...Array.from(new Set(allProjects.map(p => p.language)))]
+  const scenes = [ALLE, ...Array.from(new Set(allProjects.map(p => p.scene)))]
+
+  // Zeigt einen Bereich in der richtigen Sprache an.
+  function bereichText(scene: string) {
+    if (scene === ALLE) return t(ui.all)
+    return bereichNamen[scene] ? t(bereichNamen[scene]) : scene
+  }
 
   // Behalte nur die Projekte die zur Suche und zu beiden Filtern passen.
   const filtered = allProjects.filter(project => {
-    const matchSearch = project.name.toLowerCase().includes(search.toLowerCase())
-    const matchLanguage = selectedLanguage === 'Alle' || project.language === selectedLanguage
-    const matchScene = selectedScene === 'Alle' || project.scene === selectedScene
+    const matchSearch = t(project.name).toLowerCase().includes(search.toLowerCase())
+    const matchLanguage = selectedLanguage === ALLE || project.language === selectedLanguage
+    const matchScene = selectedScene === ALLE || project.scene === selectedScene
     return matchSearch && matchLanguage && matchScene
   })
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-4xl mx-auto">
-      <PageTitle title="Meine Projekte" color={pageColors.projects} />
+      <PageTitle title={t(ui.projectsTitle)} color={pageColors.projects} />
 
       <p className="text-gray-500 text-lg mb-10" style={{ transform: 'rotate(-0.3deg)' }}>
-        Ich lerne am liebsten, indem ich Sachen baue. Klick ein Projekt an
-        für den Screenshot und den Code.
+        {t(ui.projectsIntro)}
       </p>
 
       {/* Suchfeld und der Knopf der die Filter auf- und zuklappt */}
       <div className="flex items-center gap-4 mb-4">
         <input
           type="text"
-          placeholder="Suchen..."
+          placeholder={t(ui.search)}
           value={search}
           onChange={event => setSearch(event.target.value)}
           className="box flex-1 px-4 py-2"
@@ -136,7 +177,7 @@ function Projects() {
             fontFamily: 'inherit',
           }}
         >
-          Filter ▾
+          {t(ui.filter)}
         </button>
       </div>
 
@@ -144,7 +185,7 @@ function Projects() {
       {showFilter && (
         <div className="box flex flex-wrap gap-6 sm:gap-8 p-4 mb-6">
           <div>
-            <p className="text-sm text-gray-400 mb-2">Sprache</p>
+            <p className="text-sm text-gray-400 mb-2">{t(ui.filterLang)}</p>
             {languages.map(language => (
               <button
                 key={language}
@@ -152,12 +193,12 @@ function Projects() {
                 className="pill block mb-1"
                 style={{ background: selectedLanguage === language ? pageColors.projects : 'transparent' }}
               >
-                {language}
+                {language === ALLE ? t(ui.all) : language}
               </button>
             ))}
           </div>
           <div>
-            <p className="text-sm text-gray-400 mb-2">Bereich</p>
+            <p className="text-sm text-gray-400 mb-2">{t(ui.filterScene)}</p>
             {scenes.map(scene => (
               <button
                 key={scene}
@@ -165,19 +206,18 @@ function Projects() {
                 className="pill block mb-1"
                 style={{ background: selectedScene === scene ? pageColors.projects : 'transparent' }}
               >
-                {scene}
+                {bereichText(scene)}
               </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Für jedes gefundene Projekt ein Post-it. Klick öffnet das Fenster. */}
       {/* Auf dem Handy eine Spalte, ab 768px zwei */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {filtered.map((project, i) => (
           <div
-            key={project.name}
+            key={project.id}
             onClick={() => setOpenProject(project)}
             className="cursor-pointer"
           >
@@ -185,8 +225,8 @@ function Projects() {
               colors={postitColors.yellow}
               rotate={i % 2 === 0 ? -0.8 : 0.8}
             >
-              <p className="sniglet-bold text-lg mb-2">{project.name}</p>
-              <p className="text-sm text-gray-700 mb-4">{project.text}</p>
+              <p className="sniglet-bold text-lg mb-2">{t(project.name)}</p>
+              <p className="text-sm text-gray-700 mb-4">{t(project.text)}</p>
 
               {/* Was ich dabei gelernt habe */}
               {project.learned.length > 0 && (
@@ -204,7 +244,7 @@ function Projects() {
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-gray-400">Nichts gefunden.</p>
+        <p className="text-gray-400">{t(ui.nothingFound)}</p>
       )}
 
       {/* Das Fenster gibt es nur wenn ein Projekt angeklickt wurde */}

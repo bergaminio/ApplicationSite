@@ -31,6 +31,8 @@ public/
 src/
 ├── api/
 │   └── github.ts       Holt meine öffentlichen Repos von GitHub
+├── context/
+│   └── LanguageContext.tsx  Merkt sich die gewählte Sprache
 ├── components/     Bausteine die auf mehreren Seiten vorkommen
 │   ├── Navbar.tsx      Die Navigation ganz oben
 │   ├── PageTitle.tsx   Seiten-Titel mit farbigem Strich darunter
@@ -44,6 +46,7 @@ src/
 │   └── Login.tsx
 ├── styles/
 │   └── colors.ts   Alle Farben an einem Ort
+├── texts.ts        Alle festen Texte auf Deutsch und Englisch
 ├── types.ts        Wie ein Projekt bei uns aussieht
 ├── App.tsx         Legt fest welche URL welche Seite zeigt
 ├── index.css       Schrift, Hintergrund und die Klassen .pill und .box
@@ -62,6 +65,30 @@ Die Projects-Seite zeigt zwei Quellen zusammen:
 
 Screenshot hinzufügen: Bild in `public/demos/` ablegen und den Pfad
 im passenden Block eintragen, z.B. `image: '/demos/bolt.png'`.
+
+## Sprachen
+
+Die Seite gibt es auf Deutsch und Englisch, umschalten über DE / EN
+oben rechts. Die Wahl wird im Browser gemerkt.
+
+Jeder Text ist ein Paar:
+
+```ts
+{ de: 'Schliessen', en: 'Close' }
+```
+
+Feste Texte (Navigation, Knöpfe, Überschriften) stehen in `src/texts.ts`.
+Inhalte stehen direkt bei den Daten — Projekte in `src/pages/Projects.tsx`,
+Lebenslauf in `src/pages/CV.tsx`.
+
+In einer Komponente holt man sich die Sprache so:
+
+```tsx
+const { t } = useSprache()
+<p>{t(ui.navHome)}</p>
+```
+
+**Wichtig:** Wenn du einen Text änderst, immer beide Sprachen anpassen.
 
 ## Farben
 
@@ -82,10 +109,7 @@ Schrift: [Sniglet](https://fonts.google.com/specimen/Sniglet) von Google Fonts
 
 ## Noch offen
 
-- [ ] Responsive Design fürs Handy
-- [ ] Auffang-Route für unbekannte Adressen
 - [ ] PDF-Knopf auf dem Lebenslauf (sobald `public/lebenslauf.pdf` da ist)
-- [ ] Sprach-Switch Deutsch / Englisch
 - [ ] Login-Seite
 - [ ] Backend mit Java Spring Boot + PostgreSQL
 - [ ] Deployment auf bergamin.ch

@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom'
 import { pageColors, postitColors } from '../styles/colors'
 import Postit from '../components/Postit'
+import { useSprache } from '../context/LanguageContext'
+import { ui } from '../texts'
 
 function Home() {
+  const { t } = useSprache()
+
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
 
@@ -27,21 +31,21 @@ function Home() {
       </div>
 
       <p className="text-gray-500 mt-8 text-lg" style={{ transform: 'rotate(-0.3deg)' }}>
-        Entwickler in Ausbildung an der BWD Bern
+        {t(ui.homeRole)}
       </p>
 
       {/* Post-it mit dem Knopf zu den Projekten */}
       <div className="mt-12 sm:mt-16" style={{ maxWidth: '320px' }}>
         <Postit colors={postitColors.yellow} rotate={-1}>
           <p className="text-gray-700 mb-6 text-lg">
-            Schau dir meine Projekte an
+            {t(ui.homePostit)}
           </p>
           <Link
             to="/projects"
             className="pill"
             style={{ background: 'white', padding: '8px 24px', fontSize: '14px' }}
           >
-            Projekte →
+            {t(ui.homeButton)}
           </Link>
         </Postit>
       </div>

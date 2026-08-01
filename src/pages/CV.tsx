@@ -1,61 +1,109 @@
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
+import { useSprache } from '../context/LanguageContext'
+import { ui, type Text } from '../texts'
 
 // ---------------------------------------------------------------
-// Hier stehen alle Angaben. Etwas ändern? Einfach den Text anpassen
-// oder einen Block kopieren.
+// Hier stehen alle Angaben, jeweils auf Deutsch und Englisch.
+// Etwas ändern? Beide Sprachen anpassen, sonst stimmt eine nicht.
 // ---------------------------------------------------------------
 
-const ueberMich =
-  'Ich mache die IMS an der BWD Bern. Mit dem Programmieren angefangen habe ich, ' +
-  'weil ich Sachen bauen wollte, die es so nicht gab: eine App, die meine Sprintzeiten ' +
-  'per GPS stoppt, damit beim Training niemand mit der Stoppuhr danebenstehen muss. ' +
-  'Danach kamen ein Rollenspiel im Browser und diese Website dazu. Am meisten lerne ich, ' +
-  'wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss. Jetzt suche ich ein ' +
-  'Praktikum, in dem ich das an echten Projekten weitermache.'
+const ueberMich: Text = {
+  de:
+    'Ich mache die IMS an der BWD Bern. Mit dem Programmieren angefangen habe ich, ' +
+    'weil ich Sachen bauen wollte, die es so nicht gab: eine App, die meine Sprintzeiten ' +
+    'per GPS stoppt, damit beim Training niemand mit der Stoppuhr danebenstehen muss. ' +
+    'Danach kamen ein Rollenspiel im Browser und diese Website dazu. Am meisten lerne ich, ' +
+    'wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss. Jetzt suche ich ein ' +
+    'Praktikum, in dem ich das an echten Projekten weitermache.',
+  en:
+    'I am doing the IMS at BWD Bern. I started programming because I wanted to build things ' +
+    'that did not exist yet: an app that times my sprints by GPS, so nobody has to stand ' +
+    'there with a stopwatch during training. A browser role-playing game and this website ' +
+    'came after that. I learn the most when I am sitting on something of my own and have to ' +
+    'get it working. Now I am looking for an internship where I can keep doing that on real projects.',
+}
 
-const ausbildung = [
+interface Eintrag {
+  zeit: Text
+  titel: Text
+  ort: Text
+  text: Text
+}
+
+const leer: Text = { de: '', en: '' }
+
+const ausbildung: Eintrag[] = [
   {
-    zeit: '2024 – heute',
-    titel: 'Informatikmittelschule (IMS) EFZ',
-    ort: 'BWD Bern (IMS) · gibb Berufsfachschule Bern (Berufsschule)',
-    text: 'Softwareentwicklung, DevOps, agile Methoden und Geschäftsprozesse.',
+    zeit: { de: '2024 – heute', en: '2024 – today' },
+    titel: {
+      de: 'Informatikmittelschule (IMS) EFZ',
+      en: 'Informatikmittelschule (IMS) – IT secondary school, EFZ',
+    },
+    ort: {
+      de: 'BWD Bern (IMS) · gibb Berufsfachschule Bern (Berufsschule)',
+      en: 'BWD Bern (IMS) · gibb Bern (vocational school)',
+    },
+    text: {
+      de: 'Softwareentwicklung, DevOps, agile Methoden und Geschäftsprozesse.',
+      en: 'Software development, DevOps, agile methods and business processes.',
+    },
   },
   {
-    zeit: '2021 – 2024',
-    titel: 'Oberstufenzentrum (OSZ)',
-    ort: 'OSZ Ins',
-    text: '',
+    zeit: { de: '2021 – 2024', en: '2021 – 2024' },
+    titel: { de: 'Oberstufenzentrum (OSZ)', en: 'Lower secondary school (OSZ)' },
+    ort: { de: 'OSZ Ins', en: 'OSZ Ins' },
+    text: leer,
   },
   {
-    zeit: '2014 – 2020',
-    titel: 'Primarschule',
-    ort: 'Primarschule BTM (Brüttelen · Treiten · Müntschemier)',
-    text: '',
+    zeit: { de: '2014 – 2020', en: '2014 – 2020' },
+    titel: { de: 'Primarschule', en: 'Primary school' },
+    ort: {
+      de: 'Primarschule BTM (Brüttelen · Treiten · Müntschemier)',
+      en: 'Primary school BTM (Brüttelen · Treiten · Müntschemier)',
+    },
+    text: leer,
   },
 ]
 
-const erfahrung = [
+const erfahrung: Eintrag[] = [
   {
-    zeit: '2023',
-    titel: 'Schnupperlehre Informatik',
-    ort: 'BBC Bümpliz, Bern',
-    text: 'Einblick in den Berufsalltag der Informatik und erste praktische Erfahrungen.',
+    zeit: { de: '2023', en: '2023' },
+    titel: { de: 'Schnupperlehre Informatik', en: 'IT taster apprenticeship' },
+    ort: { de: 'BBC Bümpliz, Bern', en: 'BBC Bümpliz, Bern' },
+    text: {
+      de: 'Einblick in den Berufsalltag der Informatik und erste praktische Erfahrungen.',
+      en: 'A look at everyday work in IT and first hands-on experience.',
+    },
   },
 ]
 
-const sprachen = [
-  { name: 'Deutsch', niveau: 'Muttersprache' },
-  { name: 'Französisch', niveau: 'B2 (Zertifizierung März 2026)' },
-  { name: 'Englisch', niveau: 'B2 (Zertifizierung März 2026)' },
+const sprachen: { name: Text; niveau: Text }[] = [
+  {
+    name: { de: 'Deutsch', en: 'German' },
+    niveau: { de: 'Muttersprache', en: 'Native speaker' },
+  },
+  {
+    name: { de: 'Französisch', en: 'French' },
+    niveau: { de: 'B2 (Zertifizierung März 2026)', en: 'B2 (certification March 2026)' },
+  },
+  {
+    name: { de: 'Englisch', en: 'English' },
+    niveau: { de: 'B2 (Zertifizierung März 2026)', en: 'B2 (certification March 2026)' },
+  },
 ]
 
+// Technik-Namen sind in beiden Sprachen gleich.
 const itKenntnisse = [
   'React', 'TypeScript', 'Java', 'Spring Boot', 'Python',
   'Flutter', 'Git', 'GitLab', 'Docker', 'CI/CD',
 ]
 
-const hobbys = ['Klavier spielen', 'Gaming', 'Bogenschiessen']
+const hobbys: Text[] = [
+  { de: 'Klavier spielen', en: 'Playing piano' },
+  { de: 'Gaming', en: 'Gaming' },
+  { de: 'Bogenschiessen', en: 'Archery' },
+]
 
 // ---------------------------------------------------------------
 
@@ -82,31 +130,27 @@ function Abschnitt({ titel, children }: { titel: string; children: React.ReactNo
 }
 
 // Ein einzelner Eintrag: Zeitraum links, Inhalt rechts.
-function Eintrag({ zeit, titel, ort, text }: {
-  zeit: string
-  titel: string
-  ort: string
-  text: string
-}) {
+function EintragZeile({ zeit, titel, ort, text }: Eintrag) {
+  const { t } = useSprache()
   return (
     // Auf dem Handy steht der Zeitraum über dem Eintrag, ab 640px daneben.
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-6 mb-6">
-      <p className="text-sm text-gray-400 sm:w-28 sm:shrink-0">
-        {zeit}
-      </p>
+      <p className="text-sm text-gray-400 sm:w-28 sm:shrink-0">{t(zeit)}</p>
       <div>
-        <p className="sniglet-bold">{titel}</p>
-        {ort && <p className="text-sm text-gray-500">{ort}</p>}
-        {text && <p className="text-sm text-gray-700 mt-1">{text}</p>}
+        <p className="sniglet-bold">{t(titel)}</p>
+        {t(ort) && <p className="text-sm text-gray-500">{t(ort)}</p>}
+        {t(text) && <p className="text-sm text-gray-700 mt-1">{t(text)}</p>}
       </div>
     </div>
   )
 }
 
 function CV() {
+  const { t } = useSprache()
+
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-      <PageTitle title="Lebenslauf" color={pageColors.story} />
+      <PageTitle title={t(ui.cvTitle)} color={pageColors.story} />
 
       {/* Sobald public/lebenslauf.pdf da ist, hier den Knopf einhängen:
           <a href="/lebenslauf.pdf" download className="pill"
@@ -116,33 +160,31 @@ function CV() {
       */}
 
       <p className="text-gray-700 mb-12" style={{ maxWidth: '38rem' }}>
-        {ueberMich}
+        {t(ueberMich)}
       </p>
 
-      <Abschnitt titel="Ausbildung">
+      <Abschnitt titel={t(ui.education)}>
         {ausbildung.map(eintrag => (
-          <Eintrag key={eintrag.titel} {...eintrag} />
+          <EintragZeile key={eintrag.titel.de} {...eintrag} />
         ))}
       </Abschnitt>
 
-      <Abschnitt titel="Erfahrung">
+      <Abschnitt titel={t(ui.experience)}>
         {erfahrung.map(eintrag => (
-          <Eintrag key={eintrag.titel} {...eintrag} />
+          <EintragZeile key={eintrag.titel.de} {...eintrag} />
         ))}
       </Abschnitt>
 
-      <Abschnitt titel="Sprachen">
+      <Abschnitt titel={t(ui.languages)}>
         {sprachen.map(sprache => (
-          <div key={sprache.name} className="flex flex-col sm:flex-row gap-0 sm:gap-6 mb-3 sm:mb-2">
-            <p className="sniglet-bold text-sm sm:w-28 sm:shrink-0">
-              {sprache.name}
-            </p>
-            <p className="text-sm text-gray-700">{sprache.niveau}</p>
+          <div key={sprache.name.de} className="flex flex-col sm:flex-row gap-0 sm:gap-6 mb-3 sm:mb-2">
+            <p className="sniglet-bold text-sm sm:w-28 sm:shrink-0">{t(sprache.name)}</p>
+            <p className="text-sm text-gray-700">{t(sprache.niveau)}</p>
           </div>
         ))}
       </Abschnitt>
 
-      <Abschnitt titel="IT-Kenntnisse">
+      <Abschnitt titel={t(ui.itSkills)}>
         <div className="flex flex-wrap gap-2">
           {itKenntnisse.map(kenntnis => (
             <span key={kenntnis} className="pill" style={{ background: 'white' }}>
@@ -152,11 +194,11 @@ function CV() {
         </div>
       </Abschnitt>
 
-      <Abschnitt titel="Hobbys">
+      <Abschnitt titel={t(ui.hobbies)}>
         <div className="flex flex-wrap gap-2">
           {hobbys.map(hobby => (
-            <span key={hobby} className="pill" style={{ background: 'white' }}>
-              {hobby}
+            <span key={hobby.de} className="pill" style={{ background: 'white' }}>
+              {t(hobby)}
             </span>
           ))}
         </div>
