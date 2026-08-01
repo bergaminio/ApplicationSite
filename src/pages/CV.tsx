@@ -7,11 +7,12 @@ import PageTitle from '../components/PageTitle'
 // ---------------------------------------------------------------
 
 const ueberMich =
-  'Motivierter Informatik-Lernender mit grosser Begeisterung für Softwareentwicklung. ' +
-  'In meiner Freizeit realisiere ich eigene Projekte – von Web-Applikationen bis zu Spielen – ' +
-  'und eigne mir dabei selbstständig neue Technologien an. Ich arbeite gerne strukturiert, ' +
-  'verstehe Konzepte zuerst gründlich und suche eine Praktikums- bzw. Schnupperlehrstelle, ' +
-  'in der ich mein Wissen praktisch anwenden und weiter ausbauen kann.'
+  'Ich mache die IMS an der BWD Bern. Mit dem Programmieren angefangen habe ich, ' +
+  'weil ich Sachen bauen wollte, die es so nicht gab: eine App, die meine Sprintzeiten ' +
+  'per GPS stoppt, damit beim Training niemand mit der Stoppuhr danebenstehen muss. ' +
+  'Danach kamen ein Rollenspiel im Browser und diese Website dazu. Am meisten lerne ich, ' +
+  'wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss. Jetzt suche ich ein ' +
+  'Praktikum, in dem ich das an echten Projekten weitermache.'
 
 const ausbildung = [
   {
