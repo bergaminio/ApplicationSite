@@ -26,24 +26,42 @@ Läuft dann auf http://localhost:5173
 ## Aufbau
 
 ```
+public/
+└── demos/          Screenshots für das Projekt-Fenster
 src/
+├── api/
+│   └── github.ts       Holt meine öffentlichen Repos von GitHub
 ├── components/     Bausteine die auf mehreren Seiten vorkommen
 │   ├── Navbar.tsx      Die Navigation ganz oben
 │   ├── PageTitle.tsx   Seiten-Titel mit farbigem Strich darunter
-│   └── Postit.tsx      Post-it Zettel mit abgeknickter Ecke
+│   ├── Postit.tsx      Post-it Zettel mit abgeknickter Ecke
+│   └── ProjectModal.tsx  Das Fenster beim Klick auf ein Projekt
 ├── pages/          Eine Datei pro Seite
 │   ├── Home.tsx
-│   ├── Skills.tsx
 │   ├── Projects.tsx
-│   ├── Story.tsx
+│   ├── CV.tsx          Der Lebenslauf
 │   ├── Contact.tsx
 │   └── Login.tsx
 ├── styles/
 │   └── colors.ts   Alle Farben an einem Ort
+├── types.ts        Wie ein Projekt bei uns aussieht
 ├── App.tsx         Legt fest welche URL welche Seite zeigt
 ├── index.css       Schrift, Hintergrund und die Klassen .pill und .box
 └── main.tsx        Startpunkt der App
 ```
+
+## Projekte pflegen
+
+Die Projects-Seite zeigt zwei Quellen zusammen:
+
+1. **Die gepflegte Liste** oben in `src/pages/Projects.tsx` — mit Text, gelernten
+   Techniken und Screenshot. Neues Projekt? Einen Block kopieren.
+2. **GitHub** — alle öffentlichen Repos, die noch nicht in der Liste stehen,
+   erscheinen automatisch. Die Antwort wird eine Stunde im Browser
+   zwischengespeichert.
+
+Screenshot hinzufügen: Bild in `public/demos/` ablegen und den Pfad
+im passenden Block eintragen, z.B. `image: '/demos/bolt.png'`.
 
 ## Farben
 
@@ -51,20 +69,23 @@ Jede Seite hat eine eigene Signature-Farbe, alle in `src/styles/colors.ts`:
 
 | Seite | Farbe |
 |---|---|
-| Home | Rot `#f37882` |
-| Skills | Orange `#f1aa81` |
-| Projects | Gelb `#ffd06b` |
-| Story | Grün `#6edaa4` |
-| Contact | Blau `#70d6fe` |
+| Start | Rot `#f37882` |
+| Projekte | Gelb `#ffd06b` |
+| Lebenslauf | Grün `#6edaa4` |
+| Kontakt | Blau `#70d6fe` |
 | Login | Pink `#e91e8c` |
+
+Orange `#f1aa81` färbt die "Dabei gelernt"-Badges im Projekt-Fenster.
 
 Hintergrund der ganzen Seite: warmes Weiss `#faf8f4`
 Schrift: [Sniglet](https://fonts.google.com/specimen/Sniglet) von Google Fonts
 
 ## Noch offen
 
-- [ ] Login-Seite
-- [ ] Projekte über die GitHub-API laden
 - [ ] Responsive Design fürs Handy
+- [ ] Auffang-Route für unbekannte Adressen
+- [ ] PDF-Knopf auf dem Lebenslauf (sobald `public/lebenslauf.pdf` da ist)
+- [ ] Sprach-Switch Deutsch / Englisch
+- [ ] Login-Seite
 - [ ] Backend mit Java Spring Boot + PostgreSQL
 - [ ] Deployment auf bergamin.ch

@@ -7,7 +7,7 @@ import { pageColors } from '../styles/colors'
 const links = [
   { to: '/', label: 'Start', color: pageColors.home },
   { to: '/projects', label: 'Projekte', color: pageColors.projects },
-  { to: '/story', label: 'Werdegang', color: pageColors.story },
+  { to: '/cv', label: 'Lebenslauf', color: pageColors.story },
   { to: '/contact', label: 'Kontakt', color: pageColors.contact },
 ]
 
