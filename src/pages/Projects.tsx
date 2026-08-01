@@ -37,7 +37,7 @@ const myProjects: Project[] = [
     learned: ['JavaScript', 'Three.js', 'Electron', '3D'],
     language: 'JavaScript',
     scene: 'privat',
-    image: '/demos/aschenreich.png',
+    image: '/demos/aschenreich.jpg',
   },
   {
     name: 'Bomberman',
