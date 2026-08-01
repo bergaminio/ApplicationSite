@@ -2,14 +2,19 @@ package ch.bergamin.portfolio.controller;
 
 import ch.bergamin.portfolio.dto.AccountOverview;
 import ch.bergamin.portfolio.dto.NewAccountRequest;
+import ch.bergamin.portfolio.dto.NewGradeRequest;
 import ch.bergamin.portfolio.model.Account;
+import ch.bergamin.portfolio.model.Grade;
 import ch.bergamin.portfolio.repository.AccountRepository;
+import ch.bergamin.portfolio.repository.GradeRepository;
 import ch.bergamin.portfolio.repository.LoginEventRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,13 +31,16 @@ public class AdminController {
 
     private final AccountRepository accounts;
     private final LoginEventRepository loginEvents;
+    private final GradeRepository grades;
     private final PasswordEncoder passwordEncoder;
 
     public AdminController(AccountRepository accounts,
                            LoginEventRepository loginEvents,
+                           GradeRepository grades,
                            PasswordEncoder passwordEncoder) {
         this.accounts = accounts;
         this.loginEvents = loginEvents;
+        this.grades = grades;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -92,5 +100,31 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "username", account.getUsername(),
                 "displayName", account.getDisplayName()));
+    }
+
+    // POST /api/admin/grades
+    // Traegt eine Note ein.
+    @PostMapping("/grades")
+    public ResponseEntity<?> neueNote(@Valid @RequestBody NewGradeRequest request) {
+        Grade note = grades.save(new Grade(
+                request.area(),
+                request.subject().trim(),
+                request.value()));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                "id", note.getId(),
+                "area", note.getArea(),
+                "subject", note.getSubject(),
+                "value", note.getValue()));
+    }
+
+    // DELETE /api/admin/grades/{id}
+    @DeleteMapping("/grades/{id}")
+    public ResponseEntity<?> loescheNote(@PathVariable Long id) {
+        if (!grades.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        grades.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

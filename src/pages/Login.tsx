@@ -49,7 +49,20 @@ function Login() {
           <p className="text-gray-400 text-xs mb-1">{t(ui.loggedInAs)}</p>
           <p className="sniglet-bold text-xl mb-6">{benutzer.displayName}</p>
 
-          <p className="text-gray-700 text-sm mb-6">{t(ui.gradesSoon)}</p>
+          {/* Zu den Noten - das ist der Grund fuer den Login */}
+          <Link
+            to="/grades"
+            className="pill block mb-4"
+            style={{
+              background: pageColors.login,
+              color: 'white',
+              padding: '8px 20px',
+              fontSize: '14px',
+              width: 'fit-content',
+            }}
+          >
+            {t(ui.gradesLink)}
+          </Link>
 
           {/* Der Weg zu meiner Uebersicht - sehe nur ich */}
           {benutzer.role === 'ADMIN' && (

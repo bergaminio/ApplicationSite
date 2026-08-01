@@ -109,6 +109,31 @@ export const ui = {
   adminOf:            { de: 'von', en: 'of' },
   adminCompaniesWord: { de: 'Betrieben', en: 'companies' },
 
+  // Noten
+  gradesTitle: { de: 'Noten', en: 'Grades' },
+  gradesLink:  { de: 'Meine Noten →', en: 'My grades →' },
+  gradesIntro: {
+    de: 'Meine aktuellen Noten aus der Ausbildung.',
+    en: 'My current grades from my training.',
+  },
+  gradesEmpty:   { de: 'Noch keine Noten eingetragen.', en: 'No grades entered yet.' },
+  gradesAverage: { de: 'Durchschnitt', en: 'Average' },
+  gradesOverall: { de: 'Gesamtdurchschnitt', en: 'Overall average' },
+
+  areaEFZ: { de: 'EFZ · Berufsfachschule gibb', en: 'EFZ · gibb vocational school' },
+  areaBM:  { de: 'BM · BWD Bern', en: 'Vocational baccalaureate · BWD Bern' },
+  areaUEK: { de: 'ÜK · ICT Lernfactory', en: 'Inter-company courses · ICT Lernfactory' },
+
+  // Noten eintragen (nur Admin)
+  gradeAdd:      { de: 'Note eintragen', en: 'Add grade' },
+  gradeArea:     { de: 'Bereich', en: 'Area' },
+  gradeSubject:  { de: 'Fach', en: 'Subject' },
+  gradeValue:    { de: 'Note', en: 'Grade' },
+  gradeSave:     { de: 'Speichern', en: 'Save' },
+  gradeDelete:   { de: 'Löschen', en: 'Delete' },
+  gradeInvalid:  { de: 'Fach ausfüllen und eine Note zwischen 1 und 6 wählen.', en: 'Enter a subject and a grade between 1 and 6.' },
+  gradeFailed:   { de: 'Speichern hat nicht geklappt.', en: 'Saving did not work.' },
+
   // Seite nicht gefunden
   notFoundTitle: { de: 'Nicht gefunden', en: 'Not found' },
   notFoundText: {

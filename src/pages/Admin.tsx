@@ -5,6 +5,8 @@ import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 import { ladeKonten, ladeAnmeldeversuche, AdminFehler } from '../api/admin'
 import type { KontoUebersicht, Anmeldeversuch } from '../api/admin'
+import { ladeNoten, speichereNote, loescheNote } from '../api/grades'
+import type { Note } from '../api/grades'
 import { ui } from '../texts'
 
 // Zeigt einen Zeitpunkt lesbar an, z.B. "01.08.2026, 16:12"
@@ -21,17 +23,25 @@ function Admin() {
 
   const [konten, setKonten] = useState<KontoUebersicht[]>([])
   const [versuche, setVersuche] = useState<Anmeldeversuch[]>([])
+  const [noten, setNoten] = useState<Note[]>([])
   const [laedt, setLaedt] = useState(true)
   const [fehler, setFehler] = useState('')
+
+  // Das Formular zum Noten eintragen
+  const [bereich, setBereich] = useState('EFZ')
+  const [fach, setFach] = useState('')
+  const [note, setNote] = useState('')
+  const [notenFehler, setNotenFehler] = useState('')
 
   useEffect(() => {
     // Warten bis klar ist, ob jemand angemeldet ist.
     if (authLaedt) return
 
-    Promise.all([ladeKonten(), ladeAnmeldeversuche()])
-      .then(([k, v]) => {
+    Promise.all([ladeKonten(), ladeAnmeldeversuche(), ladeNoten()])
+      .then(([k, v, n]) => {
         setKonten(k)
         setVersuche(v)
+        setNoten(n)
       })
       .catch(e => {
         if (e instanceof AdminFehler && e.art === 'keinRecht') setFehler(t(ui.adminNoRight))
@@ -44,6 +54,34 @@ function Admin() {
   // Nur Lehrbetriebe zaehlen, mich selbst nicht.
   const betriebe = konten.filter(k => k.role === 'COMPANY')
   const warenDa = betriebe.filter(k => k.loginCount > 0).length
+
+  async function noteEintragen() {
+    setNotenFehler('')
+    const wert = parseFloat(note.replace(',', '.'))   // 4,5 genauso erlauben wie 4.5
+
+    if (!fach.trim() || isNaN(wert) || wert < 1 || wert > 6) {
+      setNotenFehler(t(ui.gradeInvalid))
+      return
+    }
+
+    try {
+      const neu = await speichereNote(bereich, fach.trim(), wert)
+      setNoten([...noten, neu])
+      setFach('')
+      setNote('')
+    } catch {
+      setNotenFehler(t(ui.gradeFailed))
+    }
+  }
+
+  async function noteEntfernen(id: number) {
+    try {
+      await loescheNote(id)
+      setNoten(noten.filter(n => n.id !== id))
+    } catch {
+      setNotenFehler(t(ui.gradeFailed))
+    }
+  }
 
   if (authLaedt || laedt) {
     return (
@@ -115,6 +153,79 @@ function Admin() {
           )
         })}
       </div>
+
+      {/* ---- Noten pflegen ---- */}
+      <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
+        {t(ui.gradeAdd).toUpperCase()}
+      </p>
+
+      <div className="box p-4 mb-4">
+        <div className="flex flex-col sm:flex-row gap-3 mb-3">
+          <select
+            value={bereich}
+            onChange={e => setBereich(e.target.value)}
+            className="box px-3 py-2"
+            style={{ background: 'transparent', fontFamily: 'inherit' }}
+          >
+            <option value="EFZ">EFZ</option>
+            <option value="BM">BM</option>
+            <option value="UEK">ÜK</option>
+          </select>
+
+          <input
+            type="text"
+            placeholder={t(ui.gradeSubject)}
+            value={fach}
+            onChange={e => setFach(e.target.value)}
+            className="box flex-1 px-3 py-2"
+            style={{ background: 'transparent', fontFamily: 'inherit' }}
+          />
+
+          <input
+            type="text"
+            inputMode="decimal"
+            placeholder={t(ui.gradeValue)}
+            value={note}
+            onChange={e => setNote(e.target.value)}
+            className="box px-3 py-2"
+            style={{ background: 'transparent', fontFamily: 'inherit', width: '5rem' }}
+          />
+
+          <button
+            onClick={noteEintragen}
+            className="pill"
+            style={{ cursor: 'pointer', background: pageColors.login, color: 'white', padding: '8px 16px' }}
+          >
+            {t(ui.gradeSave)}
+          </button>
+        </div>
+
+        {notenFehler && (
+          <p className="text-sm" style={{ color: pageColors.login }} role="alert">{notenFehler}</p>
+        )}
+
+        {/* Was schon drin ist, mit Loeschen-Knopf */}
+        {noten.length > 0 && (
+          <div className="flex flex-col gap-1 mt-3">
+            {noten.map(n => (
+              <div key={n.id} className="flex items-center justify-between gap-3 text-sm">
+                <span className="text-gray-400 text-xs" style={{ width: '3rem' }}>{n.area}</span>
+                <span className="flex-1">{n.subject}</span>
+                <span className="sniglet-bold">{n.value.toFixed(1)}</span>
+                <button
+                  onClick={() => noteEntfernen(n.id)}
+                  className="pill"
+                  style={{ cursor: 'pointer', fontSize: '11px' }}
+                >
+                  {t(ui.gradeDelete)}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="mb-12" />
 
       {/* ---- Das rohe Protokoll ---- */}
       <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>

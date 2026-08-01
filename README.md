@@ -130,6 +130,9 @@ Maven muss nicht installiert sein — `mvnw` holt es sich selbst.
 | `/api/admin/logins` | GET | nur ADMIN | Jeder Anmeldeversuch, neueste zuerst |
 | `/api/admin/accounts` | GET | nur ADMIN | Übersicht: wer hat sich wie oft angemeldet |
 | `/api/admin/accounts` | POST | nur ADMIN | Konto für einen Lehrbetrieb anlegen |
+| `/api/grades` | GET | angemeldet | Alle Noten |
+| `/api/admin/grades` | POST | nur ADMIN | Note eintragen |
+| `/api/admin/grades/{id}` | DELETE | nur ADMIN | Note löschen |
 
 **Die Idee dahinter:** Jeder Lehrbetrieb bekommt sein eigenes Konto. Jeder
 Anmeldeversuch landet in der Tabelle `login_events` — auch die misslungenen.
