@@ -9,7 +9,9 @@ interface PageTitleProps {
 function PageTitle({ title, color }: PageTitleProps) {
   return (
     <div className="mb-12">
-      <h1 className="text-7xl sniglet-bold leading-tight">
+      {/* Auf dem Handy kleiner, auf grossen Schirmen gross.
+          sm: ab 640px, md: ab 768px Bildschirmbreite. */}
+      <h1 className="text-4xl sm:text-6xl md:text-7xl sniglet-bold leading-tight">
         {title}
       </h1>
 

@@ -3,10 +3,11 @@ import PageTitle from '../components/PageTitle'
 
 function Contact() {
   return (
-    <div className="px-8 py-16 max-w-3xl mx-auto">
+    <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
       <PageTitle title="Kontakt" color={pageColors.contact} />
 
-      <div className="box flex gap-8 items-start p-8" style={{ borderRadius: '16px' }}>
+      {/* Auf dem Handy untereinander, ab 640px nebeneinander */}
+      <div className="box flex flex-col sm:flex-row gap-6 sm:gap-8 items-start p-5 sm:p-8" style={{ borderRadius: '16px' }}>
 
         {/* Platzhalter fürs Foto */}
         <div
@@ -29,7 +30,7 @@ function Contact() {
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">E-Mail</p>
-            <p>michael.bergamin@protonmail.com</p>
+            <p>michael.bergamin@proton.me</p>
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">Telefon</p>

@@ -110,7 +110,7 @@ function Projects() {
   })
 
   return (
-    <div className="px-8 py-16 max-w-4xl mx-auto">
+    <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-4xl mx-auto">
       <PageTitle title="Meine Projekte" color={pageColors.projects} />
 
       <p className="text-gray-500 text-lg mb-10" style={{ transform: 'rotate(-0.3deg)' }}>
@@ -142,7 +142,7 @@ function Projects() {
 
       {/* Die Filter sieht man nur wenn showFilter true ist */}
       {showFilter && (
-        <div className="box flex gap-8 p-4 mb-6">
+        <div className="box flex flex-wrap gap-6 sm:gap-8 p-4 mb-6">
           <div>
             <p className="text-sm text-gray-400 mb-2">Sprache</p>
             {languages.map(language => (
@@ -173,7 +173,8 @@ function Projects() {
       )}
 
       {/* Für jedes gefundene Projekt ein Post-it. Klick öffnet das Fenster. */}
-      <div className="grid grid-cols-2 gap-6 items-start">
+      {/* Auf dem Handy eine Spalte, ab 768px zwei */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {filtered.map((project, i) => (
           <div
             key={project.name}

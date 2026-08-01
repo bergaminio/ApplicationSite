@@ -28,7 +28,7 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '1rem',
+        padding: '0.5rem',
         zIndex: 50,
       }}
     >
@@ -36,20 +36,19 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
           es nicht gleich wieder schliesst. */}
       <div
         onClick={event => event.stopPropagation()}
-        className="box"
+        className="box p-4 sm:p-6"
         style={{
           background: '#faf8f4',
           width: '100%',
           maxWidth: '640px',
           maxHeight: '90vh',
           overflowY: 'auto',
-          padding: '1.5rem',
         }}
       >
 
         {/* Titel und der Schliessen-Knopf */}
-        <div className="flex items-start justify-between gap-4 mb-4">
-          <p className="sniglet-bold text-2xl">{project.name}</p>
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <p className="sniglet-bold text-xl sm:text-2xl">{project.name}</p>
           <button
             onClick={onClose}
             className="pill"

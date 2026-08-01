@@ -16,7 +16,7 @@ const ueberMich =
 const ausbildung = [
   {
     zeit: '2024 – heute',
-    titel: 'Informatikmittelschule (IMS) & Informatiklehre EFZ',
+    titel: 'Informatikmittelschule (IMS) EFZ',
     ort: 'BWD Bern (IMS) · gibb Berufsfachschule Bern (Berufsschule)',
     text: 'Softwareentwicklung, DevOps, agile Methoden und Geschäftsprozesse.',
   },
@@ -49,7 +49,10 @@ const sprachen = [
   { name: 'Englisch', niveau: 'B2 (Zertifizierung März 2026)' },
 ]
 
-const itKenntnisse = ['React', 'TypeScript', 'Java', 'Python', 'Flutter', 'Git']
+const itKenntnisse = [
+  'React', 'TypeScript', 'Java', 'Spring Boot', 'Python',
+  'Flutter', 'Git', 'GitLab', 'Docker', 'CI/CD',
+]
 
 const hobbys = ['Klavier spielen', 'Gaming', 'Bogenschiessen']
 
@@ -85,8 +88,9 @@ function Eintrag({ zeit, titel, ort, text }: {
   text: string
 }) {
   return (
-    <div className="flex gap-6 mb-6">
-      <p className="text-sm text-gray-400" style={{ width: '110px', flexShrink: 0 }}>
+    // Auf dem Handy steht der Zeitraum über dem Eintrag, ab 640px daneben.
+    <div className="flex flex-col sm:flex-row gap-1 sm:gap-6 mb-6">
+      <p className="text-sm text-gray-400 sm:w-28 sm:shrink-0">
         {zeit}
       </p>
       <div>
@@ -100,7 +104,7 @@ function Eintrag({ zeit, titel, ort, text }: {
 
 function CV() {
   return (
-    <div className="px-8 py-16 max-w-3xl mx-auto">
+    <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
       <PageTitle title="Lebenslauf" color={pageColors.story} />
 
       {/* Sobald public/lebenslauf.pdf da ist, hier den Knopf einhängen:
@@ -128,8 +132,8 @@ function CV() {
 
       <Abschnitt titel="Sprachen">
         {sprachen.map(sprache => (
-          <div key={sprache.name} className="flex gap-6 mb-2">
-            <p className="sniglet-bold text-sm" style={{ width: '110px', flexShrink: 0 }}>
+          <div key={sprache.name} className="flex flex-col sm:flex-row gap-0 sm:gap-6 mb-3 sm:mb-2">
+            <p className="sniglet-bold text-sm sm:w-28 sm:shrink-0">
               {sprache.name}
             </p>
             <p className="text-sm text-gray-700">{sprache.niveau}</p>
