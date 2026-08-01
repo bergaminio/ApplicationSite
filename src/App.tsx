@@ -7,6 +7,7 @@ import Projects from './pages/Projects'
 import CV from './pages/CV'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
+import Admin from './pages/Admin'
 import NotFound from './pages/NotFound'
 
 // Legt fest welche Adresse welche Seite zeigt.
@@ -25,6 +26,9 @@ function App() {
             <Route path="/cv" element={<CV />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
+            {/* Nur fuer mich. Das Backend prueft das nochmal - die
+                Seite hier auszublenden ist kein Schutz. */}
+            <Route path="/admin" element={<Admin />} />
             {/* Der Stern faengt alle Adressen ab die oben nicht stehen */}
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -84,6 +84,31 @@ export const ui = {
     en: 'The grades are coming next. The login already works.',
   },
 
+  // Meine Uebersicht (nur fuer den Admin)
+  adminTitle:   { de: 'Übersicht', en: 'Overview' },
+  adminLink:    { de: 'Wer war da? →', en: 'Who stopped by? →' },
+  adminIntro: {
+    de: 'Jeder Lehrbetrieb hat ein eigenes Konto. Hier sehe ich, wer sich meine Unterlagen wirklich angeschaut hat.',
+    en: 'Every company has its own account. Here I can see who actually looked at my application.',
+  },
+  adminLoading:  { de: 'Wird geladen...', en: 'Loading...' },
+  adminNoRight:  { de: 'Dafür fehlen dir die Rechte.', en: 'You do not have permission for this.' },
+  adminNoServer: { de: 'Der Server antwortet nicht.', en: 'The server is not responding.' },
+  adminCompanies: { de: 'Lehrbetriebe', en: 'Companies' },
+  adminAttempts:  { de: 'Letzte Anmeldeversuche', en: 'Recent sign-in attempts' },
+  adminNever:     { de: 'noch nie', en: 'never yet' },
+  adminTimes:     { de: '× angemeldet', en: '× signed in' },
+  adminLastTime:  { de: 'zuletzt', en: 'last' },
+  adminFailed:    { de: 'fehlgeschlagen', en: 'failed' },
+  adminOk:        { de: 'erfolgreich', en: 'successful' },
+  adminNoAttempts: { de: 'Noch keine Anmeldeversuche.', en: 'No sign-in attempts yet.' },
+
+  // Als Doppelpunkt-Satz gebaut, damit die Grammatik bei jeder
+  // Zahl stimmt - "1 von 3 Betrieben haben" waere falsch.
+  adminLookedIn:      { de: 'Reingeschaut', en: 'Looked in' },
+  adminOf:            { de: 'von', en: 'of' },
+  adminCompaniesWord: { de: 'Betrieben', en: 'companies' },
+
   // Seite nicht gefunden
   notFoundTitle: { de: 'Nicht gefunden', en: 'Not found' },
   notFoundText: {

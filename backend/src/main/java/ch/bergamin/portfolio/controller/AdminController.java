@@ -1,5 +1,6 @@
 package ch.bergamin.portfolio.controller;
 
+import ch.bergamin.portfolio.dto.AccountOverview;
 import ch.bergamin.portfolio.dto.NewAccountRequest;
 import ch.bergamin.portfolio.model.Account;
 import ch.bergamin.portfolio.repository.AccountRepository;
@@ -50,7 +51,8 @@ public class AdminController {
     // GET /api/admin/accounts
     // Die Uebersicht: welcher Betrieb hat sich schon angemeldet?
     @GetMapping("/accounts")
-    public List<Map<String, Object>> accountsUebersicht() {
+    public List<AccountOverview> accountsUebersicht() {
+        // Die Liste ist nach Zeit sortiert, neueste zuerst.
         var alleEvents = loginEvents.findAllByOrderByTimeDesc();
 
         return accounts.findAll().stream()
@@ -60,13 +62,13 @@ public class AdminController {
                             .filter(e -> e.isSuccess() && e.getUsername().equals(account.getUsername()))
                             .toList();
 
-                    return Map.<String, Object>of(
-                            "username", account.getUsername(),
-                            "displayName", account.getDisplayName(),
-                            "role", account.getRole(),
-                            "loginCount", gelungen.size(),
-                            // Wenn nie angemeldet, steht hier "nie"
-                            "lastLogin", gelungen.isEmpty() ? "nie" : gelungen.getFirst().getTime().toString());
+                    return new AccountOverview(
+                            account.getUsername(),
+                            account.getDisplayName(),
+                            account.getRole(),
+                            gelungen.size(),
+                            // null heisst: noch nie angemeldet
+                            gelungen.isEmpty() ? null : gelungen.getFirst().getTime());
                 })
                 .toList();
     }

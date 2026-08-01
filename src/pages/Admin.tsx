@@ -1,0 +1,146 @@
+import { useEffect, useState } from 'react'
+import { pageColors } from '../styles/colors'
+import PageTitle from '../components/PageTitle'
+import { useSprache } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
+import { ladeKonten, ladeAnmeldeversuche, AdminFehler } from '../api/admin'
+import type { KontoUebersicht, Anmeldeversuch } from '../api/admin'
+import { ui } from '../texts'
+
+// Zeigt einen Zeitpunkt lesbar an, z.B. "01.08.2026, 16:12"
+function zeitpunkt(iso: string, sprache: string) {
+  return new Date(iso).toLocaleString(sprache === 'de' ? 'de-CH' : 'en-GB', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  })
+}
+
+function Admin() {
+  const { t, sprache } = useSprache()
+  const { benutzer, laedt: authLaedt } = useAuth()
+
+  const [konten, setKonten] = useState<KontoUebersicht[]>([])
+  const [versuche, setVersuche] = useState<Anmeldeversuch[]>([])
+  const [laedt, setLaedt] = useState(true)
+  const [fehler, setFehler] = useState('')
+
+  useEffect(() => {
+    // Warten bis klar ist, ob jemand angemeldet ist.
+    if (authLaedt) return
+
+    Promise.all([ladeKonten(), ladeAnmeldeversuche()])
+      .then(([k, v]) => {
+        setKonten(k)
+        setVersuche(v)
+      })
+      .catch(e => {
+        if (e instanceof AdminFehler && e.art === 'keinRecht') setFehler(t(ui.adminNoRight))
+        else setFehler(t(ui.adminNoServer))
+      })
+      .finally(() => setLaedt(false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLaedt])
+
+  // Nur Lehrbetriebe zaehlen, mich selbst nicht.
+  const betriebe = konten.filter(k => k.role === 'COMPANY')
+  const warenDa = betriebe.filter(k => k.loginCount > 0).length
+
+  if (authLaedt || laedt) {
+    return (
+      <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
+        <PageTitle title={t(ui.adminTitle)} color={pageColors.login} />
+        <p className="text-gray-400">{t(ui.adminLoading)}</p>
+      </div>
+    )
+  }
+
+  if (fehler || !benutzer || benutzer.role !== 'ADMIN') {
+    return (
+      <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
+        <PageTitle title={t(ui.adminTitle)} color={pageColors.login} />
+        <p style={{ color: pageColors.login }}>{fehler || t(ui.adminNoRight)}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
+      <PageTitle title={t(ui.adminTitle)} color={pageColors.login} />
+
+      <p className="text-gray-500 mb-8" style={{ maxWidth: '34rem' }}>
+        {t(ui.adminIntro)}
+      </p>
+
+      {/* Die Zahl auf einen Blick */}
+      <p className="sniglet-bold text-2xl mb-8">
+        {t(ui.adminLookedIn)}: {warenDa} {t(ui.adminOf)} {betriebe.length} {t(ui.adminCompaniesWord)}
+      </p>
+
+      {/* ---- Die Betriebe ---- */}
+      <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
+        {t(ui.adminCompanies).toUpperCase()}
+      </p>
+
+      <div className="flex flex-col gap-3 mb-12">
+        {betriebe.map(konto => {
+          const warDa = konto.loginCount > 0
+          return (
+            <div
+              key={konto.username}
+              className="box p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+              // Wer noch nie da war, bekommt einen farbigen Rand -
+              // das ist ja die Information die mich interessiert.
+              style={warDa ? {} : { borderColor: pageColors.login }}
+            >
+              <div>
+                <p className="sniglet-bold">{konto.displayName}</p>
+                <p className="text-xs text-gray-400">{konto.username}</p>
+              </div>
+
+              <div className="text-sm sm:text-right">
+                {warDa ? (
+                  <>
+                    <p>{konto.loginCount}{t(ui.adminTimes)}</p>
+                    <p className="text-xs text-gray-400">
+                      {t(ui.adminLastTime)}: {zeitpunkt(konto.lastLogin!, sprache)}
+                    </p>
+                  </>
+                ) : (
+                  <span className="pill" style={{ background: pageColors.login, color: 'white' }}>
+                    {t(ui.adminNever)}
+                  </span>
+                )}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* ---- Das rohe Protokoll ---- */}
+      <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
+        {t(ui.adminAttempts).toUpperCase()}
+      </p>
+
+      {versuche.length === 0 ? (
+        <p className="text-gray-400 text-sm">{t(ui.adminNoAttempts)}</p>
+      ) : (
+        <div className="box p-4 flex flex-col gap-2">
+          {versuche.slice(0, 20).map((v, i) => (
+            <div key={i} className="flex justify-between gap-4 text-sm">
+              <span className="sniglet-bold">{v.username}</span>
+              <span className="text-gray-400 text-xs">{zeitpunkt(v.time, sprache)}</span>
+              <span
+                className="text-xs"
+                style={{ color: v.success ? '#4a9d6e' : pageColors.login, minWidth: '6rem', textAlign: 'right' }}
+              >
+                {v.success ? t(ui.adminOk) : t(ui.adminFailed)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Admin

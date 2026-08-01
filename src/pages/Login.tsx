@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import { useSprache } from '../context/LanguageContext'
@@ -49,6 +50,17 @@ function Login() {
           <p className="sniglet-bold text-xl mb-6">{benutzer.displayName}</p>
 
           <p className="text-gray-700 text-sm mb-6">{t(ui.gradesSoon)}</p>
+
+          {/* Der Weg zu meiner Uebersicht - sehe nur ich */}
+          {benutzer.role === 'ADMIN' && (
+            <Link
+              to="/admin"
+              className="pill block mb-4"
+              style={{ background: 'white', padding: '8px 20px', fontSize: '14px', width: 'fit-content' }}
+            >
+              {t(ui.adminLink)}
+            </Link>
+          )}
 
           <button
             onClick={abmelden}
