@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { pageColors } from '../styles/colors'
 import { useSprache } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
 import { ui } from '../texts'
 
 // Die Navigation ganz oben.
@@ -17,6 +18,7 @@ function Navbar() {
   // useLocation sagt uns auf welcher Seite wir gerade sind.
   const location = useLocation()
   const { sprache, setSprache, t } = useSprache()
+  const { benutzer } = useAuth()
 
   return (
     <nav className="flex items-center justify-between gap-3 px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200">
@@ -60,11 +62,15 @@ function Navbar() {
           ))}
         </div>
 
+        {/* Angemeldet? Dann steht hier der Name statt "Login". */}
         <Link
           to="/login"
-          className="text-xs sm:text-sm border border-gray-300 px-3 sm:px-4 py-1.5 sm:py-2 rounded hover:bg-gray-50 transition-colors"
+          className="text-xs sm:text-sm border px-3 sm:px-4 py-1.5 sm:py-2 rounded hover:bg-gray-50 transition-colors"
+          style={benutzer
+            ? { borderColor: pageColors.login, color: pageColors.login }
+            : { borderColor: '#d1d5db' }}
         >
-          {t(ui.navLogin)}
+          {benutzer ? benutzer.displayName : t(ui.navLogin)}
         </Link>
       </div>
     </nav>

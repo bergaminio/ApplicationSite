@@ -61,8 +61,27 @@ export const ui = {
   // Login
   loginTitle: { de: 'Login', en: 'Login' },
   loginText: {
-    de: 'Hier kommt bald der Login. Danach sieht man meine Noten von der gibb, der BWD und der ICT Lernfactory.',
-    en: 'The login is coming soon. After that you can see my grades from gibb, BWD and ICT Lernfactory.',
+    de: 'Hier liegen meine Noten von der gibb, der BWD und der ICT Lernfactory. Die Zugangsdaten stehen in meiner Bewerbung.',
+    en: 'My grades from gibb, BWD and ICT Lernfactory are behind this login. The credentials are in my application.',
+  },
+  loginUsername:  { de: 'Benutzername', en: 'Username' },
+  loginPassword:  { de: 'Passwort', en: 'Password' },
+  loginButton:    { de: 'Anmelden', en: 'Sign in' },
+  loginLoading:   { de: 'Einen Moment...', en: 'One moment...' },
+  loginEmpty:     { de: 'Bitte beides ausfüllen.', en: 'Please fill in both fields.' },
+  loginWrong:     { de: 'Benutzername oder Passwort stimmt nicht.', en: 'Username or password is not correct.' },
+  loginNoServer: {
+    de: 'Der Server antwortet nicht. Läuft das Backend?',
+    en: 'The server is not responding. Is the backend running?',
+  },
+  loginFailed:  { de: 'Das hat nicht geklappt. Bitte nochmal versuchen.', en: 'That did not work. Please try again.' },
+
+  // Angemeldet
+  loggedInAs: { de: 'Angemeldet als', en: 'Signed in as' },
+  logout:     { de: 'Abmelden', en: 'Sign out' },
+  gradesSoon: {
+    de: 'Die Noten kommen als Nächstes. Der Login funktioniert schon.',
+    en: 'The grades are coming next. The login already works.',
   },
 
   // Seite nicht gefunden
