@@ -107,6 +107,46 @@ Orange `#f1aa81` färbt die "Dabei gelernt"-Badges im Projekt-Fenster.
 Hintergrund der ganzen Seite: warmes Weiss `#faf8f4`
 Schrift: [Sniglet](https://fonts.google.com/specimen/Sniglet) von Google Fonts
 
+## Backend
+
+Liegt im Ordner `backend/`. Java 25, Spring Boot 4.1, PostgreSQL 18.
+
+### Starten
+
+```bash
+cd backend
+docker compose up -d     # Datenbank starten
+./mvnw spring-boot:run   # Backend starten (Port 8080)
+```
+
+Maven muss nicht installiert sein — `mvnw` holt es sich selbst.
+
+### Was es kann
+
+| Weg | Methode | Wer darf | Wofür |
+|---|---|---|---|
+| `/api/auth/login` | POST | alle | Anmelden, gibt ein JWT-Token zurück |
+| `/api/auth/me` | GET | angemeldet | Wer bin ich? |
+| `/api/admin/logins` | GET | nur ADMIN | Jeder Anmeldeversuch, neueste zuerst |
+| `/api/admin/accounts` | GET | nur ADMIN | Übersicht: wer hat sich wie oft angemeldet |
+| `/api/admin/accounts` | POST | nur ADMIN | Konto für einen Lehrbetrieb anlegen |
+
+**Die Idee dahinter:** Jeder Lehrbetrieb bekommt sein eigenes Konto. Jeder
+Anmeldeversuch landet in der Tabelle `login_events` — auch die misslungenen.
+So sehe ich, welcher Betrieb sich meine Unterlagen wirklich angeschaut hat
+und welcher nie.
+
+### Vor dem Deployment unbedingt setzen
+
+Diese Werte haben lokal Standardwerte. Auf einem öffentlich erreichbaren
+Server **müssen** sie als Umgebungsvariablen gesetzt werden:
+
+| Variable | Warum |
+|---|---|
+| `JWT_SECRET` | Wer das Geheimnis kennt, kann sich gültige Token selbst bauen |
+| `ADMIN_PASSWORD` | Sonst ist das Admin-Passwort `admin` |
+| `SPRING_DATASOURCE_PASSWORD` | Das Datenbank-Passwort steht sonst im Repo |
+
 ## Noch offen
 
 - [ ] PDF-Knopf auf dem Lebenslauf (sobald `public/lebenslauf.pdf` da ist)

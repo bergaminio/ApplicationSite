@@ -1,0 +1,34 @@
+# Die PostgreSQL-Datenbank fuer die Entwicklung.
+#
+#   docker compose up -d      startet sie im Hintergrund
+#   docker compose down       stoppt sie (Daten bleiben)
+#   docker compose down -v    stoppt sie UND loescht alle Daten
+#   docker compose logs -f db zeigt was die Datenbank macht
+
+services:
+  db:
+    image: postgres:18
+    container_name: portfolio-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: portfolio
+      # Nur fuer lokal. Auf dem Server kommt das Passwort
+      # aus einer Umgebungsvariable, nie aus einer Datei im Repo.
+      POSTGRES_PASSWORD: portfolio
+    ports:
+      # links der Port auf deinem Rechner, rechts der im Container
+      - "5432:5432"
+    volumes:
+      # Damit die Daten einen Neustart ueberleben.
+      # Ab Postgres 18 gehoert der Mount auf /var/lib/postgresql
+      # (frueher /var/lib/postgresql/data) - sonst startet der Container nicht.
+      - portfolio-db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portfolio -d portfolio"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  portfolio-db-data:
