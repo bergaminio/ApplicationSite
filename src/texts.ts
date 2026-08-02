@@ -55,8 +55,8 @@ export const ui = {
   // Persönliches
   personalTitle: { de: 'Persönliches', en: 'Personal' },
   personalIntro: {
-    de: 'Was ich mache, wenn ich nicht vor dem Bildschirm sitze.',
-    en: 'What I do when I am not sitting in front of a screen.',
+    de: 'Was mich neben dem Programmieren beschäftigt.',
+    en: 'What keeps me busy besides programming.',
   },
   audioFehlt: {
     de: 'Die Aufnahme liegt noch nicht bereit.',
