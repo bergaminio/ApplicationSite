@@ -81,12 +81,12 @@ const erfahrung: Eintrag[] = [
 // Nebenjobs und Freiwilligenarbeit. Die Checkliste der IMS fragt
 // ausdruecklich danach - auch Unbezahltes zaehlt.
 //
-// OFFEN: In welchem Jahr war das jeweils? Und wo? Ohne Jahr wirkt ein
-// Eintrag im Lebenslauf schwach. Sobald du es weisst, bei "zeit" und
-// "ort" eintragen - leer lassen geht auch, dann bleibt die Zeile weg.
+// OFFEN: Die Jahre sind aus dem Gedaechtnis - bitte nachpruefen.
+// Ein falsches Datum faellt spaetestens im Bewerbungsgespraech auf.
+// Der Ort fehlt noch; leer lassen geht, dann bleibt die Zeile weg.
 const nebenjobs: Eintrag[] = [
   {
-    zeit: { de: '', en: '' },
+    zeit: { de: '2023', en: '2023' },
     titel: { de: 'Tontechnik bei einem Konzert', en: 'Sound engineering at a concert' },
     ort: leer,
     text: {
@@ -95,7 +95,7 @@ const nebenjobs: Eintrag[] = [
     },
   },
   {
-    zeit: { de: '', en: '' },
+    zeit: { de: '2024', en: '2024' },
     titel: { de: 'Service bei einer Theateraufführung', en: 'Service at a theatre performance' },
     ort: leer,
     text: {

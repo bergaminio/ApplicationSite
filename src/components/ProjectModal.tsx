@@ -41,7 +41,7 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
         onClick={event => event.stopPropagation()}
         className="box p-4 sm:p-6"
         style={{
-          background: '#faf8f4',
+          background: 'var(--papier)',
           width: '100%',
           maxWidth: '640px',
           maxHeight: '90vh',

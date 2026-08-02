@@ -12,8 +12,16 @@ body {
   overflow-x: clip;
 }
 
+:root {
+  /* Die Papierfarbe der ganzen Seite.
+     Sie steht NUR hier. Alle anderen Stellen holen sie sich mit
+     var(--papier) - auch die im JavaScript. So aendert man sie
+     ueberall, indem man diese eine Zeile anpasst. */
+  --papier: #ffffff;
+}
+
 body {
-  background-color: #faf8f4;
+  background-color: var(--papier);
   font-family: "Sniglet", system-ui;
 }
 

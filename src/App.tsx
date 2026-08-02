@@ -170,7 +170,7 @@ function Seiten() {
               gridArea: '1 / 1',
               transformOrigin: 'left center',
               backfaceVisibility: 'hidden',
-              background: '#faf8f4',
+              background: 'var(--papier)',
               boxShadow: MIT_SCHATTEN,
               minHeight: '100vh',
               // vorwaerts: unter der alten (10), ueber der neuen (1)
@@ -195,7 +195,7 @@ function Seiten() {
             gridArea: '1 / 1',              // beide Seiten in dieselbe Zelle
             transformOrigin: 'left center', // EIN Falz, immer links
             backfaceVisibility: 'hidden',   // Rueckseite waere spiegelverkehrt
-            background: '#faf8f4',          // sonst schimmert es durch
+            background: 'var(--papier)',    // sonst schimmert es durch
             minHeight: '100vh',
           }}
         >
