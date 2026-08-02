@@ -98,9 +98,13 @@ button.pill {
    muss die neue obenauf.
 
    Mit :last-child statt einer festen Zahl bleibt es auch richtig, wenn
-   jemand schnell klickt und kurz mehr als zwei Seiten da sind. */
+   jemand schnell klickt und kurz mehr als zwei Seiten da sind.
+
+   Die Zwischenblaetter beim Mehrfach-Blaettern setzen ihre Ebene
+   selbst und liegen dadurch zwischen diesen beiden. Darum 10 und 1
+   statt 2 und 1 - dazwischen ist Platz. */
 .buch-vor > * {
-  z-index: 2;
+  z-index: 10;
 }
 .buch-vor > *:last-child {
   z-index: 1;
@@ -110,7 +114,7 @@ button.pill {
   z-index: 1;
 }
 .buch-zurueck > *:last-child {
-  z-index: 2;
+  z-index: 10;
 }
 
 /* Inhalte, die beim Erscheinen kurz nach oben rutschen. */
