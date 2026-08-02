@@ -71,6 +71,21 @@ export const ui = {
   labelPhone:   { de: 'Telefon', en: 'Phone' },
   labelPlace:   { de: 'Ort', en: 'Location' },
 
+  // Impressum - steht unten auf der Kontakt-Seite
+  imprint:            { de: 'Impressum', en: 'Legal notice' },
+  imprintResponsible: { de: 'Verantwortlich für den Inhalt', en: 'Responsible for the content' },
+  imprintPurpose:     { de: 'Zweck der Seite', en: 'Purpose of this site' },
+  imprintPurposeText: {
+    de: 'Persönliche Bewerbungswebsite. Entstanden im Rahmen der Ausbildung an der Informatikmittelschule der BWD Bern.',
+    en: 'Personal application website. Created as part of my training at the IMS at BWD Bern.',
+  },
+  imprintHosting:     { de: 'Gehostet bei', en: 'Hosted at' },
+  imprintSource:      { de: 'Quellcode', en: 'Source code' },
+  imprintSourceText: {
+    de: 'Diese Seite ist offen einsehbar auf GitHub.',
+    en: 'The code of this site is public on GitHub.',
+  },
+
   // Login
   loginTitle: { de: 'Login', en: 'Login' },
   loginText: {

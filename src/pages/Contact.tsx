@@ -1,7 +1,34 @@
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import { useSprache } from '../context/LanguageContext'
-import { ui } from '../texts'
+import { ui, type Text } from '../texts'
+
+// ---------------------------------------------------------------
+// Meine Kontaktangaben. Stehen hier oben, damit man sie an einem
+// Ort aendern kann - sie erscheinen unten auch im Impressum.
+// ---------------------------------------------------------------
+
+const NAME = 'Michael Bergamin'
+const EMAIL = 'michael.bergamin@proton.me'
+const TELEFON = '+41 76 537 56 30'
+const ORT = '3232 Ins, Schweiz'
+const GITHUB = 'https://github.com/bergaminio/ApplicationSite'
+
+// OFFEN: Sobald das Hosting steht, hier den Anbieter eintragen.
+// Solange der Text leer ist, bleibt die Zeile im Impressum weg.
+// Die IMS-Checkliste fragt danach ("gehostet auf?"), also vor der
+// Abgabe ausfuellen.
+const HOSTING: Text = { de: '', en: '' }
+
+// Eine Zeile im Impressum: kleine graue Beschriftung, darunter der Wert.
+function Angabe({ titel, children }: { titel: string; children: React.ReactNode }) {
+  return (
+    <div className="mb-4">
+      <p className="text-gray-400 text-xs mb-1">{titel}</p>
+      <div className="text-sm text-gray-700">{children}</div>
+    </div>
+  )
+}
 
 function Contact() {
   const { t } = useSprache()
@@ -30,22 +57,65 @@ function Contact() {
         <div className="flex flex-col gap-3">
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelName)}</p>
-            <p className="sniglet-bold">Michael Bergamin</p>
+            <p className="sniglet-bold">{NAME}</p>
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelEmail)}</p>
-            <p>michael.bergamin@proton.me</p>
+            <a href={`mailto:${EMAIL}`} className="underline hover:text-gray-500">{EMAIL}</a>
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelPhone)}</p>
-            <p>+41 76 537 56 30</p>
+            <a href={`tel:${TELEFON.replace(/\s/g, '')}`} className="underline hover:text-gray-500">{TELEFON}</a>
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelPlace)}</p>
-            <p>3232 Ins, Schweiz</p>
+            <p>{ORT}</p>
           </div>
         </div>
 
+      </div>
+
+      {/* ---- Impressum ---- */}
+      <div className="mt-16">
+        <p className="sniglet-bold text-sm text-gray-400" style={{ letterSpacing: '0.12em' }}>
+          {t(ui.imprint).toUpperCase()}
+        </p>
+        <div style={{
+          width: '60px',
+          height: '3px',
+          background: pageColors.contact,
+          borderRadius: '2px',
+          transform: 'rotate(-0.5deg)',
+          marginTop: '6px',
+          marginBottom: '1.5rem',
+        }} />
+
+        <Angabe titel={t(ui.imprintResponsible)}>
+          <p>{NAME}</p>
+          <p>{ORT}</p>
+          <a href={`mailto:${EMAIL}`} className="underline hover:text-gray-500">{EMAIL}</a>
+        </Angabe>
+
+        <Angabe titel={t(ui.imprintPurpose)}>
+          {t(ui.imprintPurposeText)}
+        </Angabe>
+
+        {/* Erscheint erst, wenn oben ein Anbieter eingetragen ist */}
+        {t(HOSTING) && (
+          <Angabe titel={t(ui.imprintHosting)}>{t(HOSTING)}</Angabe>
+        )}
+
+        <Angabe titel={t(ui.imprintSource)}>
+          <p className="mb-1">{t(ui.imprintSourceText)}</p>
+          <a
+            href={GITHUB}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-gray-500"
+          >
+            {GITHUB.replace('https://', '')}
+          </a>
+        </Angabe>
       </div>
     </div>
   )
