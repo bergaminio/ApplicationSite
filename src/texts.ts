@@ -48,6 +48,7 @@ export const ui = {
   cvTitle:    { de: 'Lebenslauf', en: 'CV' },
   education:  { de: 'Ausbildung', en: 'Education' },
   experience: { de: 'Erfahrung', en: 'Experience' },
+  sideJobs:   { de: 'Nebenjobs & Freiwilligenarbeit', en: 'Side jobs & volunteer work' },
   languages:  { de: 'Sprachen', en: 'Languages' },
   itSkills:   { de: 'IT-Kenntnisse', en: 'IT skills' },
   hobbies:    { de: 'Hobbys', en: 'Hobbies' },

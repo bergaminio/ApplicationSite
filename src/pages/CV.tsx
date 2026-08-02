@@ -78,6 +78,33 @@ const erfahrung: Eintrag[] = [
   },
 ]
 
+// Nebenjobs und Freiwilligenarbeit. Die Checkliste der IMS fragt
+// ausdruecklich danach - auch Unbezahltes zaehlt.
+//
+// OFFEN: In welchem Jahr war das jeweils? Und wo? Ohne Jahr wirkt ein
+// Eintrag im Lebenslauf schwach. Sobald du es weisst, bei "zeit" und
+// "ort" eintragen - leer lassen geht auch, dann bleibt die Zeile weg.
+const nebenjobs: Eintrag[] = [
+  {
+    zeit: { de: '', en: '' },
+    titel: { de: 'Tontechnik bei einem Konzert', en: 'Sound engineering at a concert' },
+    ort: leer,
+    text: {
+      de: 'Bedienung des Audiopults während der Veranstaltung.',
+      en: 'Operating the mixing desk during the event.',
+    },
+  },
+  {
+    zeit: { de: '', en: '' },
+    titel: { de: 'Service bei einer Theateraufführung', en: 'Service at a theatre performance' },
+    ort: leer,
+    text: {
+      de: 'Bewirtung der Gäste während der Vorstellung.',
+      en: 'Serving guests during the performance.',
+    },
+  },
+]
+
 const sprachen: { name: Text; niveau: Text }[] = [
   {
     name: { de: 'Deutsch', en: 'German' },
@@ -171,6 +198,12 @@ function CV() {
 
       <Abschnitt titel={t(ui.experience)}>
         {erfahrung.map(eintrag => (
+          <EintragZeile key={eintrag.titel.de} {...eintrag} />
+        ))}
+      </Abschnitt>
+
+      <Abschnitt titel={t(ui.sideJobs)}>
+        {nebenjobs.map(eintrag => (
           <EintragZeile key={eintrag.titel.de} {...eintrag} />
         ))}
       </Abschnitt>
