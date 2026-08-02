@@ -15,11 +15,15 @@ import NotFound from './pages/NotFound'
 
 // Legt fest welche Adresse welche Seite zeigt - und wie geblaettert wird.
 //
-// AnimatePresence haelt die alte Seite noch einen Moment im Speicher,
-// damit sie wegblaettern kann. Ohne das waere sie sofort weg und man
-// saehe nur die neue hereinkommen.
+// So blaettert ein echtes Buch: die neue Seite liegt schon da und
+// bewegt sich ueberhaupt nicht. Nur die alte klappt darueber weg.
 //
-// mode="wait" heisst: erst blaettert die alte weg, dann kommt die neue.
+// Damit das geht, muessen beide Seiten uebereinander liegen. Der Trick
+// dafuer ist ein Raster mit einer einzigen Zelle: beide Seiten bekommen
+// dieselbe Zelle zugewiesen und liegen dadurch aufeinander.
+//
+// Wichtig ist auch der Hintergrund auf der Seite selbst - ohne ihn
+// wuerde die untere Seite durch die obere durchschimmern.
 function Seiten() {
   const location = useLocation()
 
@@ -33,20 +37,43 @@ function Seiten() {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
-  const dauer = wenigerBewegung ? 0 : 0.3
+  // Eine Seite umzublaettern dauert laenger als ein Ein-/Ausblenden,
+  // sonst wirkt es hektisch.
+  const dauer = wenigerBewegung ? 0 : 0.55
 
   return (
     // perspective gehoert auf die Eltern-Schicht, sonst wirkt die
-    // Drehung flach statt raeumlich.
-    <div style={{ perspective: '1400px' }}>
-      <AnimatePresence mode="wait">
+    // Drehung flach statt raeumlich. Je groesser der Wert, desto
+    // ruhiger die Perspektive - wie bei einem grossen Buch.
+    <div style={{ display: 'grid', perspective: '1800px' }}>
+      {/* Kein mode: beide Seiten sind gleichzeitig da und liegen
+          uebereinander. Genau das macht den Blaetter-Eindruck. */}
+      <AnimatePresence initial={false}>
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0, rotateY: -16, x: -12 }}
-          animate={{ opacity: 1, rotateY: 0, x: 0 }}
-          exit={{ opacity: 0, rotateY: 14, x: 12 }}
-          transition={{ duration: dauer, ease: 'easeInOut' }}
-          style={{ transformOrigin: 'left center' }}
+          // Die neue Seite steht anfangs hochkant und faellt dann
+          // flach aufs Buch - dabei deckt sie die alte zu.
+          //
+          // Warum herum und nicht die alte wegklappen? Weil die neue
+          // Seite im Dokument die spaetere ist und dadurch von selbst
+          // obenauf liegt. Andersherum muesste man mit z-index
+          // nachhelfen, und der vertraegt keine Zwischenwerte.
+          //
+          // Der durchsichtige Schatten am Ende ist Absicht: von
+          // "Schatten" auf "kein Schatten" kann der Browser nicht weich
+          // ueberblenden, auf "durchsichtig" schon.
+          initial={{ rotateY: -110, boxShadow: '24px 0 48px rgba(0, 0, 0, 0.3)' }}
+          animate={{ rotateY: 0, boxShadow: '0px 0 0px rgba(0, 0, 0, 0)' }}
+          // Die alte bleibt einfach liegen, bis sie zugedeckt ist.
+          exit={{ opacity: 1 }}
+          transition={{ duration: dauer, ease: [0.35, 0, 0.25, 1] }}
+          style={{
+            gridArea: '1 / 1',            // beide Seiten in dieselbe Zelle
+            transformOrigin: 'left center',
+            backfaceVisibility: 'hidden', // Rueckseite waere spiegelverkehrt
+            background: '#faf8f4',        // sonst schimmert es durch
+            minHeight: '100vh',
+          }}
         >
           <Routes location={location}>
             <Route path="/" element={<Home />} />
