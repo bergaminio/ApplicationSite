@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { SpracheProvider } from './context/LanguageContext'
@@ -12,6 +12,19 @@ import Login from './pages/Login'
 import Grades from './pages/Grades'
 import Admin from './pages/Admin'
 import NotFound from './pages/NotFound'
+
+// Die Reihenfolge der Seiten im "Buch". Daraus ergibt sich, in welche
+// Richtung geblaettert wird: weiter hinten im Buch heisst vorwaerts.
+const seitenReihenfolge = ['/', '/projects', '/cv', '/contact']
+
+function istVorwaerts(von: string, nach: string) {
+  const a = seitenReihenfolge.indexOf(von)
+  const b = seitenReihenfolge.indexOf(nach)
+  // Seiten ausserhalb des Buchs (Login, Noten, Uebersicht, 404)
+  // behandeln wir als vorwaerts.
+  if (a === -1 || b === -1) return true
+  return b > a
+}
 
 // Legt fest welche Adresse welche Seite zeigt - und wie geblaettert wird.
 //
@@ -31,9 +44,15 @@ function Seiten() {
   // bekommt den Wechsel ohne Animation.
   const wenigerBewegung = useReducedMotion()
 
-  // Nach dem Blaettern oben anfangen, sonst landet man mitten
-  // auf der neuen Seite.
+  // Welche Seite vorher offen war. useRef merkt sich den Wert, ohne
+  // dass die Seite dabei neu gezeichnet wird.
+  const vorherigerPfad = useRef(location.pathname)
+  const vorwaerts = istVorwaerts(vorherigerPfad.current, location.pathname)
+
   useEffect(() => {
+    vorherigerPfad.current = location.pathname
+    // Nach dem Blaettern oben anfangen, sonst landet man mitten
+    // auf der neuen Seite.
     window.scrollTo(0, 0)
   }, [location.pathname])
 
@@ -62,14 +81,23 @@ function Seiten() {
           // Der durchsichtige Schatten am Ende ist Absicht: von
           // "Schatten" auf "kein Schatten" kann der Browser nicht weich
           // ueberblenden, auf "durchsichtig" schon.
-          initial={{ rotateY: -110, boxShadow: '24px 0 48px rgba(0, 0, 0, 0.3)' }}
+          //
+          // Vorwaerts kommt die Seite von rechts, rueckwaerts von links -
+          // wie beim echten Blaettern. Dafuer wandert der Scharnier-Punkt
+          // auf die jeweils andere Kante und die Drehung kehrt sich um.
+          initial={{
+            rotateY: vorwaerts ? 110 : -110,
+            boxShadow: vorwaerts
+              ? '-24px 0 48px rgba(0, 0, 0, 0.3)'
+              : '24px 0 48px rgba(0, 0, 0, 0.3)',
+          }}
           animate={{ rotateY: 0, boxShadow: '0px 0 0px rgba(0, 0, 0, 0)' }}
           // Die alte bleibt einfach liegen, bis sie zugedeckt ist.
           exit={{ opacity: 1 }}
           transition={{ duration: dauer, ease: [0.35, 0, 0.25, 1] }}
           style={{
             gridArea: '1 / 1',            // beide Seiten in dieselbe Zelle
-            transformOrigin: 'left center',
+            transformOrigin: vorwaerts ? 'right center' : 'left center',
             backfaceVisibility: 'hidden', // Rueckseite waere spiegelverkehrt
             background: '#faf8f4',        // sonst schimmert es durch
             minHeight: '100vh',
