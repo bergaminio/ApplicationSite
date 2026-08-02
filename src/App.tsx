@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { SpracheProvider } from './context/LanguageContext'
 import { AuthProvider } from './context/AuthContext'
 import Navbar from './components/Navbar'
@@ -11,29 +13,56 @@ import Grades from './pages/Grades'
 import Admin from './pages/Admin'
 import NotFound from './pages/NotFound'
 
-// Legt fest welche Adresse welche Seite zeigt.
+// Legt fest welche Adresse welche Seite zeigt - und wie geblaettert wird.
 //
-// Der key sorgt fuer die Blaetter-Animation: sobald sich die Adresse
-// aendert, ist es fuer React ein anderes Element. Es wird darum neu
-// aufgebaut - und die Animation aus index.css laeuft wieder los.
+// AnimatePresence haelt die alte Seite noch einen Moment im Speicher,
+// damit sie wegblaettern kann. Ohne das waere sie sofort weg und man
+// saehe nur die neue hereinkommen.
+//
+// mode="wait" heisst: erst blaettert die alte weg, dann kommt die neue.
 function Seiten() {
   const location = useLocation()
 
+  // Wer im Betriebssystem eingestellt hat, dass Bewegung stoert,
+  // bekommt den Wechsel ohne Animation.
+  const wenigerBewegung = useReducedMotion()
+
+  // Nach dem Blaettern oben anfangen, sonst landet man mitten
+  // auf der neuen Seite.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  const dauer = wenigerBewegung ? 0 : 0.3
+
   return (
-    <div key={location.pathname} className="seite-blaettern">
-      <Routes location={location}>
-        <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/cv" element={<CV />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
-        {/* Braucht eine Anmeldung. Das Backend prueft das nochmal -
-            die Seite hier auszublenden ist kein Schutz. */}
-        <Route path="/grades" element={<Grades />} />
-        <Route path="/admin" element={<Admin />} />
-        {/* Der Stern faengt alle Adressen ab die oben nicht stehen */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+    // perspective gehoert auf die Eltern-Schicht, sonst wirkt die
+    // Drehung flach statt raeumlich.
+    <div style={{ perspective: '1400px' }}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, rotateY: -16, x: -12 }}
+          animate={{ opacity: 1, rotateY: 0, x: 0 }}
+          exit={{ opacity: 0, rotateY: 14, x: 12 }}
+          transition={{ duration: dauer, ease: 'easeInOut' }}
+          style={{ transformOrigin: 'left center' }}
+        >
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/cv" element={<CV />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            {/* Brauchen eine Anmeldung. Das Backend prueft das nochmal -
+                die Seite hier auszublenden ist kein Schutz. */}
+            <Route path="/grades" element={<Grades />} />
+            <Route path="/admin" element={<Admin />} />
+            {/* Der Stern faengt alle Adressen ab die oben nicht stehen */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }
