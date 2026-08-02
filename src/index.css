@@ -83,7 +83,22 @@ button.pill {
 /* Der Seitenwechsel wird nicht hier gemacht, sondern in App.tsx mit
    der Bibliothek "motion". Grund: die alte Seite soll wegblaettern
    waehrend die neue kommt, und dafuer muss sie noch kurz im Speicher
-   bleiben. Das kann CSS allein nicht. */
+   bleiben. Das kann CSS allein nicht.
+
+   Waehrend des Blaetterns liegen zwei Seiten uebereinander. Die ALTE
+   muss obenauf sein - sonst deckt die neue sie zu und man sieht kein
+   Umblaettern, sondern nur ein Auftauchen aus dem Nichts.
+
+   AnimatePresence haengt die neue Seite hinten an. Die neue ist also
+   immer die letzte - alle davor sind am Wegblaettern und gehoeren
+   darueber. So bleibt es auch richtig, wenn jemand schnell klickt und
+   kurz mehr als zwei Seiten uebereinander liegen. */
+.buch > * {
+  z-index: 2;
+}
+.buch > *:last-child {
+  z-index: 1;
+}
 
 /* Inhalte, die beim Erscheinen kurz nach oben rutschen. */
 @keyframes sanft-rein {
