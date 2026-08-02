@@ -113,26 +113,28 @@ export const ui = {
   gradesTitle: { de: 'Noten', en: 'Grades' },
   gradesLink:  { de: 'Meine Noten →', en: 'My grades →' },
   gradesIntro: {
-    de: 'Meine aktuellen Noten aus der Ausbildung.',
-    en: 'My current grades from my training.',
+    de: 'Die offiziellen Notenausweise aus meiner Ausbildung, so wie ich sie erhalten habe.',
+    en: 'The official grade reports from my training, exactly as I received them.',
   },
-  gradesEmpty:   { de: 'Noch keine Noten eingetragen.', en: 'No grades entered yet.' },
-  gradesAverage: { de: 'Durchschnitt', en: 'Average' },
-  gradesOverall: { de: 'Gesamtdurchschnitt', en: 'Overall average' },
+  gradesEmpty:   { de: 'Noch keine Notenausweise hochgeladen.', en: 'No grade reports uploaded yet.' },
+  gradesOpenPdf: { de: 'PDF öffnen', en: 'Open PDF' },
+  gradesLoadingFile: { de: 'Wird geladen...', en: 'Loading...' },
+  gradesFileFailed:  { de: 'Datei konnte nicht geladen werden.', en: 'File could not be loaded.' },
 
   areaEFZ: { de: 'EFZ · Berufsfachschule gibb', en: 'EFZ · gibb vocational school' },
   areaBM:  { de: 'BM · BWD Bern', en: 'Vocational baccalaureate · BWD Bern' },
   areaUEK: { de: 'ÜK · ICT Lernfactory', en: 'Inter-company courses · ICT Lernfactory' },
 
-  // Noten eintragen (nur Admin)
-  gradeAdd:      { de: 'Note eintragen', en: 'Add grade' },
-  gradeArea:     { de: 'Bereich', en: 'Area' },
-  gradeSubject:  { de: 'Fach', en: 'Subject' },
-  gradeValue:    { de: 'Note', en: 'Grade' },
-  gradeSave:     { de: 'Speichern', en: 'Save' },
-  gradeDelete:   { de: 'Löschen', en: 'Delete' },
-  gradeInvalid:  { de: 'Fach ausfüllen und eine Note zwischen 1 und 6 wählen.', en: 'Enter a subject and a grade between 1 and 6.' },
-  gradeFailed:   { de: 'Speichern hat nicht geklappt.', en: 'Saving did not work.' },
+  // Notenausweis hochladen (nur Admin)
+  docAdd:       { de: 'Notenausweis hochladen', en: 'Upload grade report' },
+  docTitle:     { de: 'Titel, z.B. Notenausweis 2. Semester', en: 'Title, e.g. grade report semester 2' },
+  docUpload:    { de: 'Hochladen', en: 'Upload' },
+  docUploading: { de: 'Wird hochgeladen...', en: 'Uploading...' },
+  docDelete:    { de: 'Löschen', en: 'Delete' },
+  docNeedAll:   { de: 'Titel eingeben und eine Datei auswählen.', en: 'Enter a title and choose a file.' },
+  docTypes:     { de: 'JPG, PNG, WEBP oder PDF, höchstens 10 MB', en: 'JPG, PNG, WEBP or PDF, max 10 MB' },
+  docTooBig:    { de: 'Die Datei ist grösser als 10 MB.', en: 'The file is larger than 10 MB.' },
+  docFailed:    { de: 'Das hat nicht geklappt.', en: 'That did not work.' },
 
   // Seite nicht gefunden
   notFoundTitle: { de: 'Nicht gefunden', en: 'Not found' },

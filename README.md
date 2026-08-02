@@ -130,9 +130,19 @@ Maven muss nicht installiert sein — `mvnw` holt es sich selbst.
 | `/api/admin/logins` | GET | nur ADMIN | Jeder Anmeldeversuch, neueste zuerst |
 | `/api/admin/accounts` | GET | nur ADMIN | Übersicht: wer hat sich wie oft angemeldet |
 | `/api/admin/accounts` | POST | nur ADMIN | Konto für einen Lehrbetrieb anlegen |
-| `/api/grades` | GET | angemeldet | Alle Noten |
-| `/api/admin/grades` | POST | nur ADMIN | Note eintragen |
-| `/api/admin/grades/{id}` | DELETE | nur ADMIN | Note löschen |
+| `/api/documents` | GET | angemeldet | Liste der Notenausweise (ohne Dateien) |
+| `/api/documents/{id}/file` | GET | angemeldet | Die Datei selbst |
+| `/api/admin/documents` | POST | nur ADMIN | Notenausweis hochladen |
+| `/api/admin/documents/{id}` | DELETE | nur ADMIN | Löschen |
+
+**Warum die Dateien nicht in `public/` liegen:** Alles in einem öffentlichen
+Ordner kann jeder abrufen, der die Adresse kennt — ein Login davor ändert
+daran nichts. Die Scans liegen deshalb in der Datenbank und kommen nur über
+`/api/documents/{id}/file` heraus, und der Weg verlangt ein gültiges Token.
+
+Das hat eine Folge im Frontend: ein `<img src="...">` schickt keinen
+Authorization-Header mit. Die Datei wird darum in `src/api/documents.ts`
+per `fetch` mit Token geholt und über `URL.createObjectURL()` angezeigt.
 
 **Die Idee dahinter:** Jeder Lehrbetrieb bekommt sein eigenes Konto. Jeder
 Anmeldeversuch landet in der Tabelle `login_events` — auch die misslungenen.

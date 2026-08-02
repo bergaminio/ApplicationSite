@@ -5,8 +5,8 @@ import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 import { ladeKonten, ladeAnmeldeversuche, AdminFehler } from '../api/admin'
 import type { KontoUebersicht, Anmeldeversuch } from '../api/admin'
-import { ladeNoten, speichereNote, loescheNote } from '../api/grades'
-import type { Note } from '../api/grades'
+import { ladeDokumente, ladeHoch, loescheDokument } from '../api/documents'
+import type { Dokument } from '../api/documents'
 import { ui } from '../texts'
 
 // Zeigt einen Zeitpunkt lesbar an, z.B. "01.08.2026, 16:12"
@@ -23,25 +23,26 @@ function Admin() {
 
   const [konten, setKonten] = useState<KontoUebersicht[]>([])
   const [versuche, setVersuche] = useState<Anmeldeversuch[]>([])
-  const [noten, setNoten] = useState<Note[]>([])
+  const [dokumente, setDokumente] = useState<Dokument[]>([])
   const [laedt, setLaedt] = useState(true)
   const [fehler, setFehler] = useState('')
 
-  // Das Formular zum Noten eintragen
+  // Das Formular zum Hochladen
   const [bereich, setBereich] = useState('EFZ')
-  const [fach, setFach] = useState('')
-  const [note, setNote] = useState('')
-  const [notenFehler, setNotenFehler] = useState('')
+  const [titel, setTitel] = useState('')
+  const [datei, setDatei] = useState<File | null>(null)
+  const [uploadFehler, setUploadFehler] = useState('')
+  const [laedtHoch, setLaedtHoch] = useState(false)
 
   useEffect(() => {
     // Warten bis klar ist, ob jemand angemeldet ist.
     if (authLaedt) return
 
-    Promise.all([ladeKonten(), ladeAnmeldeversuche(), ladeNoten()])
-      .then(([k, v, n]) => {
+    Promise.all([ladeKonten(), ladeAnmeldeversuche(), ladeDokumente()])
+      .then(([k, v, d]) => {
         setKonten(k)
         setVersuche(v)
-        setNoten(n)
+        setDokumente(d)
       })
       .catch(e => {
         if (e instanceof AdminFehler && e.art === 'keinRecht') setFehler(t(ui.adminNoRight))
@@ -55,31 +56,42 @@ function Admin() {
   const betriebe = konten.filter(k => k.role === 'COMPANY')
   const warenDa = betriebe.filter(k => k.loginCount > 0).length
 
-  async function noteEintragen() {
-    setNotenFehler('')
-    const wert = parseFloat(note.replace(',', '.'))   // 4,5 genauso erlauben wie 4.5
+  async function hochladen() {
+    setUploadFehler('')
 
-    if (!fach.trim() || isNaN(wert) || wert < 1 || wert > 6) {
-      setNotenFehler(t(ui.gradeInvalid))
+    if (!titel.trim() || !datei) {
+      setUploadFehler(t(ui.docNeedAll))
+      return
+    }
+    // Vor dem Senden pruefen, damit man nicht erst 10 MB hochlaedt
+    // und dann eine Absage bekommt.
+    if (datei.size > 10 * 1024 * 1024) {
+      setUploadFehler(t(ui.docTooBig))
       return
     }
 
+    setLaedtHoch(true)
     try {
-      const neu = await speichereNote(bereich, fach.trim(), wert)
-      setNoten([...noten, neu])
-      setFach('')
-      setNote('')
-    } catch {
-      setNotenFehler(t(ui.gradeFailed))
+      const neu = await ladeHoch(titel.trim(), bereich, datei)
+      setDokumente([...dokumente, neu])
+      setTitel('')
+      setDatei(null)
+      // Auch das Dateifeld selbst leeren
+      const feld = document.querySelector<HTMLInputElement>('input[type="file"]')
+      if (feld) feld.value = ''
+    } catch (e) {
+      setUploadFehler(e instanceof Error ? e.message : t(ui.docFailed))
+    } finally {
+      setLaedtHoch(false)
     }
   }
 
-  async function noteEntfernen(id: number) {
+  async function dokumentEntfernen(id: number) {
     try {
-      await loescheNote(id)
-      setNoten(noten.filter(n => n.id !== id))
+      await loescheDokument(id)
+      setDokumente(dokumente.filter(d => d.id !== id))
     } catch {
-      setNotenFehler(t(ui.gradeFailed))
+      setUploadFehler(t(ui.docFailed))
     }
   }
 
@@ -154,12 +166,12 @@ function Admin() {
         })}
       </div>
 
-      {/* ---- Noten pflegen ---- */}
+      {/* ---- Notenausweise hochladen ---- */}
       <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
-        {t(ui.gradeAdd).toUpperCase()}
+        {t(ui.docAdd).toUpperCase()}
       </p>
 
-      <div className="box p-4 mb-4">
+      <div className="box p-4 mb-12">
         <div className="flex flex-col sm:flex-row gap-3 mb-3">
           <select
             value={bereich}
@@ -174,58 +186,63 @@ function Admin() {
 
           <input
             type="text"
-            placeholder={t(ui.gradeSubject)}
-            value={fach}
-            onChange={e => setFach(e.target.value)}
+            placeholder={t(ui.docTitle)}
+            value={titel}
+            onChange={e => setTitel(e.target.value)}
             className="box flex-1 px-3 py-2"
             style={{ background: 'transparent', fontFamily: 'inherit' }}
           />
+        </div>
 
+        <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
           <input
-            type="text"
-            inputMode="decimal"
-            placeholder={t(ui.gradeValue)}
-            value={note}
-            onChange={e => setNote(e.target.value)}
-            className="box px-3 py-2"
-            style={{ background: 'transparent', fontFamily: 'inherit', width: '5rem' }}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,application/pdf"
+            onChange={e => setDatei(e.target.files?.[0] ?? null)}
+            className="text-sm flex-1"
           />
 
           <button
-            onClick={noteEintragen}
+            onClick={hochladen}
+            disabled={laedtHoch}
             className="pill"
-            style={{ cursor: 'pointer', background: pageColors.login, color: 'white', padding: '8px 16px' }}
+            style={{
+              cursor: laedtHoch ? 'wait' : 'pointer',
+              background: pageColors.login,
+              color: 'white',
+              padding: '8px 16px',
+            }}
           >
-            {t(ui.gradeSave)}
+            {laedtHoch ? t(ui.docUploading) : t(ui.docUpload)}
           </button>
         </div>
 
-        {notenFehler && (
-          <p className="text-sm" style={{ color: pageColors.login }} role="alert">{notenFehler}</p>
+        <p className="text-xs text-gray-400 mt-2">{t(ui.docTypes)}</p>
+
+        {uploadFehler && (
+          <p className="text-sm mt-2" style={{ color: pageColors.login }} role="alert">{uploadFehler}</p>
         )}
 
-        {/* Was schon drin ist, mit Loeschen-Knopf */}
-        {noten.length > 0 && (
-          <div className="flex flex-col gap-1 mt-3">
-            {noten.map(n => (
-              <div key={n.id} className="flex items-center justify-between gap-3 text-sm">
-                <span className="text-gray-400 text-xs" style={{ width: '3rem' }}>{n.area}</span>
-                <span className="flex-1">{n.subject}</span>
-                <span className="sniglet-bold">{n.value.toFixed(1)}</span>
+        {/* Was schon hochgeladen ist, mit Loeschen-Knopf */}
+        {dokumente.length > 0 && (
+          <div className="flex flex-col gap-1 mt-4">
+            {dokumente.map(d => (
+              <div key={d.id} className="flex items-center justify-between gap-3 text-sm">
+                <span className="text-gray-400 text-xs" style={{ width: '3rem' }}>{d.area}</span>
+                <span className="flex-1">{d.title}</span>
+                <span className="text-gray-400 text-xs">{Math.round(d.size / 1024)} KB</span>
                 <button
-                  onClick={() => noteEntfernen(n.id)}
+                  onClick={() => dokumentEntfernen(d.id)}
                   className="pill"
                   style={{ cursor: 'pointer', fontSize: '11px' }}
                 >
-                  {t(ui.gradeDelete)}
+                  {t(ui.docDelete)}
                 </button>
               </div>
             ))}
           </div>
         )}
       </div>
-
-      <div className="mb-12" />
 
       {/* ---- Das rohe Protokoll ---- */}
       <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>

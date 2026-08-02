@@ -2,11 +2,10 @@ package ch.bergamin.portfolio.controller;
 
 import ch.bergamin.portfolio.dto.AccountOverview;
 import ch.bergamin.portfolio.dto.NewAccountRequest;
-import ch.bergamin.portfolio.dto.NewGradeRequest;
 import ch.bergamin.portfolio.model.Account;
-import ch.bergamin.portfolio.model.Grade;
+import ch.bergamin.portfolio.model.GradeDocument;
 import ch.bergamin.portfolio.repository.AccountRepository;
-import ch.bergamin.portfolio.repository.GradeRepository;
+import ch.bergamin.portfolio.repository.GradeDocumentRepository;
 import ch.bergamin.portfolio.repository.LoginEventRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -31,16 +33,16 @@ public class AdminController {
 
     private final AccountRepository accounts;
     private final LoginEventRepository loginEvents;
-    private final GradeRepository grades;
+    private final GradeDocumentRepository documents;
     private final PasswordEncoder passwordEncoder;
 
     public AdminController(AccountRepository accounts,
                            LoginEventRepository loginEvents,
-                           GradeRepository grades,
+                           GradeDocumentRepository documents,
                            PasswordEncoder passwordEncoder) {
         this.accounts = accounts;
         this.loginEvents = loginEvents;
-        this.grades = grades;
+        this.documents = documents;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -102,29 +104,62 @@ public class AdminController {
                 "displayName", account.getDisplayName()));
     }
 
-    // POST /api/admin/grades
-    // Traegt eine Note ein.
-    @PostMapping("/grades")
-    public ResponseEntity<?> neueNote(@Valid @RequestBody NewGradeRequest request) {
-        Grade note = grades.save(new Grade(
-                request.area(),
-                request.subject().trim(),
-                request.value()));
+    // Nur diese Dateitypen nehmen wir an.
+    private static final List<String> ERLAUBTE_TYPEN = List.of(
+            "image/jpeg", "image/png", "image/webp", "application/pdf");
+
+    private static final List<String> ERLAUBTE_BEREICHE = List.of("EFZ", "BM", "UEK");
+
+    // POST /api/admin/documents
+    // Laedt einen Notenausweis hoch (Bild oder PDF).
+    @PostMapping("/documents")
+    public ResponseEntity<?> hochladen(
+            @RequestParam String title,
+            @RequestParam String area,
+            @RequestParam MultipartFile file) throws IOException {
+
+        if (title.isBlank()) {
+            return fehler("Bitte einen Titel angeben");
+        }
+        if (!ERLAUBTE_BEREICHE.contains(area)) {
+            return fehler("Bereich muss EFZ, BM oder UEK sein");
+        }
+        if (file.isEmpty()) {
+            return fehler("Keine Datei ausgewaehlt");
+        }
+
+        String typ = file.getContentType();
+        if (typ == null || !ERLAUBTE_TYPEN.contains(typ)) {
+            return fehler("Nur JPG, PNG, WEBP oder PDF");
+        }
+
+        GradeDocument dokument = documents.save(new GradeDocument(
+                title.trim(),
+                area,
+                file.getOriginalFilename() == null ? "datei" : file.getOriginalFilename(),
+                typ,
+                file.getBytes()));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
-                "id", note.getId(),
-                "area", note.getArea(),
-                "subject", note.getSubject(),
-                "value", note.getValue()));
+                "id", dokument.getId(),
+                "title", dokument.getTitle(),
+                "area", dokument.getArea(),
+                "contentType", dokument.getContentType(),
+                "size", dokument.getSize(),
+                "uploadedAt", dokument.getUploadedAt()));
     }
 
-    // DELETE /api/admin/grades/{id}
-    @DeleteMapping("/grades/{id}")
-    public ResponseEntity<?> loescheNote(@PathVariable Long id) {
-        if (!grades.existsById(id)) {
+    // DELETE /api/admin/documents/{id}
+    @DeleteMapping("/documents/{id}")
+    public ResponseEntity<?> loescheDokument(@PathVariable Long id) {
+        if (!documents.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        grades.deleteById(id);
+        documents.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private ResponseEntity<?> fehler(String meldung) {
+        return ResponseEntity.badRequest().body(Map.of("message", meldung));
     }
 }
