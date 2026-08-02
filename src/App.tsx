@@ -32,10 +32,17 @@ const MAX_BLAETTER = 3
 
 // Die Reihenfolge der Seiten im "Buch". Daraus ergibt sich, in welche
 // Richtung und wie weit geblaettert wird.
-const seitenReihenfolge = ['/', '/projects', '/cv', '/contact']
+//
+// Login, Noten und Uebersicht stehen hinten - wie ein Anhang. Dadurch
+// blaettert es vom Login zurueck zur Startseite auch wirklich zurueck.
+const seitenReihenfolge = [
+  '/', '/projects', '/cv', '/contact',
+  '/login', '/grades', '/admin',
+]
 
-// Wie viele Seiten liegen zwischen den beiden? 1 = direkt nebeneinander.
-// 0 heisst: eine der beiden gehoert nicht ins Buch (Login, Noten, 404).
+// Wie viele Seiten liegen zwischen den beiden? 1 = direkt nebeneinander,
+// negativ heisst rueckwaerts. 0 heisst: eine der beiden gehoert nicht
+// ins Buch, zum Beispiel eine Adresse die es gar nicht gibt.
 function abstand(von: string, nach: string) {
   const a = seitenReihenfolge.indexOf(von)
   const b = seitenReihenfolge.indexOf(nach)

@@ -1,4 +1,3 @@
-import { pageColors } from '../styles/colors'
 import { GITHUB_USER } from '../api/github'
 import { useSprache } from '../context/LanguageContext'
 import { ui } from '../texts'
@@ -84,7 +83,8 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
 
         <p className="text-gray-700 mb-6">{t(project.text)}</p>
 
-        {/* Was ich dabei gelernt habe - in der Skills-Farbe Orange */}
+        {/* Was ich dabei gelernt habe - weiss wie die Badges auf den
+            Karten, damit die Projects-Seite durchgehend gelb bleibt */}
         {project.learned.length > 0 && (
           <div className="mb-6">
             <p className="text-gray-400 text-xs mb-2">{t(ui.learned)}</p>
@@ -93,7 +93,7 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <span
                   key={skill}
                   className="pill"
-                  style={{ background: pageColors.skills }}
+                  style={{ background: 'white' }}
                 >
                   {skill}
                 </span>

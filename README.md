@@ -102,7 +102,8 @@ Jede Seite hat eine eigene Signature-Farbe, alle in `src/styles/colors.ts`:
 | Kontakt | Blau `#70d6fe` |
 | Login | Pink `#e91e8c` |
 
-Orange `#f1aa81` färbt die "Dabei gelernt"-Badges im Projekt-Fenster.
+Orange `#f1aa81` ist aus der früheren Skills-Seite übrig und wird
+aktuell nirgends verwendet.
 
 Hintergrund der ganzen Seite: warmes Weiss `#faf8f4`
 Schrift: [Sniglet](https://fonts.google.com/specimen/Sniglet) von Google Fonts
