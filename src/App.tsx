@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { SpracheProvider } from './context/LanguageContext'
@@ -18,17 +18,55 @@ import NotFound from './pages/NotFound'
 const FALZKANTE =
   'inset 2px 0 0 rgba(0, 0, 0, 0.07), inset 4px 0 0 rgba(0, 0, 0, 0.05), inset 6px 0 0 rgba(0, 0, 0, 0.03)'
 
+// Wie weit eine Seite hochgeklappt wird. Muss unter 90 Grad bleiben:
+// darueber zeigt sie ihre Rueckseite, und die ist ausgeblendet - die
+// Seite wuerde mitten in der Bewegung verschwinden.
+const WINKEL = -78
+
+const OHNE_SCHATTEN = FALZKANTE
+const MIT_SCHATTEN = `40px 0 60px rgba(0, 0, 0, 0.28), ${FALZKANTE}`
+
+// Die Reihenfolge der Seiten im "Buch". Daraus ergibt sich, in welche
+// Richtung geblaettert wird: weiter hinten im Buch heisst vorwaerts.
+const seitenReihenfolge = ['/', '/projects', '/cv', '/contact']
+
+function istVorwaerts(von: string, nach: string) {
+  const a = seitenReihenfolge.indexOf(von)
+  const b = seitenReihenfolge.indexOf(nach)
+  // Seiten ausserhalb des Buchs (Login, Noten, Uebersicht, 404)
+  // behandeln wir als vorwaerts.
+  if (a === -1 || b === -1) return true
+  return b > a
+}
+
+// Wie sich eine Seite verhaelt. Welcher Zustand gilt, haengt von der
+// Richtung ab - darum sind es Funktionen statt fester Werte.
+//
+// Vorwaerts blaettern: die alte Seite klappt weg, die neue liegt schon
+// fertig darunter und bewegt sich nicht.
+// Zurueck blaettern: genau umgekehrt - die alte bleibt liegen, die
+// neue faellt von links wieder darauf.
+const seitenVarianten = {
+  // Flach auf dem Stapel.
+  liegt: { rotateY: 0, boxShadow: OHNE_SCHATTEN },
+
+  // Wie die Seite hereinkommt.
+  kommt: (vorwaerts: boolean) =>
+    vorwaerts
+      ? { rotateY: 0, boxShadow: OHNE_SCHATTEN }        // lag schon da
+      : { rotateY: WINKEL, boxShadow: MIT_SCHATTEN },   // faellt zurueck
+
+  // Wie die Seite verschwindet.
+  geht: (vorwaerts: boolean) =>
+    vorwaerts
+      ? { rotateY: WINKEL, boxShadow: MIT_SCHATTEN }    // klappt weg
+      : { rotateY: 0, boxShadow: OHNE_SCHATTEN },       // bleibt liegen
+}
+
 // Legt fest welche Adresse welche Seite zeigt - und wie geblaettert wird.
 //
-// So blaettert ein Buch: die naechste Seite lag schon immer darunter.
-// Sie bewegt sich nicht. Bewegen tut sich nur die Seite obendrauf -
-// sie hebt sich ab und klappt ueber den Falz weg.
-//
-// Damit das geht, muessen beide Seiten uebereinander liegen. Der Trick
-// dafuer ist ein Raster mit einer einzigen Zelle: beide Seiten bekommen
-// dieselbe Zelle zugewiesen und liegen dadurch aufeinander.
-//
-// Welche der beiden obenauf liegt, steht in index.css bei ".buch".
+// Beide Seiten liegen uebereinander: ein Raster mit einer einzigen
+// Zelle, beide Seiten bekommen dieselbe zugewiesen.
 function Seiten() {
   const location = useLocation()
 
@@ -36,7 +74,13 @@ function Seiten() {
   // bekommt den Wechsel ohne Animation.
   const wenigerBewegung = useReducedMotion()
 
+  // Welche Seite vorher offen war. useRef merkt sich den Wert, ohne
+  // dass die Seite dabei neu gezeichnet wird.
+  const vorherigerPfad = useRef(location.pathname)
+  const vorwaerts = istVorwaerts(vorherigerPfad.current, location.pathname)
+
   useEffect(() => {
+    vorherigerPfad.current = location.pathname
     // Nach dem Blaettern oben anfangen, sonst landet man mitten
     // auf der neuen Seite.
     window.scrollTo(0, 0)
@@ -48,34 +92,25 @@ function Seiten() {
 
   return (
     // perspective gehoert auf die Eltern-Schicht, sonst wirkt die
-    // Drehung flach statt raeumlich. Je groesser der Wert, desto
-    // ruhiger die Perspektive - wie bei einem grossen Buch.
-    <div className="buch" style={{ display: 'grid', perspective: '1800px' }}>
-      {/* Kein mode: beide Seiten sind gleichzeitig da und liegen
-          uebereinander. Genau das macht den Blaetter-Eindruck. */}
-      <AnimatePresence initial={false}>
+    // Drehung flach statt raeumlich. Die Klasse regelt, welche der
+    // beiden Seiten obenauf liegt - siehe index.css.
+    <div
+      className={vorwaerts ? 'buch-vor' : 'buch-zurueck'}
+      style={{ display: 'grid', perspective: '1800px' }}
+    >
+      {/* custom gibt die Richtung weiter. Das ist noetig, weil die
+          wegblaetternde Seite sonst mit der Richtung von ihrem eigenen
+          Aufbau arbeiten wuerde - also mit der von vorhin, nicht mit
+          der von jetzt. AnimatePresence reicht dieses custom gezielt
+          an die verschwindende Seite durch. */}
+      <AnimatePresence initial={false} custom={vorwaerts}>
         <motion.div
           key={location.pathname}
-          // Die neue Seite lag schon darunter - sie bekommt keinen
-          // Auftritt. initial={false} heisst genau das: nicht
-          // hereinbewegen, einfach da sein.
-          initial={false}
-          animate={{ rotateY: 0, boxShadow: FALZKANTE }}
-          // Nur die alte Seite bewegt sich. Sie klappt ueber den Falz
-          // nach links weg und wirft dabei einen Schatten auf die
-          // darunterliegende, der mit ihr wandert.
-          //
-          // Der Winkel bleibt unter 90 Grad: darueber zeigt die Seite
-          // ihre Rueckseite, und die ist ausgeblendet - sie wuerde
-          // mitten in der Bewegung verschwinden.
-          exit={{
-            rotateY: -78,
-            boxShadow: [
-              `8px 0 20px rgba(0, 0, 0, 0.18), ${FALZKANTE}`,
-              `26px 0 44px rgba(0, 0, 0, 0.32), ${FALZKANTE}`,
-              `40px 0 60px rgba(0, 0, 0, 0.28), ${FALZKANTE}`,
-            ],
-          }}
+          custom={vorwaerts}
+          variants={seitenVarianten}
+          initial="kommt"
+          animate="liegt"
+          exit="geht"
           transition={{ duration: dauer, ease: [0.35, 0, 0.25, 1] }}
           style={{
             gridArea: '1 / 1',              // beide Seiten in dieselbe Zelle

@@ -89,15 +89,28 @@ button.pill {
    muss obenauf sein - sonst deckt die neue sie zu und man sieht kein
    Umblaettern, sondern nur ein Auftauchen aus dem Nichts.
 
-   AnimatePresence haengt die neue Seite hinten an. Die neue ist also
-   immer die letzte - alle davor sind am Wegblaettern und gehoeren
-   darueber. So bleibt es auch richtig, wenn jemand schnell klickt und
-   kurz mehr als zwei Seiten uebereinander liegen. */
-.buch > * {
+   Welche obenauf gehoert, haengt von der Richtung ab. AnimatePresence
+   haengt die neue Seite immer hinten an, die neue ist also die letzte.
+
+   Vorwaerts: die alte klappt weg - sie muss obenauf, sonst sieht man
+   die Bewegung nicht.
+   Zurueck: die alte bleibt liegen und die neue faellt darauf - dann
+   muss die neue obenauf.
+
+   Mit :last-child statt einer festen Zahl bleibt es auch richtig, wenn
+   jemand schnell klickt und kurz mehr als zwei Seiten da sind. */
+.buch-vor > * {
   z-index: 2;
 }
-.buch > *:last-child {
+.buch-vor > *:last-child {
   z-index: 1;
+}
+
+.buch-zurueck > * {
+  z-index: 1;
+}
+.buch-zurueck > *:last-child {
+  z-index: 2;
 }
 
 /* Inhalte, die beim Erscheinen kurz nach oben rutschen. */
