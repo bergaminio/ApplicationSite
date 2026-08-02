@@ -8,19 +8,26 @@ interface PostitProps {
     corner: string   // die abgeknickte Ecke
   }
   rotate?: number    // wie schief der Zettel liegt, in Grad. Standard: gerade
+  // Wie lange der Zettel wartet, bis er hereinfaellt (in Millisekunden).
+  // Damit fallen mehrere Zettel nacheinander statt alle gleichzeitig.
+  verzoegerung?: number
   children: React.ReactNode
 }
 
 // Diese Form schneidet oben rechts eine Ecke weg.
 const cutCorner = 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)'
 
-function Postit({ colors, rotate = 0, children }: PostitProps) {
+function Postit({ colors, rotate = 0, verzoegerung = 0, children }: PostitProps) {
   return (
-    <div style={{
-      position: 'relative',
-      width: '100%',
-      transform: `rotate(${rotate}deg)`,
-    }}>
+    // Aeussere Schicht nur fuer die Animation. Die Drehung bleibt
+    // eine Schicht weiter innen, sonst kommen sich die beiden
+    // transform-Angaben in die Quere.
+    <div className="postit-rein" style={{ animationDelay: `${verzoegerung}ms` }}>
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        transform: `rotate(${rotate}deg)`,
+      }}>
       {/* Der Schatten liegt als eigene Schicht dahinter, leicht versetzt */}
       <div style={{
         position: 'absolute',
@@ -53,6 +60,7 @@ function Postit({ colors, rotate = 0, children }: PostitProps) {
           clipPath: 'polygon(100% 0, 0 0, 100% 100%)',
         }} />
         {children}
+        </div>
       </div>
     </div>
   )

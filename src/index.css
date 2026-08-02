@@ -2,6 +2,16 @@
 
 /* Hintergrund und Schrift fuer die ganze Seite.
    Die Schrift "Sniglet" wird in index.html von Google Fonts geladen. */
+/* Beim Blaettern dreht sich die Seite kurz im Raum und ragt dabei
+   seitlich hinaus. Ohne das hier blitzt bei jedem Seitenwechsel
+   eine waagrechte Scrollleiste auf.
+   "clip" statt "hidden": hidden wuerde einen eigenen Scroll-Bereich
+   aufmachen und damit position:sticky kaputtmachen. */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   background-color: #faf8f4;
   font-family: "Sniglet", system-ui;
@@ -31,4 +41,81 @@ button.pill {
 .box {
   border: 1.5px solid #333;
   border-radius: 8px;
+}
+
+/* =========================================================
+   Animationen
+   ========================================================= */
+
+/* Der Strich unter dem Titel zeichnet sich wie mit einem Stift.
+   scaleX statt width - das ist fluessiger, weil der Browser dafuer
+   nicht bei jedem Bild neu rechnen muss wo alles hingehoert. */
+@keyframes strich-zeichnen {
+  from { transform: scaleX(0) rotate(-0.5deg); }
+  to   { transform: scaleX(1) rotate(-0.5deg); }
+}
+
+.strich {
+  transform-origin: left center;   /* von links nach rechts zeichnen */
+  animation: strich-zeichnen 0.55s ease-out both;
+}
+
+/* Ein Post-it faellt leicht von oben herein. */
+@keyframes postit-rein {
+  from { opacity: 0; transform: translateY(-14px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.postit-rein {
+  animation: postit-rein 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.15) both;
+}
+
+/* Beim Darueberfahren wirkt der Zettel angehoben.
+   Wir aendern hier den Schatten und nicht transform - sonst wuerde
+   es sich mit der Animation oben in die Quere kommen. */
+.postit-rein {
+  transition: filter 0.18s ease-out;
+}
+.postit-rein:hover {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.18));
+}
+
+/* Seitenwechsel: die neue Seite schwingt herein wie eine
+   umgeblaetterte Notizbuchseite. */
+@keyframes blaettern {
+  from {
+    opacity: 0;
+    transform: perspective(1200px) rotateY(-14deg) translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(0) translateX(0);
+  }
+}
+
+.seite-blaettern {
+  transform-origin: left center;   /* Buchruecken ist links */
+  animation: blaettern 0.5s ease-out both;
+}
+
+/* Inhalte, die beim Erscheinen kurz nach oben rutschen. */
+@keyframes sanft-rein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.sanft-rein {
+  animation: sanft-rein 0.5s ease-out both;
+}
+
+/* Wer im Betriebssystem eingestellt hat, dass Bewegung stoert,
+   bekommt alles sofort und ohne Animation. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

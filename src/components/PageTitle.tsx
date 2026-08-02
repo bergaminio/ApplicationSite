@@ -15,15 +15,19 @@ function PageTitle({ title, color }: PageTitleProps) {
         {title}
       </h1>
 
-      {/* Der Strich unter dem Titel */}
-      <div style={{
-        width: '140px',
-        height: '3px',
-        background: color,
-        borderRadius: '2px',
-        transform: 'rotate(-0.5deg)',
-        marginTop: '8px',
-      }} />
+      {/* Der Strich unter dem Titel. Die Klasse "strich" laesst ihn
+          beim Laden von links nach rechts entstehen - die Drehung
+          steckt in der Animation, siehe index.css. */}
+      <div
+        className="strich"
+        style={{
+          width: '140px',
+          height: '3px',
+          background: color,
+          borderRadius: '2px',
+          marginTop: '8px',
+        }}
+      />
     </div>
   )
 }

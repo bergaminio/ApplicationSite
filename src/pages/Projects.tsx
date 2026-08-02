@@ -224,6 +224,7 @@ function Projects() {
             <Postit
               colors={postitColors.yellow}
               rotate={i % 2 === 0 ? -0.8 : 0.8}
+              verzoegerung={i * 70}
             >
               <p className="sniglet-bold text-lg mb-2">{t(project.name)}</p>
               <p className="text-sm text-gray-700 mb-4">{t(project.text)}</p>

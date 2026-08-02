@@ -18,19 +18,24 @@ function Home() {
         <h1 className="text-5xl sm:text-6xl md:text-7xl sniglet-bold leading-tight">
           Bergamin
         </h1>
-        <div style={{
-          position: 'absolute',
-          bottom: '-20px',
-          left: 0,
-          width: '140%',
-          height: '2vh',
-          background: pageColors.home,
-          transform: 'rotate(-0.5deg)',
-          borderRadius: '2vh',
-        }} />
+        <div
+          className="strich"
+          style={{
+            position: 'absolute',
+            bottom: '-20px',
+            left: 0,
+            width: '140%',
+            height: '2vh',
+            background: pageColors.home,
+            borderRadius: '2vh',
+          }}
+        />
       </div>
 
-      <p className="text-gray-500 mt-8 text-lg" style={{ transform: 'rotate(-0.3deg)' }}>
+      <p
+        className="text-gray-500 mt-8 text-lg sanft-rein"
+        style={{ animationDelay: '250ms' }}
+      >
         {t(ui.homeRole)}
       </p>
 
