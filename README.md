@@ -42,6 +42,7 @@ src/
 │   ├── Home.tsx
 │   ├── Projects.tsx
 │   ├── CV.tsx          Der Lebenslauf
+│   ├── Personal.tsx    Hobbys und Interessen
 │   ├── Contact.tsx
 │   └── Login.tsx
 ├── styles/
@@ -99,11 +100,9 @@ Jede Seite hat eine eigene Signature-Farbe, alle in `src/styles/colors.ts`:
 | Start | Rot `#f37882` |
 | Projekte | Gelb `#ffd06b` |
 | Lebenslauf | Grün `#6edaa4` |
+| Persönliches | Orange `#f1aa81` |
 | Kontakt | Blau `#70d6fe` |
 | Login | Pink `#e91e8c` |
-
-Orange `#f1aa81` ist aus der früheren Skills-Seite übrig und wird
-aktuell nirgends verwendet.
 
 Hintergrund der ganzen Seite: warmes Weiss `#faf8f4`
 Schrift: [Sniglet](https://fonts.google.com/specimen/Sniglet) von Google Fonts

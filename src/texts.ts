@@ -12,6 +12,7 @@ export const ui = {
   navHome:     { de: 'Start',      en: 'Home' },
   navProjects: { de: 'Projekte',   en: 'Projects' },
   navCV:       { de: 'Lebenslauf', en: 'CV' },
+  navPersonal: { de: 'Persönliches', en: 'Personal' },
   navContact:  { de: 'Kontakt',    en: 'Contact' },
   navLogin:    { de: 'Login',      en: 'Login' },
 
@@ -50,6 +51,17 @@ export const ui = {
   languages:  { de: 'Sprachen', en: 'Languages' },
   itSkills:   { de: 'IT-Kenntnisse', en: 'IT skills' },
   hobbies:    { de: 'Hobbys', en: 'Hobbies' },
+
+  // Persönliches
+  personalTitle: { de: 'Persönliches', en: 'Personal' },
+  personalIntro: {
+    de: 'Was ich mache, wenn ich nicht vor dem Bildschirm sitze.',
+    en: 'What I do when I am not sitting in front of a screen.',
+  },
+  audioFehlt: {
+    de: 'Die Aufnahme liegt noch nicht bereit.',
+    en: 'The recording is not available yet.',
+  },
 
   // Kontakt
   contactTitle: { de: 'Kontakt', en: 'Contact' },

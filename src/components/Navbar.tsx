@@ -11,6 +11,7 @@ const links = [
   { to: '/', label: ui.navHome, color: pageColors.home },
   { to: '/projects', label: ui.navProjects, color: pageColors.projects },
   { to: '/cv', label: ui.navCV, color: pageColors.story },
+  { to: '/personal', label: ui.navPersonal, color: pageColors.personal },
   { to: '/contact', label: ui.navContact, color: pageColors.contact },
 ]
 

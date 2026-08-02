@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
 import CV from './pages/CV'
+import Personal from './pages/Personal'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Grades from './pages/Grades'
@@ -36,7 +37,7 @@ const MAX_BLAETTER = 3
 // Login, Noten und Uebersicht stehen hinten - wie ein Anhang. Dadurch
 // blaettert es vom Login zurueck zur Startseite auch wirklich zurueck.
 const seitenReihenfolge = [
-  '/', '/projects', '/cv', '/contact',
+  '/', '/projects', '/cv', '/personal', '/contact',
   '/login', '/grades', '/admin',
 ]
 
@@ -202,6 +203,7 @@ function Seiten() {
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/cv" element={<CV />} />
+            <Route path="/personal" element={<Personal />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             {/* Brauchen eine Anmeldung. Das Backend prueft das nochmal -
