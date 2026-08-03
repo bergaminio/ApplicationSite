@@ -13,6 +13,12 @@ body {
 }
 
 :root {
+  /* Sagt dem Browser: diese Seite ist fuer Hell gemacht.
+     Ohne diese Zeile faerbt der automatische Dunkelmodus von Chrome
+     und Edge die Seite eigenmaechtig um - Weiss wird grau, Farben
+     kippen. Mit der Zeile laesst er sie in Ruhe. */
+  color-scheme: light;
+
   /* Die Papierfarbe der ganzen Seite.
      Sie steht NUR hier. Alle anderen Stellen holen sie sich mit
      var(--papier) - auch die im JavaScript. So aendert man sie
