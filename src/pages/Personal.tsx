@@ -80,7 +80,9 @@ function Personal() {
         {t(ui.personalIntro)}
       </p>
 
-      <div className="flex flex-col gap-8">
+      {/* Schmaler als die Seite: ein Zettel ueber die volle Breite
+          wirkt wie ein farbiger Balken, nicht wie eine Notiz. */}
+      <div className="flex flex-col gap-8" style={{ maxWidth: '30rem' }}>
         {hobbys.map((hobby, i) => (
           <Postit
             key={hobby.titel.de}

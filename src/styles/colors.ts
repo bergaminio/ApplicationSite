@@ -16,7 +16,10 @@ export const pageColors = {
 // Schatten und Ecke sind bewusst hell und wenig farbig gehalten.
 // Kraeftige Toene (frueher ein sattes Oliv und Braun) faerben das
 // weisse Blatt daneben optisch mit - es wirkt dann cremig statt weiss.
+// Die Zettel sind heller als die Seitenfarbe. Auf einer grossen
+// Flaeche wirkt ein kraeftiger Ton sonst wie ein farbiger Hintergrund
+// und das Weiss der Seite verschwindet.
 export const postitColors = {
-  yellow: { main: '#ffd06b', shadow: '#d8cba8', corner: '#b9a878' },
-  orange: { main: '#f1aa81', shadow: '#dcc4b3', corner: '#b39079' },
+  yellow: { main: '#ffe2a4', shadow: '#e5dcc4', corner: '#cbbf9c' },
+  orange: { main: '#f8cdb2', shadow: '#e6d5c8', corner: '#c9ab95' },
 }
