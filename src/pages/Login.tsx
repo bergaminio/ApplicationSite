@@ -1,10 +1,10 @@
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
-import { LoginFehler } from '../api/auth'
+import { LoginFehler, backendErreichbar } from '../api/auth'
 import { ui } from '../texts'
 
 function Login() {
@@ -15,6 +15,15 @@ function Login() {
   const [password, setPassword] = useState('')
   const [fehler, setFehler] = useState('')
   const [laeuft, setLaeuft] = useState(false)
+
+  // Laeuft der Server ueberhaupt? null = wird noch geprueft.
+  // Ohne Server waere ein Anmeldeformular sinnlos - dann zeigen wir
+  // stattdessen, was hier einmal hinkommt.
+  const [serverDa, setServerDa] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    backendErreichbar().then(setServerDa)
+  }, [])
 
   async function absenden(event: FormEvent) {
     event.preventDefault()   // sonst laedt der Browser die Seite neu
@@ -87,6 +96,20 @@ function Login() {
     )
   }
 
+  // ---- Server laeuft noch nicht: zeigen was hier hinkommt ----
+  if (serverDa === false) {
+    return (
+      <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
+        <PageTitle title={t(ui.loginTitle)} color={pageColors.login} />
+
+        <div className="box p-5 sm:p-8" style={{ maxWidth: '32rem' }}>
+          <p className="sniglet-bold text-lg mb-3">{t(ui.loginSoonTitle)}</p>
+          <p className="text-gray-700">{t(ui.loginSoonText)}</p>
+        </div>
+      </div>
+    )
+  }
+
   // ---- Nicht angemeldet: das Formular ----
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
@@ -96,7 +119,17 @@ function Login() {
         {t(ui.loginText)}
       </p>
 
-      <form onSubmit={absenden} className="box p-5 sm:p-8" style={{ maxWidth: '28rem' }}>
+      {/* Solange die Pruefung laeuft, kein Formular zeigen - sonst
+          blitzt es kurz auf und verschwindet wieder. */}
+      {serverDa === null && (
+        <p className="text-gray-400">{t(ui.loginChecking)}</p>
+      )}
+
+      <form
+        onSubmit={absenden}
+        className="box p-5 sm:p-8"
+        style={{ maxWidth: '28rem', display: serverDa ? undefined : 'none' }}
+      >
         <label className="block mb-4">
           <span className="text-gray-400 text-xs">{t(ui.loginUsername)}</span>
           <input

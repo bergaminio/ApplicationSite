@@ -103,8 +103,16 @@ export const ui = {
   loginEmpty:     { de: 'Bitte beides ausfüllen.', en: 'Please fill in both fields.' },
   loginWrong:     { de: 'Benutzername oder Passwort stimmt nicht.', en: 'Username or password is not correct.' },
   loginNoServer: {
-    de: 'Der Server antwortet nicht. Läuft das Backend?',
-    en: 'The server is not responding. Is the backend running?',
+    de: 'Der Anmelde-Bereich ist gerade nicht erreichbar. Bitte später nochmal versuchen.',
+    en: 'The sign-in area is currently unavailable. Please try again later.',
+  },
+
+  // Wird gezeigt, solange das Backend noch nicht laeuft
+  loginChecking: { de: 'Einen Moment...', en: 'One moment...' },
+  loginSoonTitle: { de: 'Dieser Bereich entsteht gerade', en: 'This area is being built' },
+  loginSoonText: {
+    de: 'Dahinter kommen meine Noten von der gibb, der BWD und der ICT Lernfactory — geschützt durch eine eigene Anmeldung mit Java Spring Boot, PostgreSQL und JWT-Token. Sobald der Server läuft, steht hier das Anmeldeformular.',
+    en: 'Behind this will be my grades from gibb, BWD and ICT Lernfactory — protected by my own sign-in built with Java Spring Boot, PostgreSQL and JWT tokens. As soon as the server is running, the sign-in form will appear here.',
   },
   loginFailed:  { de: 'Das hat nicht geklappt. Bitte nochmal versuchen.', en: 'That did not work. Please try again.' },
 

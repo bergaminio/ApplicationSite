@@ -1,0 +1,28 @@
+# Diese Datei braucht der Webserver beim Hoster (Apache).
+#
+# Die Seite ist eine Single Page Application: es gibt nur eine echte
+# Datei, index.html. Adressen wie /projects oder /cv sind keine Ordner
+# auf dem Server - React baut diese Seiten erst im Browser zusammen.
+#
+# Ohne die Regel unten antwortet Apache auf bergamin.ch/projects mit
+# "404 Nicht gefunden", weil es dort wirklich nichts gibt. Genauso beim
+# Neuladen einer Unterseite oder wenn jemand einen Link direkt aufruft.
+#
+# Die Regel sagt: Wird eine Datei angefragt, die es nicht gibt, liefere
+# index.html aus. Den Rest macht React.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # index.html selbst nicht umleiten, sonst dreht es sich im Kreis
+  RewriteRule ^index\.html$ - [L]
+
+  # Echte Dateien und Ordner normal ausliefern
+  # (Bilder, CSS, JavaScript, die Notenausweise)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # Alles andere an index.html
+  RewriteRule . /index.html [L]
+</IfModule>

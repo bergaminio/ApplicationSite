@@ -4,6 +4,17 @@
 // Frontend. Spaeter auf dem Server kann man VITE_API_URL setzen.
 const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8080'
 
+// Gibt es ueberhaupt ein Backend, mit dem wir reden koennen?
+//
+// Beim Entwickeln ja - da laeuft es auf localhost. In der gebauten
+// Fassung nur, wenn beim Bauen VITE_API_URL gesetzt wurde.
+//
+// Ohne das wuerde jede Seite zwei Anfragen ins Leere schicken, und
+// der Browser schreibt fuer jede einen roten Fehler in die Konsole -
+// auch wenn der Code ihn abfaengt. Also fragen wir gar nicht erst.
+export const BACKEND_EINGERICHTET =
+  Boolean(import.meta.env.VITE_API_URL) || import.meta.env.DEV
+
 // Wo wir das Token im Browser ablegen.
 const TOKEN_KEY = 'token'
 
@@ -61,6 +72,8 @@ export async function login(username: string, password: string): Promise<LoginAn
 // Fragt das Backend, wer mit dem gespeicherten Token angemeldet ist.
 // Gibt null zurueck wenn kein oder ein abgelaufenes Token da ist.
 export async function me(): Promise<Benutzer | null> {
+  if (!BACKEND_EINGERICHTET) return null
+
   const token = getToken()
   if (!token) return null
 
@@ -79,6 +92,27 @@ export async function me(): Promise<Benutzer | null> {
     // Server nicht erreichbar. Token behalten, vielleicht laeuft
     // er gleich wieder.
     return null
+  }
+}
+
+// Schaut nach, ob das Backend ueberhaupt da ist.
+//
+// Welchen Status es antwortet, ist egal - ohne Token kommt 401, und
+// auch das heisst: der Server lebt. Nur wenn gar keine Antwort kommt,
+// laeuft er nicht.
+//
+// Dadurch passt sich die Login-Seite von selbst an: laeuft der Server
+// nicht, zeigt sie einen Hinweis statt eines Formulars, das ohnehin
+// nicht funktionieren wuerde.
+export async function backendErreichbar(): Promise<boolean> {
+  if (!BACKEND_EINGERICHTET) return false
+  try {
+    await fetch(`${API}/api/auth/me`, {
+      signal: AbortSignal.timeout(3000),
+    })
+    return true
+  } catch {
+    return false
   }
 }
 
