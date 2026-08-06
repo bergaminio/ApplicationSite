@@ -70,6 +70,10 @@ export const ui = {
   labelEmail:   { de: 'E-Mail', en: 'Email' },
   labelPhone:   { de: 'Telefon', en: 'Phone' },
   labelPlace:   { de: 'Ort', en: 'Location' },
+  phoneAfterLogin: {
+    de: 'Nach dem Anmelden sichtbar',
+    en: 'Visible after signing in',
+  },
 
   // Impressum - steht unten auf der Kontakt-Seite
   imprint:            { de: 'Impressum', en: 'Legal notice' },

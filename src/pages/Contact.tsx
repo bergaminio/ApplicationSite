@@ -1,6 +1,7 @@
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import { useSprache } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
 import { ui, type Text } from '../texts'
 
 // ---------------------------------------------------------------
@@ -9,16 +10,41 @@ import { ui, type Text } from '../texts'
 // ---------------------------------------------------------------
 
 const NAME = 'Michael Bergamin'
-const EMAIL = 'michael.bergamin@proton.me'
-const TELEFON = '+41 76 537 56 30'
 const ORT = '3232 Ins, Schweiz'
 const GITHUB = 'https://github.com/bergaminio/ApplicationSite'
+
+// Die E-Mail steht in zwei Teilen und wird erst im Browser
+// zusammengesetzt. Programme, die Webseiten nach Adressen absuchen,
+// lesen meist nur den Quelltext ohne JavaScript auszufuehren.
+//
+// Warum ein Array mit join und nicht einfach teil1 + '@' + teil2?
+// Weil das Bau-Werkzeug einfaches Zusammenzaehlen von Texten schon
+// beim Bauen ausrechnet - die fertige Adresse stuende dann doch im
+// Bündel. Einen join-Aufruf rechnet es nicht vorweg.
+//
+// Kein perfekter Schutz: wer sich Muehe gibt, kommt trotzdem dran.
+// Wirklich sicher waere nur ein Kontaktformular ueber das Backend.
+const EMAIL_TEILE = ['michael.bergamin', 'proton.me']
+
+// Die Telefonnummer sieht nur, wer angemeldet ist.
+const TELEFON = '+41 76 537 56 30'
 
 // OFFEN: Sobald das Hosting steht, hier den Anbieter eintragen.
 // Solange der Text leer ist, bleibt die Zeile im Impressum weg.
 // Die IMS-Checkliste fragt danach ("gehostet auf?"), also vor der
 // Abgabe ausfuellen.
 const HOSTING: Text = { de: '', en: '' }
+
+// Zeigt die E-Mail als anklickbaren Link. Die Adresse entsteht erst
+// hier, beim Anzeigen im Browser.
+function EmailLink() {
+  const adresse = EMAIL_TEILE.join('@')
+  return (
+    <a href={'mailto:' + adresse} className="underline hover:text-gray-500">
+      {adresse}
+    </a>
+  )
+}
 
 // Eine Zeile im Impressum: kleine graue Beschriftung, darunter der Wert.
 function Angabe({ titel, children }: { titel: string; children: React.ReactNode }) {
@@ -32,6 +58,7 @@ function Angabe({ titel, children }: { titel: string; children: React.ReactNode 
 
 function Contact() {
   const { t } = useSprache()
+  const { benutzer } = useAuth()
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
@@ -61,11 +88,18 @@ function Contact() {
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelEmail)}</p>
-            <a href={`mailto:${EMAIL}`} className="underline hover:text-gray-500">{EMAIL}</a>
+            <EmailLink />
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelPhone)}</p>
-            <a href={`tel:${TELEFON.replace(/\s/g, '')}`} className="underline hover:text-gray-500">{TELEFON}</a>
+            {/* Nur fuer Angemeldete - sonst sammeln Bots die Nummer ein */}
+            {benutzer ? (
+              <a href={`tel:${TELEFON.replace(/\s/g, '')}`} className="underline hover:text-gray-500">
+                {TELEFON}
+              </a>
+            ) : (
+              <p className="text-gray-400 text-sm">{t(ui.phoneAfterLogin)}</p>
+            )}
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelPlace)}</p>
@@ -93,7 +127,7 @@ function Contact() {
         <Angabe titel={t(ui.imprintResponsible)}>
           <p>{NAME}</p>
           <p>{ORT}</p>
-          <a href={`mailto:${EMAIL}`} className="underline hover:text-gray-500">{EMAIL}</a>
+          <EmailLink />
         </Angabe>
 
         <Angabe titel={t(ui.imprintPurpose)}>
