@@ -59,6 +59,12 @@ export const ui = {
     de: 'Was mich neben dem Programmieren beschäftigt.',
     en: 'What keeps me busy besides programming.',
   },
+  fotoZurueck: { de: 'Vorheriges Bild', en: 'Previous photo' },
+  fotoWeiter:  { de: 'Nächstes Bild', en: 'Next photo' },
+  fotosFehlen: {
+    de: 'Die Bilder sind noch nicht abgelegt.',
+    en: 'The photos are not in place yet.',
+  },
   audioFehlt: {
     de: 'Die Aufnahme liegt noch nicht bereit.',
     en: 'The recording is not available yet.',

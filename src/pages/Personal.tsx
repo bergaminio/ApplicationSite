@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { pageColors, postitColors } from '../styles/colors'
 import Postit from '../components/Postit'
 import PageTitle from '../components/PageTitle'
+import Diashow from '../components/Diashow'
 import { useSprache } from '../context/LanguageContext'
 import { ui, type Text } from '../texts'
 
@@ -19,7 +20,8 @@ import { ui, type Text } from '../texts'
 interface Hobby {
   titel: Text
   text: Text
-  audio?: string   // Pfad zur Aufnahme, wenn es eine gibt
+  audio?: string      // Pfad zur Aufnahme, wenn es eine gibt
+  fotos?: string[]    // Bilder fuer die Diashow
 }
 
 const hobbys: Hobby[] = [
@@ -44,6 +46,25 @@ const hobbys: Hobby[] = [
       de: 'Ich spiele gerne Videospiele.',
       en: 'I like playing video games.',
     },
+  },
+  {
+    titel: { de: 'Fotografieren', en: 'Photography' },
+    text: {
+      de: 'Ich fotografiere.',
+      en: 'I take photographs.',
+    },
+    // Leg deine Bilder in public/fotos/ ab und trage die Dateinamen
+    // hier ein. Reihenfolge in der Liste = Reihenfolge in der Diashow.
+    // Solange die Liste leer ist, steht dort ein Hinweis.
+    //
+    // Tipp: Bilder vorher auf etwa 1600 Pixel Breite verkleinern.
+    // Fotos direkt aus der Kamera sind schnell 5 MB gross und die
+    // Seite laedt dann quaelend langsam.
+    fotos: [
+      // '/fotos/foto1.jpg',
+      // '/fotos/foto2.jpg',
+      // '/fotos/foto3.jpg',
+    ],
   },
 ]
 
@@ -94,6 +115,7 @@ function Personal() {
             <p className="text-gray-700">{t(hobby.text)}</p>
 
             {hobby.audio && <Tonaufnahme pfad={hobby.audio} />}
+            {hobby.fotos && <Diashow bilder={hobby.fotos} />}
           </Postit>
         ))}
       </div>
