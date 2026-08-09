@@ -104,7 +104,19 @@ function Login() {
 
         <div className="box p-5 sm:p-8" style={{ maxWidth: '32rem' }}>
           <p className="sniglet-bold text-lg mb-3">{t(ui.loginSoonTitle)}</p>
-          <p className="text-gray-700">{t(ui.loginSoonText)}</p>
+          <p className="text-gray-700 mb-6">{t(ui.loginSoonText)}</p>
+
+          {/* Der Beweis: wer will, schaut sich den Code selbst an.
+              Das macht aus "ist fertig" ein nachpruefbares "hier ist es". */}
+          <a
+            href="https://github.com/bergaminio/ApplicationSite/tree/main/backend"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pill"
+            style={{ background: 'white', padding: '8px 20px', fontSize: '14px' }}
+          >
+            {t(ui.loginSoonCode)}
+          </a>
         </div>
       </div>
     )

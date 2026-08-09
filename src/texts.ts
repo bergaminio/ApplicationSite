@@ -115,10 +115,17 @@ export const ui = {
 
   // Wird gezeigt, solange das Backend noch nicht laeuft
   loginChecking: { de: 'Einen Moment...', en: 'One moment...' },
-  loginSoonTitle: { de: 'Dieser Bereich entsteht gerade', en: 'This area is being built' },
+  loginSoonTitle: {
+    de: 'Fertig gebaut, noch nicht aufgeschaltet',
+    en: 'Built, not yet deployed',
+  },
   loginSoonText: {
-    de: 'Dahinter kommen meine Noten von der gibb, der BWD und der ICT Lernfactory — geschützt durch eine eigene Anmeldung mit Java Spring Boot, PostgreSQL und JWT-Token. Sobald der Server läuft, steht hier das Anmeldeformular.',
-    en: 'Behind this will be my grades from gibb, BWD and ICT Lernfactory — protected by my own sign-in built with Java Spring Boot, PostgreSQL and JWT tokens. As soon as the server is running, the sign-in form will appear here.',
+    de: 'Dahinter liegen meine Noten von der gibb, der BWD und der ICT Lernfactory. Die Anmeldung dafür habe ich selbst gebaut — mit Java Spring Boot, PostgreSQL und JWT-Token. Sie läuft nur noch auf keinem Server. Sobald sie aufgeschaltet ist, steht hier das Anmeldeformular.',
+    en: 'Behind this are my grades from gibb, BWD and ICT Lernfactory. I built the sign-in myself — with Java Spring Boot, PostgreSQL and JWT tokens. It is simply not running on a server yet. Once it is deployed, the sign-in form will appear here.',
+  },
+  loginSoonCode: {
+    de: 'Den Code dazu ansehen →',
+    en: 'Look at the code →',
   },
   loginFailed:  { de: 'Das hat nicht geklappt. Bitte nochmal versuchen.', en: 'That did not work. Please try again.' },
 
