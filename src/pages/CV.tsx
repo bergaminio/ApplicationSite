@@ -18,10 +18,10 @@ const ueberMich: Text = {
     'Praktikum, in dem ich das an echten Projekten weitermache.',
   en:
     'I am doing the IMS at BWD Bern. I started programming because I wanted to build things ' +
-    'that did not exist yet: an app that times my sprints by GPS, so nobody has to stand ' +
+    'that did not exist yet: an app that times my sprints via GPS, so nobody has to stand ' +
     'there with a stopwatch during training. A browser role-playing game and this website ' +
-    'came after that. I learn the most when I am sitting on something of my own and have to ' +
-    'get it working. Now I am looking for an internship where I can keep doing that on real projects.',
+    'came after that. I learn the most when I am working on something of my own and have to ' +
+    'get it running. Now I am looking for an internship where I can keep doing that on real projects.',
 }
 
 interface Eintrag {
@@ -69,7 +69,7 @@ const ausbildung: Eintrag[] = [
 const erfahrung: Eintrag[] = [
   {
     zeit: { de: '2023', en: '2023' },
-    titel: { de: 'Schnupperlehre Informatik', en: 'IT taster apprenticeship' },
+    titel: { de: 'Schnupperlehre Informatik', en: 'Trial apprenticeship in IT' },
     ort: { de: 'BBC Bümpliz, Bern', en: 'BBC Bümpliz, Bern' },
     text: {
       de: 'Einblick in den Berufsalltag der Informatik und erste praktische Erfahrungen.',
@@ -126,10 +126,12 @@ const itKenntnisse = [
   'Flutter', 'Git', 'GitLab', 'Docker', 'CI/CD',
 ]
 
+// Muss zur Seite "Persoenliches" passen - dort stehen sie ausfuehrlich.
 const hobbys: Text[] = [
   { de: 'Klavier spielen', en: 'Playing piano' },
-  { de: 'Gaming', en: 'Gaming' },
   { de: 'Bogenschiessen', en: 'Archery' },
+  { de: 'Gaming', en: 'Gaming' },
+  { de: 'Fotografieren', en: 'Photography' },
 ]
 
 // ---------------------------------------------------------------

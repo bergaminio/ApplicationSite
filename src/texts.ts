@@ -24,7 +24,7 @@ export const ui = {
   // Projekte
   projectsTitle: { de: 'Meine Projekte', en: 'My projects' },
   projectsIntro: {
-    de: 'Ich lerne am liebsten, indem ich Sachen baue. Klick ein Projekt an für den Screenshot und den Code.',
+    de: 'Ich lerne am liebsten, indem ich Sachen baue. Klick ein Projekt an, dann siehst du den Screenshot und den Code.',
     en: 'I learn best by building things. Click a project for the screenshot and the code.',
   },
   search:       { de: 'Suchen...', en: 'Search...' },
@@ -87,7 +87,7 @@ export const ui = {
   imprintPurpose:     { de: 'Zweck der Seite', en: 'Purpose of this site' },
   imprintPurposeText: {
     de: 'Persönliche Bewerbungswebsite. Entstanden im Rahmen der Ausbildung an der Informatikmittelschule der BWD Bern.',
-    en: 'Personal application website. Created as part of my training at the IMS at BWD Bern.',
+    en: 'Personal application website. Created during my training at the IMS, BWD Bern.',
   },
   imprintHosting:     { de: 'Gehostet bei', en: 'Hosted at' },
   imprintSource:      { de: 'Quellcode', en: 'Source code' },
