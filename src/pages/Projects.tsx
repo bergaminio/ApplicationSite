@@ -64,7 +64,7 @@ const myProjects: Project[] = [
     learned: ['Java', 'OOP'],
     language: 'Java',
     scene: 'gibb',
-    image: '/demos/platzhalter.svg',
+    image: '/demos/bomberman.png',
   },
   {
     id: 'agentdecider',
@@ -77,7 +77,7 @@ const myProjects: Project[] = [
     learned: ['Python', 'Tkinter', 'Git'],
     language: 'Python',
     scene: 'privat',
-    image: '/demos/platzhalter.svg',
+    image: '/demos/agentdecider.png',
   },
 ]
 
