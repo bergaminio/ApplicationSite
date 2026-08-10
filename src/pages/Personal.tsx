@@ -61,9 +61,15 @@ const hobbys: Hobby[] = [
     // Fotos direkt aus der Kamera sind schnell 5 MB gross und die
     // Seite laedt dann quaelend langsam.
     fotos: [
-      // '/fotos/foto1.jpg',
-      // '/fotos/foto2.jpg',
-      // '/fotos/foto3.jpg',
+      '/fotos/foto01.jpg',
+      '/fotos/foto02.jpg',
+      '/fotos/foto03.jpg',
+      '/fotos/foto04.jpg',
+      '/fotos/foto05.jpg',
+      '/fotos/foto06.jpg',
+      '/fotos/foto07.jpg',
+      '/fotos/foto08.jpg',
+      '/fotos/foto09.jpg',
     ],
   },
 ]

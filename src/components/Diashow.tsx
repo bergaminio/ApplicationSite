@@ -41,9 +41,19 @@ function Diashow({ bilder }: { bilder: string[] }) {
           style={{
             width: '100%',
             display: 'block',
+            // Fester Rahmen, damit die Seite beim Blaettern nicht
+            // springt. 4:3 passt zu den meisten Fotos.
             aspectRatio: '4 / 3',
-            objectFit: 'cover',
-            background: '#f2f2f2',
+            // 'contain' statt 'cover': das ganze Bild ist zu sehen.
+            // Mit 'cover' wuerde ein Hochformat-Foto in diesem
+            // Querformat-Rahmen oben und unten hart abgeschnitten -
+            // bei einem Bild mit dem Motiv im unteren Drittel waere
+            // genau das Motiv weg. Hochformate stehen jetzt schmaler
+            // in der Mitte, mit weissem Rand links und rechts. Der
+            // faellt nicht auf, weil der Sofortbild-Rahmen auch
+            // weiss ist.
+            objectFit: 'contain',
+            background: 'white',
           }}
         />
         <div className="flex items-center justify-between py-2">
