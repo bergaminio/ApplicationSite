@@ -91,7 +91,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(allowedOrigins.split(",")));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // PATCH nicht vergessen - fehlt eine Methode hier, fragt der
+        // Browser vorher nach, bekommt ein Nein und bricht mit
+        // "Failed to fetch" ab. Mit curl faellt das nicht auf, weil
+        // sich Kommandozeilen-Werkzeuge nicht an CORS halten muessen.
+        config.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

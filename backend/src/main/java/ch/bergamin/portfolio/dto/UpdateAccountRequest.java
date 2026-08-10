@@ -1,6 +1,6 @@
 package ch.bergamin.portfolio.dto;
 
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 // Womit ich ein Konto aendere.
 //
@@ -14,6 +14,10 @@ import jakarta.validation.constraints.Size;
 public record UpdateAccountRequest(
         String displayName,
 
-        @Size(min = 8, message = "Passwort muss mindestens 8 Zeichen haben")
+        // Entweder leer (= Passwort bleibt wie es ist) oder mindestens
+        // acht Zeichen. Ein einfaches @Size(min = 8) waere falsch: das
+        // wuerde auch den leeren Text abweisen, also genau den Fall,
+        // den wir erlauben wollen.
+        @Pattern(regexp = "|.{8,}", message = "Passwort muss mindestens 8 Zeichen haben")
         String password) {
 }
