@@ -225,7 +225,9 @@ function Admin() {
             >
               <div>
                 <p className="sniglet-bold">{konto.displayName}</p>
-                <p className="text-xs text-gray-400">{konto.username}</p>
+                <p className="text-xs text-gray-400">
+                  {t(ui.accLoginName)} <span className="sniglet-bold">{konto.username}</span>
+                </p>
               </div>
 
               <div className="flex items-center gap-3 text-sm sm:text-right">
@@ -269,7 +271,9 @@ function Admin() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <div>
                 <p className="sniglet-bold">{konto.displayName}</p>
-                <p className="text-xs text-gray-400">{konto.username} · {t(ui.accAdminHint)}</p>
+                <p className="text-xs text-gray-400">
+                  {t(ui.accLoginName)} <span className="sniglet-bold">{konto.username}</span> · {t(ui.accAdminHint)}
+                </p>
               </div>
               <button
                 onClick={() => starteKontoAendern(konto)}
@@ -285,7 +289,9 @@ function Admin() {
         {/* Aendern-Formular, erscheint unter der Liste */}
         {bearbeiteKonto && (
           <div className="box p-4" style={{ borderColor: pageColors.login }}>
-            <p className="text-xs text-gray-400 mb-2">{bearbeiteKonto}</p>
+            <p className="text-xs text-gray-400 mb-2">
+              {t(ui.accLoginName)} <span className="sniglet-bold">{bearbeiteKonto}</span>
+            </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-3">
               <input

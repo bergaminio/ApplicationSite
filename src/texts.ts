@@ -197,7 +197,11 @@ export const ui = {
   // Konten verwalten
   accEdit:        { de: 'Ändern', en: 'Edit' },
   accDelete:      { de: 'Löschen', en: 'Delete' },
-  accDisplayName: { de: 'Anzeigename', en: 'Display name' },
+  accDisplayName: { de: 'Anzeigename (nicht der Anmeldename)', en: 'Display name (not the login name)' },
+  // Steht vor dem Benutzernamen. Ohne diese zwei Woerter sieht man
+  // den Anzeigenamen gross und den Anmeldenamen klein daneben - und
+  // tippt dann beim Anmelden den falschen ein.
+  accLoginName: { de: 'Anmeldename:', en: 'Login name:' },
   accNewPassword: { de: 'Neues Passwort (leer = unverändert)', en: 'New password (empty = unchanged)' },
   accRepeatPassword: { de: 'Passwort wiederholen', en: 'Repeat password' },
   accShowPassword: { de: 'Passwort anzeigen', en: 'Show password' },
@@ -212,8 +216,8 @@ export const ui = {
     en: 'Really delete this account? The access log will be kept.',
   },
   accAdminHint: {
-    de: 'Das ist dein eigenes Konto. Hier änderst du dein Passwort.',
-    en: 'This is your own account. Change your password here.',
+    de: 'Dein eigenes Konto. Der Anmeldename bleibt, auch wenn du den Anzeigenamen änderst.',
+    en: 'Your own account. The login name stays the same even if you change the display name.',
   },
 
   // Seite nicht gefunden
