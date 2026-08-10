@@ -176,7 +176,9 @@ export const ui = {
 
   areaEFZ: { de: 'EFZ · Berufsfachschule gibb', en: 'EFZ · gibb vocational school' },
   areaBM:  { de: 'BM · BWD Bern', en: 'Vocational baccalaureate · BWD Bern' },
-  areaUEK: { de: 'ÜK · ICT Lernfactory', en: 'Inter-company courses · ICT Lernfactory' },
+  // Bewusst ohne Anbieter: die ueK waren bei mehreren, die Namen
+  // stehen bei den einzelnen Dokumenten.
+  areaUEK: { de: 'ÜK · Überbetriebliche Kurse', en: 'Inter-company courses' },
 
   // Notenausweis hochladen (nur Admin)
   docAdd:       { de: 'Notenausweis hochladen', en: 'Upload grade report' },
@@ -188,6 +190,25 @@ export const ui = {
   docTypes:     { de: 'JPG, PNG, WEBP oder PDF, höchstens 10 MB', en: 'JPG, PNG, WEBP or PDF, max 10 MB' },
   docTooBig:    { de: 'Die Datei ist grösser als 10 MB.', en: 'The file is larger than 10 MB.' },
   docFailed:    { de: 'Das hat nicht geklappt.', en: 'That did not work.' },
+  docRename:    { de: 'Umbenennen', en: 'Rename' },
+  docSave:      { de: 'Speichern', en: 'Save' },
+  docCancel:    { de: 'Abbrechen', en: 'Cancel' },
+
+  // Konten verwalten
+  accEdit:        { de: 'Ändern', en: 'Edit' },
+  accDelete:      { de: 'Löschen', en: 'Delete' },
+  accDisplayName: { de: 'Anzeigename', en: 'Display name' },
+  accNewPassword: { de: 'Neues Passwort (leer = unverändert)', en: 'New password (empty = unchanged)' },
+  accSave:        { de: 'Speichern', en: 'Save' },
+  accCancel:      { de: 'Abbrechen', en: 'Cancel' },
+  accConfirmDelete: {
+    de: 'Konto wirklich löschen? Das Zugriffsprotokoll bleibt erhalten.',
+    en: 'Really delete this account? The access log will be kept.',
+  },
+  accAdminHint: {
+    de: 'Das ist dein eigenes Konto. Hier änderst du dein Passwort.',
+    en: 'This is your own account. Change your password here.',
+  },
 
   // Seite nicht gefunden
   notFoundTitle: { de: 'Nicht gefunden', en: 'Not found' },

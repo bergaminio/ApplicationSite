@@ -64,6 +64,10 @@ public class SecurityConfig {
 
                     // Anmelden muss ohne Token gehen, sonst kaeme man nie rein.
                     .requestMatchers("/api/auth/login").permitAll()
+
+                    // Lebenszeichen: das Frontend fragt hier an, ob der
+                    // Server laeuft. Verraet nichts, braucht keine Anmeldung.
+                    .requestMatchers("/api/ping").permitAll()
                     // Alles unter /api/admin/ nur fuer mich.
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     // Der Rest braucht ein gueltiges Token.

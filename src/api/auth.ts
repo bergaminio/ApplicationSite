@@ -97,9 +97,10 @@ export async function me(): Promise<Benutzer | null> {
 
 // Schaut nach, ob das Backend ueberhaupt da ist.
 //
-// Welchen Status es antwortet, ist egal - ohne Token kommt 401, und
-// auch das heisst: der Server lebt. Nur wenn gar keine Antwort kommt,
-// laeuft er nicht.
+// Fragt /api/ping - der Weg braucht keine Anmeldung und antwortet mit
+// 200. Frueher stand hier /api/auth/me, das ohne Token 401 liefert:
+// funktioniert auch, aber der Browser schreibt bei jedem Besuch einen
+// roten Fehler in die Konsole.
 //
 // Dadurch passt sich die Login-Seite von selbst an: laeuft der Server
 // nicht, zeigt sie einen Hinweis statt eines Formulars, das ohnehin
@@ -107,10 +108,10 @@ export async function me(): Promise<Benutzer | null> {
 export async function backendErreichbar(): Promise<boolean> {
   if (!BACKEND_EINGERICHTET) return false
   try {
-    await fetch(`${API}/api/auth/me`, {
+    const antwort = await fetch(`${API}/api/ping`, {
       signal: AbortSignal.timeout(3000),
     })
-    return true
+    return antwort.ok
   } catch {
     return false
   }

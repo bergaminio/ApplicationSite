@@ -48,6 +48,34 @@ async function hole<T>(pfad: string): Promise<T> {
   return antwort.json()
 }
 
+// Aendert Anzeigename und/oder Passwort eines Kontos.
+// Was leer bleibt, wird nicht angefasst.
+export async function aendereKonto(username: string, displayName: string, password: string) {
+  const antwort = await fetch(`${API}/api/admin/accounts/${username}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify({ displayName, password }),
+    signal: AbortSignal.timeout(ZEITLIMIT),
+  })
+  if (!antwort.ok) {
+    const daten = await antwort.json().catch(() => null)
+    throw new Error(daten?.message ?? 'Ändern fehlgeschlagen')
+  }
+  return antwort.json()
+}
+
+export async function loescheKonto(username: string) {
+  const antwort = await fetch(`${API}/api/admin/accounts/${username}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${getToken()}` },
+    signal: AbortSignal.timeout(ZEITLIMIT),
+  })
+  if (!antwort.ok) {
+    const daten = await antwort.json().catch(() => null)
+    throw new Error(daten?.message ?? 'Löschen fehlgeschlagen')
+  }
+}
+
 export function ladeKonten() {
   return hole<KontoUebersicht[]>('/api/admin/accounts')
 }

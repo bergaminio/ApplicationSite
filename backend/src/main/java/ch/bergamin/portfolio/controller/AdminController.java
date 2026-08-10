@@ -2,6 +2,8 @@ package ch.bergamin.portfolio.controller;
 
 import ch.bergamin.portfolio.dto.AccountOverview;
 import ch.bergamin.portfolio.dto.NewAccountRequest;
+import ch.bergamin.portfolio.dto.UpdateAccountRequest;
+import ch.bergamin.portfolio.dto.UpdateDocumentRequest;
 import ch.bergamin.portfolio.model.Account;
 import ch.bergamin.portfolio.model.GradeDocument;
 import ch.bergamin.portfolio.repository.AccountRepository;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -147,6 +151,71 @@ public class AdminController {
                 "contentType", dokument.getContentType(),
                 "size", dokument.getSize(),
                 "uploadedAt", dokument.getUploadedAt()));
+    }
+
+    // PATCH /api/admin/documents/{id}
+    // Benennt ein Dokument um oder verschiebt es in einen anderen
+    // Bereich. Die hochgeladene Datei bleibt unangetastet.
+    @PatchMapping("/documents/{id}")
+    public ResponseEntity<?> aendereDokument(@PathVariable Long id,
+                                             @Valid @RequestBody UpdateDocumentRequest request) {
+        GradeDocument dokument = documents.findById(id).orElse(null);
+        if (dokument == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        dokument.setTitle(request.title().trim());
+        dokument.setArea(request.area());
+        documents.save(dokument);
+
+        return ResponseEntity.ok(Map.of(
+                "id", dokument.getId(),
+                "title", dokument.getTitle(),
+                "area", dokument.getArea()));
+    }
+
+    // PATCH /api/admin/accounts/{username}
+    // Aendert Anzeigename und/oder Passwort. Leere Felder bleiben
+    // unveraendert. Funktioniert auch fuer mein eigenes Konto.
+    @PatchMapping("/accounts/{username}")
+    public ResponseEntity<?> aendereKonto(@PathVariable String username,
+                                          @Valid @RequestBody UpdateAccountRequest request) {
+        Account konto = accounts.findByUsername(username).orElse(null);
+        if (konto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (request.displayName() != null && !request.displayName().isBlank()) {
+            konto.setDisplayName(request.displayName().trim());
+        }
+        if (request.password() != null && !request.password().isBlank()) {
+            konto.setPasswordHash(passwordEncoder.encode(request.password()));
+        }
+        accounts.save(konto);
+
+        return ResponseEntity.ok(Map.of(
+                "username", konto.getUsername(),
+                "displayName", konto.getDisplayName()));
+    }
+
+    // DELETE /api/admin/accounts/{username}
+    @DeleteMapping("/accounts/{username}")
+    public ResponseEntity<?> loescheKonto(@PathVariable String username, Principal principal) {
+        // Sich selbst zu loeschen waere ein Weg, sich komplett
+        // auszusperren - dann kaeme niemand mehr an die Verwaltung.
+        if (username.equals(principal.getName())) {
+            return fehler("Das eigene Konto kann nicht geloescht werden");
+        }
+
+        Account konto = accounts.findByUsername(username).orElse(null);
+        if (konto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        accounts.delete(konto);
+        // Das Zugriffsprotokoll bleibt absichtlich stehen - sonst
+        // waere die Uebersicht "wer war da" nach jedem Loeschen falsch.
+        return ResponseEntity.noContent().build();
     }
 
     // DELETE /api/admin/documents/{id}

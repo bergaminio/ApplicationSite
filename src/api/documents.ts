@@ -68,6 +68,19 @@ export async function ladeHoch(title: string, area: string, datei: File) {
   return antwort.json() as Promise<Dokument>
 }
 
+// Benennt ein Dokument um oder verschiebt es in einen anderen
+// Bereich. Die Datei selbst bleibt.
+export async function aendereDokument(id: number, title: string, area: string) {
+  const antwort = await fetch(`${API}/api/admin/documents/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify({ title, area }),
+    signal: AbortSignal.timeout(ZEITLIMIT),
+  })
+  if (!antwort.ok) throw new Error('Ändern fehlgeschlagen')
+  return antwort.json()
+}
+
 export async function loescheDokument(id: number) {
   const antwort = await fetch(`${API}/api/admin/documents/${id}`, {
     method: 'DELETE',
