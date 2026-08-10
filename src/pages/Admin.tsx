@@ -288,7 +288,14 @@ function Admin() {
 
         {/* Aendern-Formular, erscheint unter der Liste */}
         {bearbeiteKonto && (
-          <div className="box p-4" style={{ borderColor: pageColors.login }}>
+          // Ein echtes <form>, kein <div>. Sonst tut die Enter-Taste
+          // nichts - man tippt sein Passwort, drueckt Enter, und es
+          // passiert schlicht gar nichts. Kein Fehler, keine Meldung.
+          <form
+            onSubmit={e => { e.preventDefault(); speichereKonto(bearbeiteKonto) }}
+            className="box p-4"
+            style={{ borderColor: pageColors.login }}
+          >
             <p className="text-xs text-gray-400 mb-2">
               {t(ui.accLoginName)} <span className="sniglet-bold">{bearbeiteKonto}</span>
             </p>
@@ -334,14 +341,18 @@ function Admin() {
             </label>
 
             <div className="flex gap-2">
+              {/* type ist hier Pflicht: in einem <form> ist ein Knopf
+                  ohne type automatisch ein Absende-Knopf. "Abbrechen"
+                  wuerde sonst speichern. */}
               <button
-                onClick={() => speichereKonto(bearbeiteKonto)}
+                type="submit"
                 className="pill"
                 style={{ cursor: 'pointer', background: pageColors.login, color: 'white', padding: '6px 14px' }}
               >
                 {t(ui.accSave)}
               </button>
               <button
+                type="button"
                 onClick={() => setBearbeiteKonto(null)}
                 className="pill"
                 style={{ cursor: 'pointer' }}
@@ -353,7 +364,7 @@ function Admin() {
             {kontoFehler && (
               <p className="text-sm mt-2" style={{ color: pageColors.login }} role="alert">{kontoFehler}</p>
             )}
-          </div>
+          </form>
         )}
       </div>
 
