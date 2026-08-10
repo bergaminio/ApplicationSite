@@ -43,6 +43,12 @@ function Admin() {
   const [bearbeiteKonto, setBearbeiteKonto] = useState<string | null>(null)
   const [neuerName, setNeuerName] = useState('')
   const [neuesPasswort, setNeuesPasswort] = useState('')
+  // Zweite Eingabe zur Kontrolle. Ohne die tippt man sich einmal
+  // blind vertippt sein eigenes Admin-Passwort und kommt nicht mehr
+  // rein - das Passwort ist dann verschluesselt gespeichert und
+  // niemand kann es zurueckrechnen.
+  const [wiederholung, setWiederholung] = useState('')
+  const [zeigePasswort, setZeigePasswort] = useState(false)
   const [kontoFehler, setKontoFehler] = useState('')
 
   useEffect(() => {
@@ -123,6 +129,8 @@ function Admin() {
     setBearbeiteKonto(k.username)
     setNeuerName(k.displayName)
     setNeuesPasswort('')
+    setWiederholung('')
+    setZeigePasswort(false)
     setKontoFehler('')
   }
 
@@ -132,6 +140,10 @@ function Admin() {
       setKontoFehler('Passwort muss mindestens 8 Zeichen haben')
       return
     }
+    if (neuesPasswort !== wiederholung) {
+      setKontoFehler(t(ui.accMismatch))
+      return
+    }
     try {
       await aendereKonto(username, neuerName.trim(), neuesPasswort)
       setKonten(konten.map(k =>
@@ -139,6 +151,7 @@ function Admin() {
       ))
       setBearbeiteKonto(null)
       setNeuesPasswort('')
+      setWiederholung('')
     } catch (e) {
       setKontoFehler(e instanceof Error ? e.message : t(ui.docFailed))
     }
@@ -284,7 +297,7 @@ function Admin() {
                 style={{ background: 'transparent', fontFamily: 'inherit' }}
               />
               <input
-                type="password"
+                type={zeigePasswort ? 'text' : 'password'}
                 placeholder={t(ui.accNewPassword)}
                 value={neuesPasswort}
                 onChange={e => setNeuesPasswort(e.target.value)}
@@ -292,7 +305,27 @@ function Admin() {
                 className="box flex-1 px-3 py-2"
                 style={{ background: 'transparent', fontFamily: 'inherit' }}
               />
+              <input
+                type={zeigePasswort ? 'text' : 'password'}
+                placeholder={t(ui.accRepeatPassword)}
+                value={wiederholung}
+                onChange={e => setWiederholung(e.target.value)}
+                autoComplete="new-password"
+                className="box flex-1 px-3 py-2"
+                style={{ background: 'transparent', fontFamily: 'inherit' }}
+              />
             </div>
+
+            {/* Wer sein eigenes Passwort setzt, will meistens sehen
+                was er tippt - sonst merkt man den Vertipper nie. */}
+            <label className="flex items-center gap-2 text-xs text-gray-400 mb-3" style={{ cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={zeigePasswort}
+                onChange={e => setZeigePasswort(e.target.checked)}
+              />
+              {t(ui.accShowPassword)}
+            </label>
 
             <div className="flex gap-2">
               <button

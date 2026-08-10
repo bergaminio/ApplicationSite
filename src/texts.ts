@@ -199,6 +199,12 @@ export const ui = {
   accDelete:      { de: 'Löschen', en: 'Delete' },
   accDisplayName: { de: 'Anzeigename', en: 'Display name' },
   accNewPassword: { de: 'Neues Passwort (leer = unverändert)', en: 'New password (empty = unchanged)' },
+  accRepeatPassword: { de: 'Passwort wiederholen', en: 'Repeat password' },
+  accShowPassword: { de: 'Passwort anzeigen', en: 'Show password' },
+  accMismatch: {
+    de: 'Die beiden Passwörter sind nicht gleich',
+    en: 'The two passwords do not match',
+  },
   accSave:        { de: 'Speichern', en: 'Save' },
   accCancel:      { de: 'Abbrechen', en: 'Cancel' },
   accConfirmDelete: {

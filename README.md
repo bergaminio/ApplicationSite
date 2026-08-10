@@ -160,6 +160,25 @@ Server **müssen** sie als Umgebungsvariablen gesetzt werden:
 | `ADMIN_PASSWORD` | Sonst ist das Admin-Passwort `admin` |
 | `SPRING_DATASOURCE_PASSWORD` | Das Datenbank-Passwort steht sonst im Repo |
 
+`ADMIN_PASSWORD` greift nur beim **allerersten** Start, solange noch kein
+Admin-Konto in der Datenbank liegt (siehe `DataInitializer`). Danach ändert
+man das Passwort im Admin-Bereich, nicht über die Variable.
+
+### Ausgesperrt? So komme ich wieder rein
+
+Passwörter liegen als BCrypt-Hash in der Datenbank. Ein Hash lässt sich
+nicht zurückrechnen — ein vertipptes Passwort ist also weg, nicht
+wiederherstellbar. Der Weg zurück führt über die Datenbank:
+
+```bash
+docker exec -it portfolio-db psql -U portfolio -d portfolio -c "DELETE FROM accounts WHERE username = 'michael';"
+```
+
+Beim nächsten Start des Backends legt der `DataInitializer` das Konto neu
+an — mit dem Passwort aus `ADMIN_PASSWORD`, sonst `admin`. Das
+Zugriffsprotokoll bleibt dabei erhalten, es hängt am Benutzernamen als
+Text und nicht an der Konto-ID.
+
 ## Noch offen
 
 - [ ] PDF-Knopf auf dem Lebenslauf (sobald `public/lebenslauf.pdf` da ist)
