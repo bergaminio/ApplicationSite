@@ -59,6 +59,12 @@ export const ui = {
     de: 'Was mich neben dem Programmieren beschäftigt.',
     en: 'What keeps me busy besides programming.',
   },
+  // Steht als alt-Text am Bild. Michael wollte hier ausdruecklich
+  // den Hinweis statt einer Beschreibung des Motivs.
+  fotoAlt: {
+    de: 'Dieses Bild konnte nicht geladen werden.',
+    en: 'This image could not be loaded.',
+  },
   fotoZurueck: { de: 'Vorheriges Bild', en: 'Previous photo' },
   fotoWeiter:  { de: 'Nächstes Bild', en: 'Next photo' },
   fotosFehlen: {

@@ -28,30 +28,30 @@ const hobbys: Hobby[] = [
   {
     titel: { de: 'Klavier', en: 'Piano' },
     text: {
-      de: 'Ich spiele Klavier.',
-      en: 'I play the piano.',
+      de: 'Ich spiele Klavier, weil es mich fordert. Ein Stück, das beim ersten Durchlesen unmöglich aussieht, sitzt nach ein paar Wochen — dieses Gefühl mag ich. Dazu höre ich gerne klassische Musik, da liegt es nahe, sie auch selbst zu spielen.',
+      en: 'I play the piano because it challenges me. A piece that looks impossible at first sight sits after a few weeks — I like that feeling. I also enjoy listening to classical music, so playing it myself was the obvious next step.',
     },
     audio: '/audio/klavier.mp3',
   },
   {
     titel: { de: 'Bogenschiessen', en: 'Archery' },
     text: {
-      de: 'Ich schiesse mit dem Bogen.',
-      en: 'I do archery.',
+      de: 'Bogenschiessen hilft mir bei Haltung und Fokus. Man steht ruhig da, zielt und lässt los — viel mehr ist es nicht, und genau das macht es so angenehm.',
+      en: 'Archery helps me with posture and focus. You stand still, aim and let go — there is not much more to it, and that is exactly what makes it so pleasant.',
     },
   },
   {
     titel: { de: 'Gaming', en: 'Gaming' },
     text: {
-      de: 'Ich spiele gerne Videospiele.',
-      en: 'I like playing video games.',
+      de: 'Gaming ist mein Zeitvertreib, mit Kollegen oder allein. Meistens Multiplayer im Ranked-Modus, dazwischen Arcade-Spiele — Rhythm und Fighting.',
+      en: 'Gaming is how I unwind, with friends or on my own. Mostly ranked multiplayer, and arcade games in between — rhythm and fighting.',
     },
   },
   {
     titel: { de: 'Fotografieren', en: 'Photography' },
     text: {
-      de: 'Ich fotografiere.',
-      en: 'I take photographs.',
+      de: 'Dazu sagen die Bilder mehr als ich schreiben könnte.',
+      en: 'The photos say more about this than I could write.',
     },
     // Leg deine Bilder in public/fotos/ ab und trage die Dateinamen
     // hier ein. Reihenfolge in der Liste = Reihenfolge in der Diashow.

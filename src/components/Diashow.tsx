@@ -36,7 +36,7 @@ function Diashow({ bilder }: { bilder: string[] }) {
       >
         <img
           src={bilder[index]}
-          alt={`${index + 1} / ${bilder.length}`}
+          alt={t(ui.fotoAlt)}
           onError={() => setFehler(true)}
           style={{
             width: '100%',
