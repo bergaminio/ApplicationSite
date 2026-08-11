@@ -29,7 +29,7 @@ const myProjects: Project[] = [
   },
   {
     id: 'bolt',
-    name: { de: 'Bolt — Sprint-App', en: 'Bolt — sprint app' },
+    name: { de: 'Bolt, die Sprint-App', en: 'Bolt, the sprint app' },
     repo: '',
     text: {
       de: 'Misst Sprints. Die App startet automatisch und stoppt per GPS nach einer festen Distanz, zum Beispiel 100 oder 400 Meter.',
@@ -42,7 +42,7 @@ const myProjects: Project[] = [
   },
   {
     id: 'aschenreich',
-    name: { de: 'Aschenreich — 3D-Rollenspiel', en: 'Aschenreich — 3D role-playing game' },
+    name: { de: 'Aschenreich, ein 3D-Rollenspiel', en: 'Aschenreich, a 3D role-playing game' },
     repo: '',
     text: {
       de: 'Ein Dark-Fantasy-Rollenspiel, das direkt im Browser läuft.',
@@ -153,7 +153,7 @@ function Projects() {
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-4xl mx-auto">
-      <PageTitle title={t(ui.projectsTitle)} color={pageColors.projects} />
+      <PageTitle title={t(ui.projectsTitle)} color={pageColors.projects} skizze="bildschirm" />
 
       <p className="text-gray-500 text-lg mb-10" style={{ transform: 'rotate(-0.3deg)' }}>
         {t(ui.projectsIntro)}

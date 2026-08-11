@@ -1,19 +1,29 @@
+import Skizze, { type SkizzenArt } from './Skizze'
+
 // Zeigt den Titel einer Seite mit dem farbigen Strich darunter.
 // Jede Seite braucht das - darum steht der Code hier nur einmal.
 
 interface PageTitleProps {
-  title: string   // z.B. "Meine Projekte"
-  color: string   // die Farbe der Seite, kommt aus colors.ts
+  title: string        // z.B. "Meine Projekte"
+  color: string        // die Farbe der Seite, kommt aus colors.ts
+  skizze?: SkizzenArt  // kleine Zeichnung rechts vom Titel
 }
 
-function PageTitle({ title, color }: PageTitleProps) {
+function PageTitle({ title, color, skizze }: PageTitleProps) {
   return (
     <div className="mb-12">
-      {/* Auf dem Handy kleiner, auf grossen Schirmen gross.
-          sm: ab 640px, md: ab 768px Bildschirmbreite. */}
-      <h1 className="text-4xl sm:text-6xl md:text-7xl sniglet-bold leading-tight">
-        {title}
-      </h1>
+      {/* Titel links, Skizze rechts. Auf dem Handy rutscht sie
+          dadurch nicht unter den Titel, sondern bleibt daneben -
+          sie ist ja klein. */}
+      <div className="flex items-center justify-between gap-4">
+        {/* Auf dem Handy kleiner, auf grossen Schirmen gross.
+            sm: ab 640px, md: ab 768px Bildschirmbreite. */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl sniglet-bold leading-tight">
+          {title}
+        </h1>
+
+        {skizze && <Skizze art={skizze} groesse={68} />}
+      </div>
 
       {/* Der Strich unter dem Titel. Die Klasse "strich" laesst ihn
           beim Laden von links nach rechts entstehen - die Drehung

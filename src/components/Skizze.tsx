@@ -11,7 +11,10 @@
 // Neue Skizze? Einen Eintrag in ZEICHNUNGEN ergaenzen. Alle sind auf
 // ein Feld von 100x100 gezeichnet, dann passen sie zusammen.
 
-export type SkizzenArt = 'klavier' | 'bogen' | 'controller' | 'kamera' | 'laeufer' | 'stift'
+export type SkizzenArt =
+  | 'klavier' | 'bogen' | 'controller' | 'kamera' | 'laeufer' | 'stift'
+  | 'buch' | 'bildschirm' | 'gluehbirne' | 'brief' | 'schluessel'
+  | 'urkunde' | 'fragezeichen' | 'kaffee' | 'wegweiser'
 
 const ZEICHNUNGEN: Record<SkizzenArt, React.ReactNode> = {
   // Ein Stueck Klaviatur, leicht schraeg von oben.
@@ -86,17 +89,120 @@ const ZEICHNUNGEN: Record<SkizzenArt, React.ReactNode> = {
       <path d="M68 24 L76 33" />
     </>
   ),
+
+  // Aufgeschlagenes Buch, von vorne.
+  buch: (
+    <>
+      <path d="M50 32 C 40 24, 24 22, 12 26 L12 74 C 24 70, 40 72, 50 80" />
+      <path d="M50 32 C 60 24, 76 22, 88 26 L88 74 C 76 70, 60 72, 50 80" />
+      <path d="M50 32 L50 80" />
+      <path d="M20 38 L40 40" />
+      <path d="M20 50 L40 52" />
+      <path d="M60 40 L80 38" />
+      <path d="M60 52 L80 50" />
+    </>
+  ),
+
+  // Bildschirm mit ein paar Zeilen Code.
+  bildschirm: (
+    <>
+      <path d="M12 24 L88 24 L88 68 L12 68 Z" />
+      <path d="M38 68 L36 80 L64 80 L62 68" />
+      <path d="M28 80 L72 80" />
+      <path d="M24 36 L30 42 L24 48" />
+      <path d="M36 48 L52 48" />
+      <path d="M62 36 L76 36" />
+      <path d="M62 44 L70 44" />
+    </>
+  ),
+
+  // Gluehbirne, fuer eine Idee.
+  gluehbirne: (
+    <>
+      <path d="M50 14 C 33 14, 22 26, 22 40 C 22 52, 32 58, 36 68 L64 68 C 68 58, 78 52, 78 40 C 78 26, 67 14, 50 14 Z" />
+      <path d="M38 74 L62 74" />
+      <path d="M40 82 L60 82" />
+      <path d="M42 68 C 42 52, 58 52, 58 68" />
+    </>
+  ),
+
+  // Briefumschlag.
+  brief: (
+    <>
+      <path d="M12 28 L88 28 L88 74 L12 74 Z" />
+      <path d="M12 28 L50 54 L88 28" />
+      <path d="M12 74 L40 50" />
+      <path d="M88 74 L60 50" />
+    </>
+  ),
+
+  // Schluessel, fuer den geschuetzten Bereich.
+  schluessel: (
+    <>
+      <circle cx="30" cy="42" r="16" />
+      <circle cx="30" cy="42" r="5" />
+      <path d="M44 50 L82 76" />
+      <path d="M66 62 L60 72" />
+      <path d="M75 68 L69 78" />
+    </>
+  ),
+
+  // Urkunde mit Siegel, fuer die Noten.
+  urkunde: (
+    <>
+      <path d="M20 14 L74 14 L74 72 L20 72 Z" />
+      <path d="M30 30 L64 30" />
+      <path d="M30 42 L64 42" />
+      <path d="M30 54 L50 54" />
+      <circle cx="70" cy="68" r="12" />
+      <path d="M64 78 L62 90 L70 85 L78 90 L76 78" />
+    </>
+  ),
+
+  // Fragezeichen, fuer die Seite die es nicht gibt.
+  fragezeichen: (
+    <>
+      <path d="M34 34 C 34 20, 46 14, 54 16 C 66 19, 70 32, 60 42 C 52 50, 50 54, 50 64" />
+      <circle cx="50" cy="80" r="3" />
+    </>
+  ),
+
+  // Kaffeetasse.
+  kaffee: (
+    <>
+      <path d="M22 36 L74 36 L70 76 L26 76 Z" />
+      <path d="M74 44 C 88 44, 88 62, 74 62" />
+      <path d="M38 18 C 34 24, 42 26, 38 32" />
+      <path d="M54 16 C 50 22, 58 24, 54 30" />
+    </>
+  ),
+
+  // Wegweiser, fuer den Lebenslauf.
+  wegweiser: (
+    <>
+      <path d="M46 20 L46 86" />
+      <path d="M46 28 L78 28 L84 36 L78 44 L46 44" />
+      <path d="M46 54 L20 54 L14 62 L20 70 L46 70" />
+      <path d="M32 86 L60 86" />
+    </>
+  ),
 }
+
+// Die Farbe aller Skizzen. Steht nur hier, damit man sie an einer
+// Stelle aendert. Kein reines Schwarz: das wirkt auf Papier hart,
+// und der Rest der Seite ist auch nicht #000.
+export const SKIZZENFARBE = '#1c1c1c'
 
 interface SkizzeProps {
   art: SkizzenArt
-  farbe: string
+  /** Nur setzen, wenn eine Skizze bewusst aus der Reihe tanzen soll. */
+  farbe?: string
   groesse?: number
   /** Reine Verzierung - Screenreader sollen sie ueberspringen. */
   titel?: string
 }
 
-function Skizze({ art, farbe, groesse = 56, titel }: SkizzeProps) {
+function Skizze({ art, farbe = SKIZZENFARBE, groesse = 56, titel }: SkizzeProps) {
   return (
     <svg
       viewBox="0 0 100 100"

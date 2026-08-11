@@ -179,7 +179,7 @@ function Admin() {
   if (authLaedt || laedt) {
     return (
       <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-        <PageTitle title={t(ui.adminTitle)} color={pageColors.login} />
+        <PageTitle title={t(ui.adminTitle)} color={pageColors.login} skizze="buch" />
         <p className="text-gray-400">{t(ui.adminLoading)}</p>
       </div>
     )
@@ -188,7 +188,7 @@ function Admin() {
   if (fehler || !benutzer || benutzer.role !== 'ADMIN') {
     return (
       <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-        <PageTitle title={t(ui.adminTitle)} color={pageColors.login} />
+        <PageTitle title={t(ui.adminTitle)} color={pageColors.login} skizze="buch" />
         <p style={{ color: pageColors.login }}>{fehler || t(ui.adminNoRight)}</p>
       </div>
     )
@@ -196,7 +196,7 @@ function Admin() {
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-      <PageTitle title={t(ui.adminTitle)} color={pageColors.login} />
+      <PageTitle title={t(ui.adminTitle)} color={pageColors.login} skizze="buch" />
 
       <p className="text-gray-500 mb-8" style={{ maxWidth: '34rem' }}>
         {t(ui.adminIntro)}

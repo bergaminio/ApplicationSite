@@ -180,7 +180,7 @@ function CV() {
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-      <PageTitle title={t(ui.cvTitle)} color={pageColors.story} />
+      <PageTitle title={t(ui.cvTitle)} color={pageColors.story} skizze="wegweiser" />
 
       {/* Sobald public/lebenslauf.pdf da ist, hier den Knopf einhängen:
           <a href="/lebenslauf.pdf" download className="pill"
@@ -196,7 +196,7 @@ function CV() {
         <p className="text-gray-700" style={{ maxWidth: '38rem' }}>
           {t(ueberMich)}
         </p>
-        <Skizze art="laeufer" farbe={pageColors.story} groesse={72} />
+        <Skizze art="laeufer" groesse={72} />
       </div>
 
       <Abschnitt titel={t(ui.education)}>

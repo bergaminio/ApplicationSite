@@ -132,8 +132,8 @@ export const ui = {
     en: 'Built, not yet deployed',
   },
   loginSoonText: {
-    de: 'Dahinter liegen meine Noten von der gibb, der BWD und der ICT Lernfactory. Die Anmeldung dafür habe ich selbst gebaut — mit Java Spring Boot, PostgreSQL und JWT-Token. Sie läuft nur noch auf keinem Server. Sobald sie aufgeschaltet ist, steht hier das Anmeldeformular.',
-    en: 'Behind this are my grades from gibb, BWD and ICT Lernfactory. I built the sign-in myself — with Java Spring Boot, PostgreSQL and JWT tokens. It is simply not running on a server yet. Once it is deployed, the sign-in form will appear here.',
+    de: 'Dahinter liegen meine Noten von der gibb, der BWD und der ICT Lernfactory. Die Anmeldung dafür habe ich selbst gebaut, mit Java Spring Boot, PostgreSQL und JWT-Token. Sie läuft nur noch auf keinem Server. Sobald sie aufgeschaltet ist, steht hier das Anmeldeformular.',
+    en: 'Behind this are my grades from gibb, BWD and ICT Lernfactory. I built the sign-in myself, with Java Spring Boot, PostgreSQL and JWT tokens. It is simply not running on a server yet. Once it is deployed, the sign-in form will appear here.',
   },
   loginSoonCode: {
     de: 'Den Code dazu ansehen →',

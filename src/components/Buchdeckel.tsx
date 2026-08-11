@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { useSprache } from '../context/LanguageContext'
 import { ui } from '../texts'
-import { pageColors } from '../styles/colors'
+
+// Die Farbe des Einbands. Ein sehr dunkles Grau statt reinem Schwarz:
+// auf einem hellen Bildschirm wirkt #000 hart, und der Buchruecken
+// links waere darauf gar nicht mehr zu sehen.
+const EINBAND = '#161616'
 
 // Der Einband des Buches.
 //
@@ -142,10 +146,11 @@ function Buchdeckel() {
             justifyContent: 'center',
             gap: '1.5rem',
             textAlign: 'center',
-            background: pageColors.home,
-            // Der dunkle Streifen links ist der Buchruecken.
+            background: EINBAND,
+            // Der Buchruecken links. Auf dunklem Grund muss er heller
+            // sein statt dunkler, sonst sieht man ihn nicht.
             backgroundImage:
-              'linear-gradient(to right, rgba(0,0,0,0.25) 0, rgba(0,0,0,0.12) 14px, transparent 34px)',
+              'linear-gradient(to right, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.07) 14px, transparent 34px)',
             boxShadow: offen ? '60px 0 90px rgba(0, 0, 0, 0.3)' : 'none',
           }}
         >

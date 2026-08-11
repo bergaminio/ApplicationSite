@@ -52,7 +52,7 @@ function Login() {
   if (benutzer) {
     return (
       <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-        <PageTitle title={t(ui.loginTitle)} color={pageColors.login} />
+        <PageTitle title={t(ui.loginTitle)} color={pageColors.login} skizze="schluessel" />
 
         <div className="box p-5 sm:p-8" style={{ maxWidth: '28rem' }}>
           <p className="text-gray-400 text-xs mb-1">{t(ui.loggedInAs)}</p>
@@ -100,7 +100,7 @@ function Login() {
   if (serverDa === false) {
     return (
       <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-        <PageTitle title={t(ui.loginTitle)} color={pageColors.login} />
+        <PageTitle title={t(ui.loginTitle)} color={pageColors.login} skizze="schluessel" />
 
         <div className="box p-5 sm:p-8" style={{ maxWidth: '32rem' }}>
           <p className="sniglet-bold text-lg mb-3">{t(ui.loginSoonTitle)}</p>
@@ -125,7 +125,7 @@ function Login() {
   // ---- Nicht angemeldet: das Formular ----
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-      <PageTitle title={t(ui.loginTitle)} color={pageColors.login} />
+      <PageTitle title={t(ui.loginTitle)} color={pageColors.login} skizze="schluessel" />
 
       <p className="text-gray-500 mb-8" style={{ maxWidth: '32rem' }}>
         {t(ui.loginText)}

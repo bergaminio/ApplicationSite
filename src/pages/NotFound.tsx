@@ -10,7 +10,7 @@ function NotFound() {
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-      <PageTitle title={t(ui.notFoundTitle)} color={pageColors.home} />
+      <PageTitle title={t(ui.notFoundTitle)} color={pageColors.home} skizze="fragezeichen" />
 
       <p className="text-gray-700 mb-8">
         {t(ui.notFoundText)}

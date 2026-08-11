@@ -24,8 +24,8 @@ const hobbys: Hobby[] = [
   {
     titel: { de: 'Klavier', en: 'Piano' },
     text: {
-      de: 'Ich spiele Klavier, weil es mich fordert. Ein Stück, das beim ersten Durchlesen unmöglich aussieht, sitzt nach ein paar Wochen — dieses Gefühl mag ich. Dazu höre ich gerne klassische Musik, da liegt es nahe, sie auch selbst zu spielen.',
-      en: 'I play the piano because it challenges me. A piece that looks impossible at first sight sits after a few weeks — I like that feeling. I also enjoy listening to classical music, so playing it myself was the obvious next step.',
+      de: 'Ich spiele Klavier, weil es mich fordert. Ein Stück, das beim ersten Durchlesen unmöglich aussieht, sitzt nach ein paar Wochen, und dieses Gefühl mag ich. Dazu höre ich gerne klassische Musik, da liegt es nahe, sie auch selbst zu spielen.',
+      en: 'I play the piano because it challenges me. A piece that looks impossible at first sight sits after a few weeks, and I like that feeling. I also enjoy listening to classical music, so playing it myself was the obvious next step.',
     },
     audio: '/audio/klavier.mp3',
     skizze: 'klavier',
@@ -33,16 +33,16 @@ const hobbys: Hobby[] = [
   {
     titel: { de: 'Bogenschiessen', en: 'Archery' },
     text: {
-      de: 'Bogenschiessen hilft mir bei Haltung und Fokus. Man steht ruhig da, zielt und lässt los — viel mehr ist es nicht, und genau das macht es so angenehm.',
-      en: 'Archery helps me with posture and focus. You stand still, aim and let go — there is not much more to it, and that is exactly what makes it so pleasant.',
+      de: 'Bogenschiessen hilft mir bei Haltung und Fokus. Man steht ruhig da, zielt und lässt los. Viel mehr ist es nicht, und genau das macht es so angenehm.',
+      en: 'Archery helps me with posture and focus. You stand still, aim and let go. There is not much more to it, and that is exactly what makes it so pleasant.',
     },
     skizze: 'bogen',
   },
   {
     titel: { de: 'Gaming', en: 'Gaming' },
     text: {
-      de: 'Gaming ist mein Zeitvertreib, mit Kollegen oder allein. Meistens Multiplayer im Ranked-Modus, dazwischen Arcade-Spiele — Rhythm und Fighting.',
-      en: 'Gaming is how I unwind, with friends or on my own. Mostly ranked multiplayer, and arcade games in between — rhythm and fighting.',
+      de: 'Gaming ist mein Zeitvertreib, mit Kollegen oder allein. Meistens Multiplayer im Ranked-Modus, dazwischen Arcade-Spiele wie Rhythm und Fighting.',
+      en: 'Gaming is how I unwind, with friends or on my own. Mostly ranked multiplayer, with arcade games in between, like rhythm and fighting.',
     },
     skizze: 'controller',
   },
@@ -101,7 +101,7 @@ function Personal() {
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-      <PageTitle title={t(ui.personalTitle)} color={pageColors.personal} />
+      <PageTitle title={t(ui.personalTitle)} color={pageColors.personal} skizze="kaffee" />
 
       <p className="text-gray-500 text-lg mb-10" style={{ transform: 'rotate(-0.3deg)' }}>
         {t(ui.personalIntro)}
@@ -121,7 +121,7 @@ function Personal() {
                 darueber - so bleibt der Zettel kompakt. */}
             <div className="flex items-center gap-3 mb-2">
               {hobby.skizze && (
-                <Skizze art={hobby.skizze} farbe={pageColors.personal} groesse={46} />
+                <Skizze art={hobby.skizze} groesse={46} />
               )}
               <p className="sniglet-bold text-lg">{t(hobby.titel)}</p>
             </div>

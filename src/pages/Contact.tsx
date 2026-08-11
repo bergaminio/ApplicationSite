@@ -1,5 +1,6 @@
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
+import Skizze from '../components/Skizze'
 import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 import { ui, type Text } from '../texts'
@@ -62,7 +63,7 @@ function Contact() {
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
-      <PageTitle title={t(ui.contactTitle)} color={pageColors.contact} />
+      <PageTitle title={t(ui.contactTitle)} color={pageColors.contact} skizze="brief" />
 
       {/* Auf dem Handy untereinander, ab 640px nebeneinander */}
       <div className="box flex flex-col sm:flex-row gap-6 sm:gap-8 items-start p-5 sm:p-8" style={{ borderRadius: '16px' }}>
@@ -111,9 +112,12 @@ function Contact() {
 
       {/* ---- Impressum ---- */}
       <div className="mt-16">
-        <p className="sniglet-bold text-sm text-gray-400" style={{ letterSpacing: '0.12em' }}>
-          {t(ui.imprint).toUpperCase()}
-        </p>
+        <div className="flex items-center gap-3">
+          <p className="sniglet-bold text-sm text-gray-400" style={{ letterSpacing: '0.12em' }}>
+            {t(ui.imprint).toUpperCase()}
+          </p>
+          <Skizze art="stift" groesse={34} />
+        </div>
         <div style={{
           width: '60px',
           height: '3px',

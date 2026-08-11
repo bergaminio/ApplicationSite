@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { pageColors, postitColors } from '../styles/colors'
 import Postit from '../components/Postit'
+import Skizze from '../components/Skizze'
 import { useSprache } from '../context/LanguageContext'
 import { ui } from '../texts'
 
@@ -32,12 +33,15 @@ function Home() {
         />
       </div>
 
-      <p
-        className="text-gray-500 mt-8 text-lg sanft-rein"
-        style={{ animationDelay: '250ms' }}
-      >
-        {t(ui.homeRole)}
-      </p>
+      <div className="flex items-center gap-5 mt-8">
+        <p
+          className="text-gray-500 text-lg sanft-rein"
+          style={{ animationDelay: '250ms' }}
+        >
+          {t(ui.homeRole)}
+        </p>
+        <Skizze art="buch" groesse={64} />
+      </div>
 
       {/* Post-it mit dem Knopf zu den Projekten */}
       <div className="mt-12 sm:mt-16" style={{ maxWidth: '320px' }}>
@@ -45,13 +49,16 @@ function Home() {
           <p className="text-gray-700 mb-6 text-lg">
             {t(ui.homePostit)}
           </p>
-          <Link
-            to="/projects"
-            className="pill"
-            style={{ background: 'white', padding: '8px 24px', fontSize: '14px' }}
-          >
-            {t(ui.homeButton)}
-          </Link>
+          <div className="flex items-center justify-between gap-3">
+            <Link
+              to="/projects"
+              className="pill"
+              style={{ background: 'white', padding: '8px 24px', fontSize: '14px' }}
+            >
+              {t(ui.homeButton)}
+            </Link>
+            <Skizze art="gluehbirne" groesse={44} />
+          </div>
         </Postit>
       </div>
 
