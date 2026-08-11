@@ -10,11 +10,27 @@ import { pageColors } from '../styles/colors'
 // auf - dieselbe Bewegung wie beim Blaettern: Falz links, Drehung um
 // die senkrechte Achse.
 //
-// Der Deckel darf weiter aufgehen als eine Seite (siehe WINKEL in
-// App.tsx, dort sind es -78 Grad). Eine Seite muss unter 90 bleiben,
-// weil ihre Rueckseite ausgeblendet ist und sie sonst mitten in der
-// Bewegung verschwaende. Der Deckel hat eine gestaltete Rueckseite,
-// darum darf er ganz aufklappen.
+// Zwei Dinge braucht so eine Drehung, damit sie nach etwas aussieht.
+// Beide haben hier zuerst gefehlt und die Bewegung sah falsch aus,
+// ohne dass man sagen konnte warum:
+//
+// 1. perspective am ELTERN-Element. Ohne sie rechnet der Browser
+//    ohne Fluchtpunkt: der Deckel dreht sich nicht weg, er wird nur
+//    seitlich zusammengedrueckt. Wie eine Jalousie statt wie ein Buch.
+//    Beim Blaettern steht sie am Buch-Container in App.tsx - der
+//    Deckel haengt daneben und braucht seine eigene.
+//
+// 2. Zwei getrennte Seiten. Dreht man ueber 90 Grad hinaus, schaut man
+//    auf die Rueckseite - und die zeigt dieselbe Flaeche spiegelver-
+//    kehrt. "Willkommen" stand also die halbe Animation lang seiten-
+//    verkehrt da. Jetzt gibt es eine Vorder- und eine Rueckseite, beide
+//    mit backfaceVisibility: hidden. Ab 90 Grad uebernimmt die
+//    Rueckseite, und die ist die Innenseite des Deckels: liniertes
+//    Papier, wie im echten Buch.
+
+// Muss zur perspective beim Blaettern passen (App.tsx), sonst wirken
+// Deckel und Seiten unterschiedlich tief.
+const PERSPEKTIVE = '1800px'
 
 // Nur einmal pro Besuch. sessionStorage statt localStorage: beim
 // naechsten Besuch soll der Einband wieder da sein, aber nicht bei
@@ -30,6 +46,15 @@ function schonGeoeffnet() {
     return false
   }
 }
+
+// Beide Seiten des Deckels liegen genau uebereinander.
+const SEITE = {
+  position: 'absolute',
+  inset: 0,
+  // Ohne diese Zeile sieht man beide Seiten gleichzeitig
+  // durcheinander.
+  backfaceVisibility: 'hidden',
+} as const
 
 function Buchdeckel() {
   const { t } = useSprache()
@@ -69,45 +94,59 @@ function Buchdeckel() {
   if (weg) return null
 
   return (
-        <motion.button
-          type="button"
-          onClick={oeffnen}
-          aria-label={t(ui.deckelOeffnen)}
-          animate={{
-            rotateY: offen && !wenigerBewegung ? -165 : 0,
-            opacity: offen && wenigerBewegung ? 0 : 1,
-            boxShadow: offen ? '60px 0 90px rgba(0, 0, 0, 0.35)' : '0 0 0 rgba(0,0,0,0)',
-          }}
-          transition={{ duration: dauer, ease: [0.35, 0, 0.25, 1] }}
+    // Diese Huelle dreht sich nicht mit. Sie ist nur da, um die
+    // perspective zu setzen - die muss beim Eltern-Element stehen,
+    // nicht beim gedrehten selbst.
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 50,
+        perspective: PERSPEKTIVE,
+        // Sobald er aufklappt, faengt er keine Klicks mehr ab.
+        // Zweite Absicherung neben dem Zeitgeber: selbst wenn das
+        // Element haengenbliebe, kaeme man an die Seite darunter.
+        pointerEvents: offen ? 'none' : 'auto',
+      }}
+    >
+      <motion.button
+        type="button"
+        onClick={oeffnen}
+        aria-label={t(ui.deckelOeffnen)}
+        animate={{
+          rotateY: offen && !wenigerBewegung ? -168 : 0,
+          opacity: offen && wenigerBewegung ? 0 : 1,
+        }}
+        transition={{ duration: dauer, ease: [0.35, 0, 0.25, 1] }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          padding: 0,
+          border: 'none',
+          background: 'transparent',
+          cursor: offen ? 'default' : 'pointer',
+          // Der Falz sitzt links, genau wie bei den Seiten.
+          transformOrigin: 'left center',
+          // Damit Vorder- und Rueckseite im Raum stehen bleiben statt
+          // flachgedrueckt zu werden.
+          transformStyle: 'preserve-3d',
+        }}
+      >
+        {/* Vorderseite: der Einband */}
+        <span
           style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 50,
-            cursor: 'pointer',
-            // Sobald er aufklappt, faengt er keine Klicks mehr ab.
-            // Zweite Absicherung neben dem Zeitgeber: selbst wenn das
-            // Element haengenbliebe, kaeme man an die Seite darunter.
-            pointerEvents: offen ? 'none' : 'auto',
-            border: 'none',
-            font: 'inherit',
-            textAlign: 'center',
+            ...SEITE,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '1.5rem',
-
-            // Der Falz sitzt links, genau wie bei den Seiten.
-            transformOrigin: 'left center',
-            // Ohne diese Zeile wirkt die Drehung flach statt raeumlich.
-            // Beim Blaettern steht sie am Eltern-Element; der Deckel
-            // haengt direkt am body und braucht sie darum selbst.
-            transformStyle: 'preserve-3d',
-
+            textAlign: 'center',
             background: pageColors.home,
             // Der dunkle Streifen links ist der Buchruecken.
             backgroundImage:
               'linear-gradient(to right, rgba(0,0,0,0.25) 0, rgba(0,0,0,0.12) 14px, transparent 34px)',
+            boxShadow: offen ? '60px 0 90px rgba(0, 0, 0, 0.3)' : 'none',
           }}
         >
           <span
@@ -129,7 +168,24 @@ function Buchdeckel() {
           >
             {t(ui.deckelHinweis)}
           </span>
-        </motion.button>
+        </span>
+
+        {/* Rueckseite: die Innenseite des Deckels. Sie wird erst ab
+            90 Grad sichtbar. Um 180 Grad vorgedreht, sonst stuende
+            sie selbst spiegelverkehrt. */}
+        <span
+          aria-hidden
+          style={{
+            ...SEITE,
+            transform: 'rotateY(180deg)',
+            background: 'var(--papier-liniert)',
+            // Der Schatten sitzt hier rechts: von der Innenseite aus
+            // gesehen liegt der Falz auf der anderen Seite.
+            boxShadow: 'inset -2px 0 0 rgba(0,0,0,0.07), inset -4px 0 0 rgba(0,0,0,0.05)',
+          }}
+        />
+      </motion.button>
+    </div>
   )
 }
 
