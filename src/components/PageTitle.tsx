@@ -22,7 +22,10 @@ function PageTitle({ title, color, skizze }: PageTitleProps) {
           {title}
         </h1>
 
-        {skizze && <Skizze art={skizze} groesse={68} />}
+        {/* Die Skizze am Titel traegt die Farbe der Seite. Nur die
+            auf den Post-its bleiben schwarz - dort waere Farbe auf
+            Farbe zu unruhig. */}
+        {skizze && <Skizze art={skizze} farbe={color} groesse={68} />}
       </div>
 
       {/* Der Strich unter dem Titel. Die Klasse "strich" laesst ihn

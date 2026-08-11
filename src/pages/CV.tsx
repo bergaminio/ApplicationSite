@@ -1,6 +1,6 @@
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
-import Skizze from '../components/Skizze'
+import Skizze, { type SkizzenArt } from '../components/Skizze'
 import { useSprache } from '../context/LanguageContext'
 import { ui, type Text } from '../texts'
 
@@ -139,12 +139,19 @@ const hobbys: Text[] = [
 
 // Ein Abschnitt im Lebenslauf, z.B. "Ausbildung".
 // Überschrift mit kurzem grünem Strich, darunter der Inhalt.
-function Abschnitt({ titel, children }: { titel: string; children: React.ReactNode }) {
+function Abschnitt({ titel, skizze, children }: {
+  titel: string
+  skizze?: SkizzenArt
+  children: React.ReactNode
+}) {
   return (
     <div className="mb-12">
-      <p className="sniglet-bold text-sm text-gray-400" style={{ letterSpacing: '0.12em' }}>
-        {titel.toUpperCase()}
-      </p>
+      <div className="flex items-center gap-3">
+        <p className="sniglet-bold text-sm text-gray-400" style={{ letterSpacing: '0.12em' }}>
+          {titel.toUpperCase()}
+        </p>
+        {skizze && <Skizze art={skizze} farbe={pageColors.story} groesse={32} />}
+      </div>
       <div style={{
         width: '60px',
         height: '3px',
@@ -196,22 +203,22 @@ function CV() {
         <p className="text-gray-700" style={{ maxWidth: '38rem' }}>
           {t(ueberMich)}
         </p>
-        <Skizze art="laeufer" groesse={72} />
+        <Skizze art="laeufer" farbe={pageColors.story} groesse={72} />
       </div>
 
-      <Abschnitt titel={t(ui.education)}>
+      <Abschnitt titel={t(ui.education)} skizze="buch">
         {ausbildung.map(eintrag => (
           <EintragZeile key={eintrag.titel.de} {...eintrag} />
         ))}
       </Abschnitt>
 
-      <Abschnitt titel={t(ui.experience)}>
+      <Abschnitt titel={t(ui.experience)} skizze="bildschirm">
         {erfahrung.map(eintrag => (
           <EintragZeile key={eintrag.titel.de} {...eintrag} />
         ))}
       </Abschnitt>
 
-      <Abschnitt titel={t(ui.sideJobs)}>
+      <Abschnitt titel={t(ui.sideJobs)} skizze="kaffee">
         {nebenjobs.map(eintrag => (
           <EintragZeile key={eintrag.titel.de} {...eintrag} />
         ))}
@@ -236,7 +243,7 @@ function CV() {
         </div>
       </Abschnitt>
 
-      <Abschnitt titel={t(ui.hobbies)}>
+      <Abschnitt titel={t(ui.hobbies)} skizze="klavier">
         <div className="flex flex-wrap gap-2">
           {hobbys.map(hobby => (
             <span key={hobby.de} className="pill" style={{ background: 'white' }}>

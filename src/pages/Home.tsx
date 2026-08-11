@@ -40,7 +40,7 @@ function Home() {
         >
           {t(ui.homeRole)}
         </p>
-        <Skizze art="buch" groesse={64} />
+        <Skizze art="buch" farbe={pageColors.home} groesse={64} />
       </div>
 
       {/* Post-it mit dem Knopf zu den Projekten */}

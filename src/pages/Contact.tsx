@@ -116,7 +116,7 @@ function Contact() {
           <p className="sniglet-bold text-sm text-gray-400" style={{ letterSpacing: '0.12em' }}>
             {t(ui.imprint).toUpperCase()}
           </p>
-          <Skizze art="stift" groesse={34} />
+          <Skizze art="stift" farbe={pageColors.contact} groesse={34} />
         </div>
         <div style={{
           width: '60px',

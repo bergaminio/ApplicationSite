@@ -3,6 +3,7 @@ import { pageColors, postitColors } from '../styles/colors'
 import Postit from '../components/Postit'
 import PageTitle from '../components/PageTitle'
 import ProjectModal from '../components/ProjectModal'
+import Skizze from '../components/Skizze'
 import { loadRepos } from '../api/github'
 import { useSprache } from '../context/LanguageContext'
 import { ui, type Text } from '../texts'
@@ -155,9 +156,12 @@ function Projects() {
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-4xl mx-auto">
       <PageTitle title={t(ui.projectsTitle)} color={pageColors.projects} skizze="bildschirm" />
 
-      <p className="text-gray-500 text-lg mb-10" style={{ transform: 'rotate(-0.3deg)' }}>
-        {t(ui.projectsIntro)}
-      </p>
+      <div className="flex items-center gap-5 mb-10">
+        <p className="text-gray-500 text-lg" style={{ transform: 'rotate(-0.3deg)' }}>
+          {t(ui.projectsIntro)}
+        </p>
+        <Skizze art="gluehbirne" farbe={pageColors.projects} groesse={54} />
+      </div>
 
       {/* Suchfeld und der Knopf der die Filter auf- und zuklappt */}
       <div className="flex items-center gap-4 mb-4">

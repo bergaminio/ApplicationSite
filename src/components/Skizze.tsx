@@ -1,3 +1,5 @@
+import { useId } from 'react'
+
 // Kleine handgezeichnete Skizzen.
 //
 // Alle nach demselben Muster: nur Striche, keine Flaechen, runde
@@ -193,9 +195,37 @@ const ZEICHNUNGEN: Record<SkizzenArt, React.ReactNode> = {
 // und der Rest der Seite ist auch nicht #000.
 export const SKIZZENFARBE = '#1c1c1c'
 
+// Damit die Skizzen nicht wie am Lineal gezogen aussehen.
+//
+// Statt jede Zeichnung von Hand krumm zu machen, verzieht ein Filter
+// alle Linien ein wenig: feTurbulence erzeugt ein zufaelliges Rauschen,
+// feDisplacementMap schiebt damit jeden Punkt der Zeichnung ein paar
+// Zehntel zur Seite. Das Ergebnis sieht aus wie mit der Hand gezogen.
+//
+// baseFrequency steuert, wie oft die Linie die Richtung wechselt.
+// scale steuert, wie weit sie abweicht. Beides bewusst klein: mehr
+// und die Zeichnungen wirken zittrig statt handgemacht.
+function Wackelfilter({ id }: { id: string }) {
+  return (
+    <filter id={id} x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves={2} seed={7} result="rauschen" />
+      <feDisplacementMap in="SourceGraphic" in2="rauschen" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  )
+}
+
+// Ein leichter Schiefstand, damit nicht alle Skizzen exakt gerade
+// stehen. Aus dem Namen gerechnet statt zufaellig: sonst wuerde jede
+// Skizze bei jedem Neuzeichnen anders kippen und die Seite zappeln.
+function neigung(art: string) {
+  let summe = 0
+  for (const zeichen of art) summe += zeichen.charCodeAt(0)
+  return (summe % 7) - 3   // -3 bis +3 Grad
+}
+
 interface SkizzeProps {
   art: SkizzenArt
-  /** Nur setzen, wenn eine Skizze bewusst aus der Reihe tanzen soll. */
+  /** Standard ist Schwarz. Ausserhalb der Post-its die Seitenfarbe. */
   farbe?: string
   groesse?: number
   /** Reine Verzierung - Screenreader sollen sie ueberspringen. */
@@ -203,6 +233,10 @@ interface SkizzeProps {
 }
 
 function Skizze({ art, farbe = SKIZZENFARBE, groesse = 56, titel }: SkizzeProps) {
+  // Jede Skizze braucht ihre eigene Filter-Nummer. Zweimal dieselbe
+  // waere ungueltiges HTML, und der Browser nimmt dann irgendeine.
+  const filterId = useId()
+
   return (
     <svg
       viewBox="0 0 100 100"
@@ -210,17 +244,21 @@ function Skizze({ art, farbe = SKIZZENFARBE, groesse = 56, titel }: SkizzeProps)
       height={groesse}
       fill="none"
       stroke={farbe}
-      strokeWidth={3.2}
+      // Etwas dicker als vorher: der Filter frisst an duennen Linien.
+      strokeWidth={3.6}
       strokeLinecap="round"
       strokeLinejoin="round"
       // Ohne aria-hidden liest ein Screenreader jede Skizze als
       // "Grafik" vor, ohne dass sie etwas beitraegt.
       aria-hidden={titel ? undefined : true}
       role={titel ? 'img' : undefined}
-      style={{ flexShrink: 0 }}
+      style={{ flexShrink: 0, transform: `rotate(${neigung(art)}deg)` }}
     >
       {titel && <title>{titel}</title>}
-      {ZEICHNUNGEN[art]}
+      <defs>
+        <Wackelfilter id={filterId} />
+      </defs>
+      <g filter={`url(#${filterId})`}>{ZEICHNUNGEN[art]}</g>
     </svg>
   )
 }
