@@ -59,6 +59,12 @@ export const ui = {
     de: 'Was mich neben dem Programmieren beschäftigt.',
     en: 'What keeps me busy besides programming.',
   },
+  // Der Einband, der beim ersten Besuch ueber der Startseite liegt.
+  deckelTitel:   { de: 'Willkommen', en: 'Welcome' },
+  deckelName:    { de: 'Michael Bergamin', en: 'Michael Bergamin' },
+  deckelHinweis: { de: 'Klicken zum Aufschlagen', en: 'Click to open' },
+  deckelOeffnen: { de: 'Buch aufschlagen', en: 'Open the book' },
+
   // Steht als alt-Text am Bild. Michael wollte hier ausdruecklich
   // den Hinweis statt einer Beschreibung des Motivs.
   fotoAlt: {

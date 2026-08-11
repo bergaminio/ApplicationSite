@@ -1,5 +1,6 @@
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
+import Skizze from '../components/Skizze'
 import { useSprache } from '../context/LanguageContext'
 import { ui, type Text } from '../texts'
 
@@ -188,9 +189,15 @@ function CV() {
           </a>
       */}
 
-      <p className="text-gray-700 mb-12" style={{ maxWidth: '38rem' }}>
-        {t(ueberMich)}
-      </p>
+      {/* Der Laeufer neben dem Text: ein Lebenslauf ist ein Weg,
+          kein Stillstand. Reine Verzierung, darum aria-hidden
+          (steckt in der Skizze selbst). */}
+      <div className="flex items-start gap-5 mb-12">
+        <p className="text-gray-700" style={{ maxWidth: '38rem' }}>
+          {t(ueberMich)}
+        </p>
+        <Skizze art="laeufer" farbe={pageColors.story} groesse={72} />
+      </div>
 
       <Abschnitt titel={t(ui.education)}>
         {ausbildung.map(eintrag => (

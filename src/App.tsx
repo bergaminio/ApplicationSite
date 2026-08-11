@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { SpracheProvider } from './context/LanguageContext'
 import { AuthProvider } from './context/AuthContext'
 import Navbar from './components/Navbar'
+import Buchdeckel from './components/Buchdeckel'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
 import CV from './pages/CV'
@@ -170,7 +171,10 @@ function Seiten() {
               gridArea: '1 / 1',
               transformOrigin: 'left center',
               backfaceVisibility: 'hidden',
-              background: 'var(--papier)',
+              // Auch die Zwischenblaetter sind liniert - sonst
+              // faellt beim Blaettern auf, dass da leere Zettel
+              // zwischen den Seiten liegen.
+              background: 'var(--papier-liniert)',
               boxShadow: MIT_SCHATTEN,
               minHeight: '100vh',
               // vorwaerts: unter der alten (10), ueber der neuen (1)
@@ -195,7 +199,11 @@ function Seiten() {
             gridArea: '1 / 1',              // beide Seiten in dieselbe Zelle
             transformOrigin: 'left center', // EIN Falz, immer links
             backfaceVisibility: 'hidden',   // Rueckseite waere spiegelverkehrt
-            background: 'var(--papier)',    // sonst schimmert es durch
+            // Die Linien sitzen auf der Seite selbst, nicht auf dem
+            // Hintergrund dahinter. Nur so klappen sie beim Blaettern
+            // mit um - sonst blieben sie stehen und die Seite waere
+            // durchsichtig darueber.
+            background: 'var(--papier-liniert)',
             minHeight: '100vh',
           }}
         >
@@ -226,6 +234,10 @@ function App() {
     <SpracheProvider>
       <AuthProvider>
         <BrowserRouter>
+          {/* Der Einband liegt beim ersten Besuch ueber allem und
+              klappt auf Klick auf. Er steht ausserhalb von <Seiten>,
+              damit er nicht selbst mitblaettert. */}
+          <Buchdeckel />
           <Navbar />
           <Seiten />
         </BrowserRouter>

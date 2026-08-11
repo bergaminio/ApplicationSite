@@ -24,6 +24,29 @@ body {
      var(--papier) - auch die im JavaScript. So aendert man sie
      ueberall, indem man diese eine Zeile anpasst. */
   --papier: #ffffff;
+
+  /* Abstand von Linie zu Linie. Steht extra hier, weil man daran
+     am ehesten drehen will - enger wirkt wie Heftpapier, weiter
+     wie ein Notizbuch. */
+  --linienabstand: 34px;
+
+  /* Liniertes Papier.
+     Der Verlauf wiederholt sich alle --linienabstand Pixel: erst
+     nichts, dann eine Linie von einem Pixel. Dahinter liegt die
+     Papierfarbe, sonst waere zwischen den Linien nichts.
+
+     Sehr blass gehalten (7%). Auf echtem Heftpapier sind die Linien
+     kraeftiger, aber dort steht auch Handschrift drauf und kein
+     Fliesstext - zu dunkle Linien machen Text muehsam zu lesen. */
+  --papier-liniert:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--linienabstand) - 1px),
+      rgba(0, 0, 0, 0.07) calc(var(--linienabstand) - 1px),
+      rgba(0, 0, 0, 0.07) var(--linienabstand)
+    )
+    var(--papier);
 }
 
 body {

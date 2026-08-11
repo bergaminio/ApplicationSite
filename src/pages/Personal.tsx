@@ -3,16 +3,11 @@ import { pageColors, postitColors } from '../styles/colors'
 import Postit from '../components/Postit'
 import PageTitle from '../components/PageTitle'
 import Diashow from '../components/Diashow'
+import Skizze, { type SkizzenArt } from '../components/Skizze'
 import { useSprache } from '../context/LanguageContext'
 import { ui, type Text } from '../texts'
 
 // ---------------------------------------------------------------
-// PLATZHALTER - hier gehoeren deine eigenen Worte hin.
-//
-// Zwei bis drei Saetze pro Hobby reichen. Am meisten bringt es, wenn
-// etwas davon zum Programmieren zurueckfuehrt - beim Gaming zum
-// Beispiel der Weg zu Aschenreich.
-//
 // Die Klavier-Aufnahme gehoert nach public/audio/klavier.mp3.
 // Solange sie fehlt, steht dort ein Hinweis statt eines Abspielers.
 // ---------------------------------------------------------------
@@ -22,6 +17,7 @@ interface Hobby {
   text: Text
   audio?: string      // Pfad zur Aufnahme, wenn es eine gibt
   fotos?: string[]    // Bilder fuer die Diashow
+  skizze?: SkizzenArt // Kleine Zeichnung neben der Ueberschrift
 }
 
 const hobbys: Hobby[] = [
@@ -32,6 +28,7 @@ const hobbys: Hobby[] = [
       en: 'I play the piano because it challenges me. A piece that looks impossible at first sight sits after a few weeks — I like that feeling. I also enjoy listening to classical music, so playing it myself was the obvious next step.',
     },
     audio: '/audio/klavier.mp3',
+    skizze: 'klavier',
   },
   {
     titel: { de: 'Bogenschiessen', en: 'Archery' },
@@ -39,6 +36,7 @@ const hobbys: Hobby[] = [
       de: 'Bogenschiessen hilft mir bei Haltung und Fokus. Man steht ruhig da, zielt und lässt los — viel mehr ist es nicht, und genau das macht es so angenehm.',
       en: 'Archery helps me with posture and focus. You stand still, aim and let go — there is not much more to it, and that is exactly what makes it so pleasant.',
     },
+    skizze: 'bogen',
   },
   {
     titel: { de: 'Gaming', en: 'Gaming' },
@@ -46,6 +44,7 @@ const hobbys: Hobby[] = [
       de: 'Gaming ist mein Zeitvertreib, mit Kollegen oder allein. Meistens Multiplayer im Ranked-Modus, dazwischen Arcade-Spiele — Rhythm und Fighting.',
       en: 'Gaming is how I unwind, with friends or on my own. Mostly ranked multiplayer, and arcade games in between — rhythm and fighting.',
     },
+    skizze: 'controller',
   },
   {
     titel: { de: 'Fotografieren', en: 'Photography' },
@@ -53,6 +52,7 @@ const hobbys: Hobby[] = [
       de: 'Dazu sagen die Bilder mehr als ich schreiben könnte.',
       en: 'The photos say more about this than I could write.',
     },
+    skizze: 'kamera',
     // Leg deine Bilder in public/fotos/ ab und trage die Dateinamen
     // hier ein. Reihenfolge in der Liste = Reihenfolge in der Diashow.
     // Solange die Liste leer ist, steht dort ein Hinweis.
@@ -117,7 +117,14 @@ function Personal() {
             rotate={i % 2 === 0 ? -0.6 : 0.6}
             verzoegerung={i * 90}
           >
-            <p className="sniglet-bold text-lg mb-2">{t(hobby.titel)}</p>
+            {/* Die Skizze steht neben der Ueberschrift, nicht
+                darueber - so bleibt der Zettel kompakt. */}
+            <div className="flex items-center gap-3 mb-2">
+              {hobby.skizze && (
+                <Skizze art={hobby.skizze} farbe={pageColors.personal} groesse={46} />
+              )}
+              <p className="sniglet-bold text-lg">{t(hobby.titel)}</p>
+            </div>
             <p className="text-gray-700">{t(hobby.text)}</p>
 
             {hobby.audio && <Tonaufnahme pfad={hobby.audio} />}
