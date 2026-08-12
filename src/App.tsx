@@ -17,16 +17,40 @@ import NotFound from './pages/NotFound'
 
 // Feine Linien am linken Rand, die andeuten, dass dort ein Stapel
 // Papier liegt statt einer einzelnen starren Flaeche.
+//
+// Jede Zahl mit px, auch die Nullen. Sonst stehen in den beiden
+// Zustaenden, zwischen denen ueberblendet wird, an derselben Stelle
+// einmal "0" und einmal "0px" - und dann kann der Browser sie nicht
+// als dieselbe Groesse erkennen.
 const FALZKANTE =
-  'inset 2px 0 0 rgba(0, 0, 0, 0.07), inset 4px 0 0 rgba(0, 0, 0, 0.05), inset 6px 0 0 rgba(0, 0, 0, 0.03)'
+  'inset 2px 0px 0px rgba(0, 0, 0, 0.07), inset 4px 0px 0px rgba(0, 0, 0, 0.05), inset 6px 0px 0px rgba(0, 0, 0, 0.03)'
 
 // Wie weit eine Seite hochgeklappt wird. Muss unter 90 Grad bleiben:
 // darueber zeigt sie ihre Rueckseite, und die ist ausgeblendet - die
 // Seite wuerde mitten in der Bewegung verschwinden.
 const WINKEL = -78
 
-const OHNE_SCHATTEN = FALZKANTE
-const MIT_SCHATTEN = `40px 0 60px rgba(0, 0, 0, 0.28), ${FALZKANTE}`
+// Die beiden Schatten-Zustaende einer Seite: flach liegend und
+// aufgeklappt.
+//
+// WICHTIG: beide brauchen gleich viele Lagen. Ein Browser kann
+// zwischen zwei box-shadow-Angaben nur dann weich ueberblenden, wenn
+// sie gleich viele Schatten haben. Sonst springt er sofort auf den
+// Zielwert.
+//
+// Genau daran ist es frueher gescheitert: OHNE_SCHATTEN war nur die
+// Falzkante (drei Lagen), MIT_SCHATTEN hatte einen aeusseren dazu
+// (vier). Vorwaerts sprang der Schatten sofort AN - das faellt nicht
+// auf, die Seite klappt ja gerade hoch. Rueckwaerts sprang er sofort
+// AUS, und die hereinfallende Seite hatte auf dem ganzen Weg gar
+// keinen Schatten. Sie sah flach aufgeklebt aus statt ueber dem
+// Stapel schwebend.
+//
+// Darum steht auch im flachen Zustand ein aeusserer Schatten - nur
+// eben ohne Versatz, ohne Weichzeichnung und durchsichtig. Man sieht
+// ihn nicht, aber er ist da und laesst sich weich hochfahren.
+const OHNE_SCHATTEN = `0px 0px 0px rgba(0, 0, 0, 0), ${FALZKANTE}`
+const MIT_SCHATTEN = `28px 0px 55px rgba(0, 0, 0, 0.22), ${FALZKANTE}`
 
 // Hoechstens so viele Zwischenblaetter zeigen. Bei vier Seiten waeren
 // mehr ohnehin nicht moeglich, und viele duenne Blaetter wirken unruhig.
@@ -60,27 +84,37 @@ function abstand(von: string, nach: string) {
 // Zurueck blaettern: genau umgekehrt - die alte bleibt liegen, die
 // neue faellt von links wieder darauf.
 const seitenVarianten = {
-  // Flach auf dem Stapel, volle Helligkeit.
-  liegt: { rotateY: 0, boxShadow: OHNE_SCHATTEN, filter: 'brightness(1)' },
+  // Flach auf dem Stapel.
+  liegt: { rotateY: 0, boxShadow: OHNE_SCHATTEN, opacity: 1 },
 
   // Wie die Seite hereinkommt.
   kommt: (vorwaerts: boolean) =>
     vorwaerts
-      ? { rotateY: 0, boxShadow: OHNE_SCHATTEN, filter: 'brightness(1)' }
-      : { rotateY: WINKEL, boxShadow: MIT_SCHATTEN, filter: 'brightness(1)' },
+      ? { rotateY: 0, boxShadow: OHNE_SCHATTEN, opacity: 1 }
+      : { rotateY: WINKEL, boxShadow: MIT_SCHATTEN, opacity: 1 },
 
   // Wie die Seite verschwindet.
   //
-  // Beim Zurueckblaettern bleibt sie eigentlich einfach liegen. Wenn
-  // sich aber gar nichts aendert, hat motion nichts zu animieren und
-  // meldet sofort "fertig" - die Seite wuerde dann schon beim Start
-  // ausgehaengt und man saehe den Hintergrund durchscheinen.
-  // Darum wird sie leicht abgedunkelt: das haelt sie bis zum Ende und
-  // sieht ausserdem richtig aus, weil sich ja eine Seite darueberlegt.
+  // Beim Zurueckblaettern bleibt sie einfach liegen, sie bewegt sich
+  // gar nicht. Wenn sich aber gar nichts aendert, hat motion nichts
+  // zu animieren und meldet sofort "fertig" - die Seite wuerde schon
+  // beim Start ausgehaengt und man saehe den Hintergrund durch.
+  //
+  // Frueher stand hier brightness(0.88), damit ueberhaupt etwas
+  // passiert. Das war der Fehler: die untere Seite wurde beim
+  // Zurueckblaettern sichtbar dunkler, und zwar von der ersten
+  // Millisekunde an - also schon dann, wenn die neue Seite noch
+  // hochkant steht und gar nichts verdeckt. Vorwaerts gab es nichts
+  // Vergleichbares, darum sah nur eine der beiden Richtungen komisch
+  // aus.
+  //
+  // Jetzt ein Wert, den man nicht sehen kann: 0.999 statt 1. Motion
+  // hat etwas zu tun und haelt die Seite bis zum Schluss, das Auge
+  // merkt nichts.
   geht: (vorwaerts: boolean) =>
     vorwaerts
-      ? { rotateY: WINKEL, boxShadow: MIT_SCHATTEN, filter: 'brightness(1)' }
-      : { rotateY: 0, boxShadow: OHNE_SCHATTEN, filter: 'brightness(0.88)' },
+      ? { rotateY: WINKEL, boxShadow: MIT_SCHATTEN, opacity: 1 }
+      : { rotateY: 0, boxShadow: OHNE_SCHATTEN, opacity: 0.999 },
 }
 
 // Legt fest welche Adresse welche Seite zeigt - und wie geblaettert wird.
@@ -158,8 +192,19 @@ function Seiten() {
           <motion.div
             key={`blatt-${location.key}-${i}`}
             aria-hidden
-            initial={{ rotateY: vorwaerts ? 0 : WINKEL }}
-            animate={{ rotateY: vorwaerts ? WINKEL : 0 }}
+            // Der Schatten laeuft mit der Drehung mit: aufgeklappt
+            // wirft das Blatt einen, flach liegend nicht. Vorher stand
+            // er fest im style und war auch dann noch da, wenn das
+            // Blatt schon flach lag - beim Zurueckblaettern blieb also
+            // am Ende ein Schatten stehen, der zu nichts gehoerte.
+            initial={{
+              rotateY: vorwaerts ? 0 : WINKEL,
+              boxShadow: vorwaerts ? OHNE_SCHATTEN : MIT_SCHATTEN,
+            }}
+            animate={{
+              rotateY: vorwaerts ? WINKEL : 0,
+              boxShadow: vorwaerts ? MIT_SCHATTEN : OHNE_SCHATTEN,
+            }}
             transition={{
               duration: dauer * 0.85,
               // Nacheinander statt gleichzeitig - so wirkt es wie ein
@@ -175,7 +220,6 @@ function Seiten() {
               // faellt beim Blaettern auf, dass da leere Zettel
               // zwischen den Seiten liegen.
               background: 'var(--papier-liniert)',
-              boxShadow: MIT_SCHATTEN,
               minHeight: '100vh',
               // vorwaerts: unter der alten (10), ueber der neuen (1)
               // zurueck:   ueber der alten (1), unter der neuen (10)
