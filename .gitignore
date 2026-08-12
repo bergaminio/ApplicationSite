@@ -30,3 +30,7 @@ backend/*.log
 # Die Originalfotos. Die verkleinerten Fassungen in public/fotos
 # kommen ins Repo, diese hier nicht - sie waeren nur Ballast.
 fotos-original/
+
+# Die ausgefuellte .env mit den echten Passwoertern.
+# .env.example gehoert ins Repo, diese hier auf keinen Fall.
+.env

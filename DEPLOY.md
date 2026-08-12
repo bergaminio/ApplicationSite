@@ -1,0 +1,172 @@
+# Die Bewerbungsseite auf einem Server starten
+
+Alles läuft in drei Containern: Datenbank, Backend, Website.
+Auf dem Server muss nur Docker installiert sein — kein Java, kein
+Node, kein PostgreSQL.
+
+---
+
+## Kurzfassung
+
+```bash
+git clone https://github.com/bergaminio/ApplicationSite.git
+cd ApplicationSite
+cp .env.example .env
+nano .env                 # die leeren Werte ausfüllen, siehe unten
+docker compose up -d
+```
+
+Der erste Start dauert ein paar Minuten, weil Docker Java und Node
+herunterlädt und alles baut. Danach geht es in Sekunden.
+
+---
+
+## Die `.env` ausfüllen
+
+Ohne diese Datei startet gar nichts — Compose bricht mit einer
+Meldung ab, welcher Wert fehlt. Das ist Absicht: ein Server mit dem
+Standardpasswort `admin` wäre schlimmer als einer, der nicht startet.
+
+| Wert | Was hinein gehört |
+|---|---|
+| `DB_PASSWORD` | Irgendetwas Langes. Nur die Container benutzen es, niemand tippt es je ein. |
+| `JWT_SECRET` | Mindestens 32 Zeichen. Wer es kennt, kommt ohne Passwort an die Noten. |
+| `ADMIN_PASSWORD` | Michaels erstes Anmeldepasswort. |
+| `SITE_URL` | Adresse der Website, z.B. `https://bergamin.ch` |
+| `API_URL` | Adresse des Backends, z.B. `https://api.bergamin.ch` |
+
+Passwörter erzeugen:
+
+```bash
+openssl rand -base64 32
+```
+
+**`SITE_URL` und `API_URL` müssen stimmen.** Steht dort die falsche
+Adresse, lädt die Seite zwar, aber jede Anmeldung bricht mit
+„Failed to fetch" ab. Das Backend lässt Anfragen nur von der Adresse
+in `SITE_URL` zu (CORS), und die Website spricht genau die Adresse in
+`API_URL` an.
+
+---
+
+## Nur das Backend hosten
+
+Wenn die Website schon beim Webhoster liegt und hier nur das Backend
+laufen soll:
+
+```bash
+docker compose up -d db backend
+```
+
+`API_URL` darf dann leer bleiben.
+
+---
+
+## Befehle für den Alltag
+
+```bash
+docker compose ps                    # was läuft, und ist es gesund
+docker compose logs -f backend       # zuschauen, was das Backend macht
+docker compose restart backend       # nur das Backend neu starten
+docker compose down                  # alles stoppen, Daten bleiben
+docker compose up -d --build         # nach einem git pull neu bauen
+```
+
+**`docker compose down -v` löscht die Datenbank samt aller Noten.**
+Das `-v` entfernt das Volume. Ohne `-v` bleibt alles erhalten.
+
+---
+
+## Nach einer Änderung im Code
+
+```bash
+git pull
+docker compose up -d --build
+```
+
+Wichtig, wenn sich `API_URL` ändert: die Website muss dann **neu
+gebaut** werden, ein Neustart genügt nicht. Vite schreibt die Adresse
+beim Bauen fest in die JavaScript-Dateien, nicht beim Starten.
+
+```bash
+docker compose up -d --build frontend
+```
+
+---
+
+## Ports
+
+Beide Dienste lauschen nur auf `127.0.0.1`, sind also **nicht direkt
+aus dem Internet erreichbar**:
+
+| | Port auf dem Server |
+|---|---|
+| Website | `127.0.0.1:8081` |
+| Backend | `127.0.0.1:8080` |
+| Datenbank | gar nicht — nur intern zwischen den Containern |
+
+Davor gehört ein Reverse Proxy (nginx, Caddy, Traefik) oder ein
+Cloudflare Tunnel, der HTTPS übernimmt und beide Adressen nach aussen
+gibt. Sind die Ports auf dem Server schon belegt, kann man sie in
+`docker-compose.yml` bei `ports:` ändern — links steht der Port auf
+dem Server, rechts der im Container.
+
+---
+
+## Sicherung
+
+Alles Wichtige liegt in einer einzigen Datenbank, auch die
+hochgeladenen Notenausweise (als `bytea`, nicht als Dateien).
+Eine Sicherung ist deshalb eine Datei:
+
+```bash
+docker compose exec db pg_dump -U portfolio portfolio > sicherung.sql
+```
+
+Zurückspielen:
+
+```bash
+cat sicherung.sql | docker compose exec -T db psql -U portfolio portfolio
+```
+
+---
+
+## Wenn etwas nicht geht
+
+**Backend startet und stirbt sofort.** `docker compose logs backend`
+ansehen. Meist fehlt ein Wert in der `.env`.
+
+**„Failed to fetch" beim Anmelden.** `SITE_URL` stimmt nicht mit der
+Adresse überein, unter der die Seite wirklich läuft. Prüfen:
+
+```bash
+curl -I -X OPTIONS https://api.bergamin.ch/api/auth/login \
+  -H "Origin: https://bergamin.ch" \
+  -H "Access-Control-Request-Method: POST"
+```
+
+Es muss `Access-Control-Allow-Origin` zurückkommen.
+
+**Datenbank startet nicht.** Ab PostgreSQL 18 gehört der Mount auf
+`/var/lib/postgresql` und nicht mehr auf `/var/lib/postgresql/data`.
+In der `docker-compose.yml` steht es richtig — nur nicht „korrigieren".
+
+**Container gilt als `unhealthy`, antwortet aber.** Im Healthcheck
+muss `127.0.0.1` stehen, nicht `localhost`: im Container zeigt
+`localhost` zuerst auf die IPv6-Adresse `::1`, und die Dienste
+lauschen nur auf IPv4.
+
+---
+
+## Was getestet ist
+
+Der ganze Stapel lief am 12.08.2026 lokal durch:
+
+- Beide Abbilder bauen von Null
+- Alle drei Container melden sich als `healthy`
+- Anmeldung mit dem Passwort aus der `.env`: HTTP 200, falsches
+  Passwort: HTTP 401
+- `/projects` liefert 200 statt 404 (SPA-Weiterleitung in nginx)
+- CORS lässt `SITE_URL` durch und weist fremde Herkunft mit 403 ab
+- Nach `docker compose down` und wieder `up` ist die Anmeldung noch
+  gültig — die Daten überleben im Volume

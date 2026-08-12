@@ -1,0 +1,16 @@
+# Was NICHT ins Frontend-Abbild kopiert wird.
+#
+# Zwei Gruende: das Abbild bleibt klein, und der Bau wird schneller,
+# weil Docker weniger einlesen muss. node_modules ist der grosse
+# Brocken - die Pakete installiert der Bau ohnehin selbst neu, und
+# zwar fuer Linux statt fuer Windows.
+
+node_modules
+dist
+.git
+.env
+fotos-original
+backend
+*.log
+.vscode
+.idea

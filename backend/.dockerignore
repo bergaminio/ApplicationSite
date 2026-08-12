@@ -1,0 +1,9 @@
+# Was NICHT ins Backend-Abbild kopiert wird.
+#
+# target/ enthaelt den Bau von deinem Windows-Rechner. Der Container
+# baut selbst neu - waere die alte Fassung drin, koennte Maven die
+# versehentlich weiterverwenden.
+
+target
+*.log
+.env

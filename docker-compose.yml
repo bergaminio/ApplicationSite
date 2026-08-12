@@ -1,0 +1,99 @@
+# Die ganze Bewerbungsseite in drei Containern.
+#
+# Zum Starten braucht es nur zwei Befehle:
+#
+#   cp .env.example .env      Kopie anlegen und die Werte ausfuellen
+#   docker compose up -d      bauen und starten
+#
+# Weitere nuetzliche Befehle stehen in DEPLOY.md.
+#
+# ACHTUNG: Diese Datei ist fuer den Server. Zum Entwickeln auf dem
+# eigenen Rechner reicht backend/docker-compose.yml - die startet nur
+# die Datenbank, waehrend Backend und Frontend direkt laufen.
+
+services:
+  # ---- Die Datenbank ----------------------------------------------
+  db:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: portfolio
+      # Kommt aus der .env-Datei. Steht absichtlich nirgends im Repo.
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD fehlt in der .env}
+    volumes:
+      # Damit die Noten einen Neustart ueberleben.
+      #
+      # Ab Postgres 18 gehoert der Mount auf /var/lib/postgresql und
+      # NICHT mehr auf /var/lib/postgresql/data wie frueher. Mit dem
+      # alten Pfad startet der Container gar nicht erst.
+      - portfolio-db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portfolio -d portfolio"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # Kein "ports"-Abschnitt: die Datenbank muss von aussen gar nicht
+    # erreichbar sein. Das Backend redet ueber das interne Docker-Netz
+    # mit ihr. Was nicht offen ist, kann auch niemand angreifen.
+
+  # ---- Das Backend ------------------------------------------------
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        # Nicht nur "gestartet", sondern "antwortet auch schon".
+        # Sonst versucht das Backend sich zu verbinden, waehrend
+        # Postgres noch hochfaehrt, und stirbt beim Start.
+        condition: service_healthy
+    environment:
+      # "db" ist der Name des Dienstes oben. Docker macht daraus einen
+      # Rechnernamen im internen Netz - localhost waere hier falsch,
+      # das waere der Container selbst.
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/portfolio
+      SPRING_DATASOURCE_USERNAME: portfolio
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD fehlt in der .env}
+
+      # Ohne dieses Geheimnis kann sich jeder selbst gueltige
+      # Anmelde-Token bauen und kaeme an die Noten.
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET fehlt in der .env}
+
+      # Nur beim allerersten Start benutzt, danach aendert man das
+      # Passwort im Admin-Bereich.
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-michael}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD fehlt in der .env}
+
+      # Von welcher Adresse aus das Frontend fragen darf. Steht hier
+      # die falsche, bricht jede Anfrage mit "Failed to fetch" ab.
+      APP_CORS_ALLOWED_ORIGINS: ${SITE_URL:?SITE_URL fehlt in der .env}
+
+      # Auf dem Server nicht jede SQL-Abfrage mitschreiben.
+      SPRING_JPA_SHOW_SQL: "false"
+    ports:
+      # Nur auf dem Server selbst erreichbar (127.0.0.1 davor).
+      # Nach aussen geht es ueber den Reverse Proxy oder den
+      # Cloudflare Tunnel, nicht direkt.
+      - "127.0.0.1:8080:8080"
+
+  # ---- Die Website ------------------------------------------------
+  #
+  # Wenn beim Kollegen NUR das Backend laufen soll, weil die Website
+  # schon beim Webhoster liegt:
+  #     docker compose up -d db backend
+  frontend:
+    build:
+      context: .
+      args:
+        # Beim Bauen eingebacken, nicht beim Starten - siehe die
+        # Erklaerung im Dockerfile. Wer diesen Wert aendert, muss neu
+        # bauen: docker compose up -d --build frontend
+        VITE_API_URL: ${API_URL:?API_URL fehlt in der .env}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "127.0.0.1:8081:80"
+
+volumes:
+  portfolio-db-data:
