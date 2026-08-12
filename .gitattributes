@@ -1,0 +1,45 @@
+# Welche Dateien welche Zeilenenden bekommen.
+#
+# Warum das noetig ist:
+#
+# Windows beendet Zeilen mit zwei Zeichen (CRLF), Linux mit einem (LF).
+# Git rechnet beim Auschecken um, wenn core.autocrlf=true gesetzt ist -
+# und das ist es auf Windows meistens. Fuer Textdateien ist das
+# praktisch, fuer Dateien die in einem Linux-Container laufen ist es
+# ein Fehler.
+#
+# Konkret passiert: mvnw beginnt mit "#!/bin/sh". Mit Windows-Enden
+# steht dort "#!/bin/sh\r". Linux sucht dann einen Interpreter namens
+# "/bin/sh\r", findet keinen und bricht mit "command not found" ab.
+# Der Bau des Backends schlaegt fehl - aber nur nach einem frischen
+# git clone, nicht im gewachsenen Arbeitsordner. Ein Fehler, der
+# ausgerechnet beim Kollegen auftritt und bei einem selbst nie.
+
+# Standard: Git entscheidet selbst, im Repo immer LF.
+* text=auto eol=lf
+
+# Laeuft im Container, muss zwingend LF haben.
+mvnw text eol=lf
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.dockerignore text eol=lf
+nginx.conf text eol=lf
+docker-compose.yml text eol=lf
+
+# Wird zu .env kopiert und von Docker Compose gelesen. Mit CRLF haenge
+# an jedem Wert ein unsichtbares \r - das Passwort waere dann falsch
+# und die Adressen ebenso.
+.env.example text eol=lf
+
+# PowerShell laeuft nur auf Windows, da sind CRLF richtig.
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+
+# Nicht anfassen - das sind keine Textdateien.
+*.jar binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.mp3 binary
+*.ico binary
