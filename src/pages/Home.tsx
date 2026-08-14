@@ -37,24 +37,41 @@ function Home() {
         {t(ui.homeRole)}
       </p>
 
-      {/* Der Eyecatcher. Groesste Schrift der ganzen Seite. */}
-      <div style={{ display: 'inline-block' }}>
+      {/* Der Eyecatcher. Groesste Schrift der ganzen Seite.
+          Eine Stufe kleiner als sonst ueblich, weil der Satz lang ist:
+          bei 84px wuerde er den halben Bildschirm fuellen. */}
+      <div>
         <h1
-          className="schrift-titel text-4xl sm:text-5xl md:text-6xl leading-tight sanft-rein"
-          style={{ maxWidth: '20ch' }}
+          className="schrift-titel text-2xl sm:text-3xl md:text-4xl leading-tight sanft-rein"
+          // 30ch begrenzt die Zeilenlaenge. Ohne die Grenze laufen die
+          // Zeilen ueber die volle Spaltenbreite und werden muehsam zu
+          // lesen; enger gesetzt braeuchte der Satz zu viele Zeilen.
+          style={{ maxWidth: '30ch' }}
         >
           {t(ui.homeClaim)}
         </h1>
+
+        {/* Die Aufloesung, kleiner und in der Seitenfarbe. Sie steht
+            bewusst allein, damit sie wie ein Nachsatz wirkt und nicht
+            wie der zweite Teil der Ueberschrift. */}
+        <p
+          className="schrift-titel text-xl sm:text-2xl mt-3 sanft-rein"
+          style={{ color: pageColors.home, animationDelay: '200ms' }}
+        >
+          {t(ui.homeClaimZwei)}
+        </p>
+
         {/* Der Strich waechst beim Laden von links nach rechts,
             siehe .strich in index.css */}
         <div
           className="strich"
           style={{
-            width: '100%',
+            width: '220px',
+            maxWidth: '100%',
             height: '10px',
             background: pageColors.home,
             borderRadius: '10px',
-            marginTop: '12px',
+            marginTop: '14px',
           }}
         />
       </div>
@@ -63,7 +80,7 @@ function Home() {
       <div className="flex items-start gap-5 mt-8">
         <p
           className="text-gray-600 text-base sm:text-lg sanft-rein"
-          style={{ animationDelay: '250ms', maxWidth: '42rem' }}
+          style={{ animationDelay: '350ms', maxWidth: '42rem' }}
         >
           {t(ui.homeClaimSub)}
         </p>

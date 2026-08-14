@@ -24,11 +24,23 @@ export const ui = {
   homePostit: { de: 'Meine Projekte ansehen', en: 'A look at my projects' },
   homeButton: { de: 'Projekte →', en: 'Projects →' },
 
-  // Der Satz, der die Startseite traegt. Bewusst kurz: er soll in
-  // einer Zeile stehen und in fuenf Sekunden gelesen sein.
+  // Der Satz, der die Startseite traegt.
+  //
+  // Er beschreibt absichtlich ein Gefuehl und keine Faehigkeit. Wer
+  // "ich bin motiviert und lernbereit" schreibt, klingt wie zwanzig
+  // andere Bewerbungen. Wer den Moment beschreibt, in dem etwas zum
+  // ersten Mal funktioniert, trifft jemanden, der ihn selbst kennt.
+  //
+  // Frueher stand hier "Ich baue Sachen, die es noch nicht gab" -
+  // richtig, aber Standardsprache, die man auf jeder zweiten Seite
+  // liest.
   homeClaim: {
-    de: 'Ich baue Sachen, die es noch nicht gab.',
-    en: 'I build things that did not exist yet.',
+    de: 'Es gibt diesen einen Moment, in dem der Bildschirm zum ersten Mal zeigt, was ich im Kopf hatte.',
+    en: 'There is that one moment when the screen finally shows what was in my head.',
+  },
+  homeClaimZwei: {
+    de: 'Für den gebe ich alles.',
+    en: 'That is what I give everything for.',
   },
   homeClaimSub: {
     de: 'Eine App, die meine Sprintzeiten per GPS stoppt. Ein Rollenspiel im Browser. Diese Website samt Anmeldung und Datenbank.',
