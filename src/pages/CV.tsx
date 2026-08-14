@@ -191,7 +191,7 @@ function CV() {
 
       {/* Sobald public/lebenslauf.pdf da ist, hier den Knopf einhängen:
           <a href="/lebenslauf.pdf" download className="pill"
-             style={{ background: 'white', padding: '8px 20px', fontSize: '14px' }}>
+             style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}>
             Als PDF herunterladen ↓
           </a>
       */}

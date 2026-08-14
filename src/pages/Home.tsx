@@ -89,7 +89,7 @@ function Home() {
             key={v.ziel}
             to={v.ziel}
             className="pill"
-            style={{ background: 'white', padding: '8px 20px', fontSize: '14px' }}
+            style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
           >
             {t(v.text)} →
           </Link>
@@ -106,7 +106,7 @@ function Home() {
             <Link
               to="/projects"
               className="pill"
-              style={{ background: 'white', padding: '8px 24px', fontSize: '14px' }}
+              style={{ background: 'white', padding: '8px 24px', fontSize: '20px' }}
             >
               {t(ui.homeButton)}
             </Link>

@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+/* ---- Schriftgroesse ------------------------------------------------
+   Alle Textgroessen um 40 Prozent angehoben.
+
+   Warum hier und nicht einfach "html { font-size: 140% }"? Weil das
+   ALLES vergroessern wuerde, auch jeden Abstand und jede Spaltenbreite -
+   die Seite waere dann nur weiter weggezoomt, nicht besser lesbar.
+   Hier wird nur die Schrift groesser, das Raster bleibt stehen.
+
+   Die Zahlen sind die Tailwind-Vorgaben mal 1.4. Wer das zurueckdrehen
+   will, teilt sie wieder durch 1.4 - oder loescht den ganzen Block,
+   dann gelten wieder die Vorgaben. */
+@theme {
+  --text-xs: 1.05rem;     /* war 0.75  */
+  --text-sm: 1.225rem;    /* war 0.875 */
+  --text-base: 1.4rem;    /* war 1     */
+  --text-lg: 1.575rem;    /* war 1.125 */
+  --text-xl: 1.75rem;     /* war 1.25  */
+  --text-2xl: 2.1rem;     /* war 1.5   */
+  --text-3xl: 2.625rem;   /* war 1.875 */
+  --text-4xl: 3.15rem;    /* war 2.25  */
+  --text-5xl: 4.2rem;     /* war 3     */
+  --text-6xl: 5.25rem;    /* war 3.75  */
+  --text-7xl: 6.3rem;     /* war 4.5   */
+}
+
 /* ---- Die beiden Schriften -----------------------------------------
    Beide liegen als Datei im Projekt (src/assets/fonts/) und werden
    nicht mehr von Google geladen. Zwei Vorteile: die Seite ist schneller,
@@ -81,6 +106,10 @@ body {
 body {
   background-color: var(--papier);
   font-family: "Darling Letter", system-ui, sans-serif;
+  /* Fuer allen Text, an dem KEINE Groessenklasse steht. Ohne diese
+     Zeile blieben solche Absaetze bei 16px stehen, waehrend alles
+     andere waechst - und genau die faellt dann als zu klein auf. */
+  font-size: var(--text-base);
 }
 
 /* Alles was als Ueberschrift gilt, bekommt die Titelschrift.
@@ -112,7 +141,7 @@ body {
   border: 1.5px solid #333;
   border-radius: 999px;
   padding: 2px 12px;
-  font-size: 12px;
+  font-size: 17px;   /* 12px mal 1.4, siehe Block ganz oben */
   font-family: inherit;
   background: transparent;
 }

@@ -249,14 +249,14 @@ function Admin() {
                 <button
                   onClick={() => starteKontoAendern(konto)}
                   className="pill"
-                  style={{ cursor: 'pointer', fontSize: '11px' }}
+                  style={{ cursor: 'pointer', fontSize: '15px' }}
                 >
                   {t(ui.accEdit)}
                 </button>
                 <button
                   onClick={() => kontoEntfernen(konto.username)}
                   className="pill"
-                  style={{ cursor: 'pointer', fontSize: '11px' }}
+                  style={{ cursor: 'pointer', fontSize: '15px' }}
                 >
                   {t(ui.accDelete)}
                 </button>
@@ -278,7 +278,7 @@ function Admin() {
               <button
                 onClick={() => starteKontoAendern(konto)}
                 className="pill"
-                style={{ cursor: 'pointer', fontSize: '11px' }}
+                style={{ cursor: 'pointer', fontSize: '15px' }}
               >
                 {t(ui.accEdit)}
               </button>
@@ -453,14 +453,14 @@ function Admin() {
                 <button
                   onClick={() => speichereDokument(d.id)}
                   className="pill"
-                  style={{ cursor: 'pointer', fontSize: '11px', background: pageColors.login, color: 'white' }}
+                  style={{ cursor: 'pointer', fontSize: '15px', background: pageColors.login, color: 'white' }}
                 >
                   {t(ui.docSave)}
                 </button>
                 <button
                   onClick={() => setBearbeiteDok(null)}
                   className="pill"
-                  style={{ cursor: 'pointer', fontSize: '11px' }}
+                  style={{ cursor: 'pointer', fontSize: '15px' }}
                 >
                   {t(ui.docCancel)}
                 </button>
@@ -473,14 +473,14 @@ function Admin() {
                 <button
                   onClick={() => starteUmbenennen(d)}
                   className="pill"
-                  style={{ cursor: 'pointer', fontSize: '11px' }}
+                  style={{ cursor: 'pointer', fontSize: '15px' }}
                 >
                   {t(ui.docRename)}
                 </button>
                 <button
                   onClick={() => dokumentEntfernen(d.id)}
                   className="pill"
-                  style={{ cursor: 'pointer', fontSize: '11px' }}
+                  style={{ cursor: 'pointer', fontSize: '15px' }}
                 >
                   {t(ui.docDelete)}
                 </button>

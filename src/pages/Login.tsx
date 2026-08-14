@@ -66,7 +66,7 @@ function Login() {
               background: pageColors.login,
               color: 'white',
               padding: '8px 20px',
-              fontSize: '14px',
+              fontSize: '20px',
               width: 'fit-content',
             }}
           >
@@ -78,7 +78,7 @@ function Login() {
             <Link
               to="/admin"
               className="pill block mb-4"
-              style={{ background: 'white', padding: '8px 20px', fontSize: '14px', width: 'fit-content' }}
+              style={{ background: 'white', padding: '8px 20px', fontSize: '20px', width: 'fit-content' }}
             >
               {t(ui.adminLink)}
             </Link>
@@ -87,7 +87,7 @@ function Login() {
           <button
             onClick={abmelden}
             className="pill"
-            style={{ cursor: 'pointer', background: 'white', padding: '8px 20px', fontSize: '14px' }}
+            style={{ cursor: 'pointer', background: 'white', padding: '8px 20px', fontSize: '20px' }}
           >
             {t(ui.logout)}
           </button>
@@ -113,7 +113,7 @@ function Login() {
             target="_blank"
             rel="noopener noreferrer"
             className="pill"
-            style={{ background: 'white', padding: '8px 20px', fontSize: '14px' }}
+            style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
           >
             {t(ui.loginSoonCode)}
           </a>
@@ -188,7 +188,7 @@ function Login() {
             background: laeuft ? 'white' : pageColors.login,
             color: laeuft ? '#333' : 'white',
             padding: '8px 24px',
-            fontSize: '14px',
+            fontSize: '20px',
           }}
         >
           {laeuft ? t(ui.loginLoading) : t(ui.loginButton)}

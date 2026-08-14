@@ -19,7 +19,7 @@ function NotFound() {
       <Link
         to="/"
         className="pill"
-        style={{ background: 'white', padding: '8px 20px', fontSize: '14px' }}
+        style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
       >
         {t(ui.backHome)}
       </Link>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import Skizze from '../components/Skizze'
@@ -61,6 +62,10 @@ function Contact() {
   const { t } = useSprache()
   const { benutzer } = useAuth()
 
+  // Fehlt die Bilddatei, zeigen wir wieder das Kuerzel statt eines
+  // kaputten Bildsymbols.
+  const [fotoFehlt, setFotoFehlt] = useState(false)
+
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
       <PageTitle title={t(ui.contactTitle)} color={pageColors.contact} skizze="brief" />
@@ -68,18 +73,33 @@ function Contact() {
       {/* Auf dem Handy untereinander, ab 640px nebeneinander */}
       <div className="box flex flex-col sm:flex-row gap-6 sm:gap-8 items-start p-5 sm:p-8" style={{ borderRadius: '16px' }}>
 
-        {/* Platzhalter fürs Foto */}
-        <div
-          className="box flex items-center justify-center text-3xl"
-          style={{
-            width: '100px',
-            height: '100px',
-            background: pageColors.contact,
-            flexShrink: 0,
-          }}
-        >
-          MB
-        </div>
+        {/* Das Foto. Bewusst nicht groesser als 120px: die Vorlage ist
+            265 Pixel breit, darueber wird sie unscharf. Kommt einmal
+            ein Foto in voller Aufloesung, darf es wachsen. */}
+        {fotoFehlt ? (
+          // Faellt das Bild aus, steht hier wie vorher das Kuerzel,
+          // statt eines kaputten Bildsymbols.
+          <div
+            className="box flex items-center justify-center text-3xl"
+            style={{ width: '120px', height: '141px', background: pageColors.contact, flexShrink: 0 }}
+          >
+            MB
+          </div>
+        ) : (
+          <img
+            src="/fotos/portrait.jpg"
+            alt={NAME}
+            onError={() => setFotoFehlt(true)}
+            className="box"
+            style={{
+              width: '120px',
+              height: '141px',
+              objectFit: 'cover',
+              flexShrink: 0,
+              display: 'block',
+            }}
+          />
+        )}
 
         {/* Die Kontakt-Infos */}
         <div className="flex flex-col gap-3">

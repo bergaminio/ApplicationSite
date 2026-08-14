@@ -59,7 +59,7 @@ function DokumentAnsicht({ dokument }: { dokument: Dokument }) {
           target="_blank"
           rel="noopener noreferrer"
           className="pill"
-          style={{ background: 'white', padding: '8px 20px', fontSize: '14px' }}
+          style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
         >
           {t(ui.gradesOpenPdf)}
         </a>
