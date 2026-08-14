@@ -56,7 +56,7 @@ export const ui = {
   },
   homeAbout: {
     de: 'Angefangen hat es damit, dass mich etwas gestört hat: beim Sprinttraining stand immer jemand mit der Stoppuhr daneben. Also habe ich eine App gebaut, die das per GPS erledigt. Seither wird aus jedem Ärgernis ein Projekt. Am meisten lerne ich, wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss.',
-    en: 'It started with something that annoyed me: at sprint training, someone always had to stand there with a stopwatch. So I built an app that does it via GPS. Since then, every annoyance turns into a project. I learn the most when I am working on something of my own and have to get it running.',
+    en: "It started with something that annoyed me: at sprint training, someone always had to stand there holding a stopwatch. So I built an app that does it via GPS. Since then, pretty much every annoyance turns into a project. I learn most when I'm building something of my own and have to make it work.",
   },
   homeLooking: {
     de: 'Ich suche eine Lehrstelle als Informatiker, Fachrichtung Applikationsentwicklung.',
@@ -141,7 +141,10 @@ export const ui = {
   imprintPurpose:     { de: 'Zweck der Seite', en: 'Purpose of this site' },
   imprintPurposeText: {
     de: 'Persönliche Bewerbungswebsite. Entstanden im Rahmen der Ausbildung an der Informatikmittelschule der BWD Bern.',
-    en: 'Personal application website. Created during my training at the IMS, BWD Bern.',
+    // Nicht "application website": im Englischen heisst "application"
+    // auch Programm, und auf einer Informatikseite versteht man es
+    // garantiert falsch. "Job application" ist eindeutig.
+    en: 'Personal job application website. Created during my studies at the IMS, BWD Bern.',
   },
   imprintHosting:     { de: 'Gehostet bei', en: 'Hosted at' },
   imprintSource:      { de: 'Quellcode', en: 'Source code' },
@@ -175,7 +178,7 @@ export const ui = {
   },
   loginSoonText: {
     de: 'Dahinter liegen meine Noten von der gibb, der BWD und der ICT Lernfactory. Die Anmeldung dafür habe ich selbst gebaut, mit Java Spring Boot, PostgreSQL und JWT-Token. Sie läuft nur noch auf keinem Server. Sobald sie aufgeschaltet ist, steht hier das Anmeldeformular.',
-    en: 'Behind this are my grades from gibb, BWD and ICT Lernfactory. I built the sign-in myself, with Java Spring Boot, PostgreSQL and JWT tokens. It is simply not running on a server yet. Once it is deployed, the sign-in form will appear here.',
+    en: "Behind this are my grades from gibb, BWD and ICT Lernfactory. I built the sign-in myself, with Java Spring Boot, PostgreSQL and JWT tokens. It's just not running on a server yet. Once it is, the sign-in form will appear here.",
   },
   loginSoonCode: {
     de: 'Den Code dazu ansehen →',
@@ -261,7 +264,7 @@ export const ui = {
   accShowPassword: { de: 'Passwort anzeigen', en: 'Show password' },
   accMismatch: {
     de: 'Die beiden Passwörter sind nicht gleich',
-    en: 'The two passwords do not match',
+    en: "The two passwords don't match",
   },
   accSave:        { de: 'Speichern', en: 'Save' },
   accCancel:      { de: 'Abbrechen', en: 'Cancel' },
@@ -278,7 +281,7 @@ export const ui = {
   notFoundTitle: { de: 'Nicht gefunden', en: 'Not found' },
   notFoundText: {
     de: 'Diese Seite gibt es nicht. Vielleicht ein Tippfehler in der Adresse?',
-    en: 'This page does not exist. Maybe a typo in the address?',
+    en: "This page doesn't exist. Maybe a typo in the address?",
   },
   backHome: { de: 'Zurück zur Startseite →', en: 'Back to home →' },
 }
