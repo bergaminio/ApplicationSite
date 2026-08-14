@@ -40,7 +40,11 @@ export const ui = {
   },
   homeClaimZwei: {
     de: 'Für den gebe ich alles.',
-    en: 'That is what I give everything for.',
+    // "Alles geben" ist im Deutschen Sportsprache. "give it my all"
+    // ist im Englischen genau dasselbe Bild, deshalb passt es besser
+    // als die woertliche Fassung "that is what I give everything for",
+    // die im Englischen umstaendlich klingt.
+    en: 'For that moment, I give it my all.',
   },
   homeClaimSub: {
     de: 'Eine App, die meine Sprintzeiten per GPS stoppt. Ein Rollenspiel im Browser. Diese Website samt Anmeldung und Datenbank.',
