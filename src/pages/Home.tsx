@@ -27,13 +27,16 @@ function Home() {
   const { t } = useSprache()
 
   return (
-    <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
+    // Breiter als die anderen Seiten (5xl statt 3xl). Die Startseite
+    // lebt von grosser Schrift, und die braucht Platz - sonst bricht
+    // jeder Satz auf fuenf Zeilen um.
+    <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-5xl mx-auto">
 
-      {/* Name und Rolle, klein ueber der Aussage */}
-      <p className="schrift-titel text-xl sm:text-2xl" style={{ color: pageColors.home }}>
+      {/* Name und Rolle ueber der Aussage */}
+      <p className="schrift-titel text-2xl sm:text-3xl md:text-4xl" style={{ color: pageColors.home }}>
         Michael Bergamin
       </p>
-      <p className="text-gray-500 text-sm sm:text-base mb-6">
+      <p className="text-gray-500 text-base sm:text-lg mb-8">
         {t(ui.homeRole)}
       </p>
 
@@ -42,11 +45,11 @@ function Home() {
           bei 84px wuerde er den halben Bildschirm fuellen. */}
       <div>
         <h1
-          className="schrift-titel text-2xl sm:text-3xl md:text-4xl leading-tight sanft-rein"
-          // 30ch begrenzt die Zeilenlaenge. Ohne die Grenze laufen die
+          className="schrift-titel text-3xl sm:text-4xl md:text-5xl leading-tight sanft-rein"
+          // 32ch begrenzt die Zeilenlaenge. Ohne die Grenze laufen die
           // Zeilen ueber die volle Spaltenbreite und werden muehsam zu
           // lesen; enger gesetzt braeuchte der Satz zu viele Zeilen.
-          style={{ maxWidth: '30ch' }}
+          style={{ maxWidth: '32ch' }}
         >
           {t(ui.homeClaim)}
         </h1>
@@ -55,7 +58,7 @@ function Home() {
             bewusst allein, damit sie wie ein Nachsatz wirkt und nicht
             wie der zweite Teil der Ueberschrift. */}
         <p
-          className="schrift-titel text-xl sm:text-2xl mt-3 sanft-rein"
+          className="schrift-titel text-2xl sm:text-3xl md:text-4xl mt-4 sanft-rein"
           style={{ color: pageColors.home, animationDelay: '200ms' }}
         >
           {t(ui.homeClaimZwei)}
