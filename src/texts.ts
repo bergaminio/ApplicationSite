@@ -36,7 +36,11 @@ export const ui = {
   // liest.
   homeClaim: {
     de: 'Es gibt diesen einen Moment, in dem der Bildschirm zum ersten Mal zeigt, was ich im Kopf hatte.',
-    en: 'There is that one moment when the screen finally shows what was in my head.',
+    // "finally" hiess endlich, das deutsche "zum ersten Mal" heisst
+    // aber erstmals - zwei verschiedene Aussagen. Und "what was in my
+    // head" ist zwar richtig, klingt aber steif. "what I had pictured"
+    // trifft beides: den Zeitpunkt und den Ton.
+    en: 'There is that one moment when the screen shows exactly what I had pictured.',
   },
   homeClaimZwei: {
     de: 'Für den gebe ich alles.',
