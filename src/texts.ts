@@ -18,14 +18,36 @@ export const ui = {
 
   // Startseite
   homeRole:   { de: 'Entwickler in Ausbildung an der BWD Bern', en: 'Developer in training at BWD Bern' },
-  homePostit: { de: 'Schau dir meine Projekte an', en: 'Take a look at my projects' },
+  // Die Seite spricht den Besucher bewusst nirgends direkt an - weder
+  // mit du noch mit Sie. Stattdessen Infinitiv ("ansehen") oder erste
+  // Person ("ich"). Das bleibt hoeflich, ohne steif zu wirken.
+  homePostit: { de: 'Meine Projekte ansehen', en: 'A look at my projects' },
   homeButton: { de: 'Projekte →', en: 'Projects →' },
+
+  // Der Satz, der die Startseite traegt. Bewusst kurz: er soll in
+  // einer Zeile stehen und in fuenf Sekunden gelesen sein.
+  homeClaim: {
+    de: 'Ich baue Sachen, die es noch nicht gab.',
+    en: 'I build things that did not exist yet.',
+  },
+  homeClaimSub: {
+    de: 'Eine App, die meine Sprintzeiten per GPS stoppt. Ein Rollenspiel im Browser. Diese Website samt Anmeldung und Datenbank.',
+    en: 'An app that times my sprints via GPS. A role-playing game in the browser. This website, including its login and database.',
+  },
+  homeAbout: {
+    de: 'Angefangen hat es damit, dass mich etwas gestört hat: beim Sprinttraining stand immer jemand mit der Stoppuhr daneben. Also habe ich eine App gebaut, die das per GPS erledigt. Seither wird aus jedem Ärgernis ein Projekt. Am meisten lerne ich, wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss.',
+    en: 'It started with something that annoyed me: at sprint training, someone always had to stand there with a stopwatch. So I built an app that does it via GPS. Since then, every annoyance turns into a project. I learn the most when I am working on something of my own and have to get it running.',
+  },
+  homeLooking: {
+    de: 'Ich suche eine Lehrstelle als Informatiker, Fachrichtung Applikationsentwicklung.',
+    en: 'I am looking for an apprenticeship in software development.',
+  },
 
   // Projekte
   projectsTitle: { de: 'Meine Projekte', en: 'My projects' },
   projectsIntro: {
-    de: 'Ich lerne am liebsten, indem ich Sachen baue. Klick ein Projekt an, dann siehst du den Screenshot und den Code.',
-    en: 'I learn best by building things. Click a project for the screenshot and the code.',
+    de: 'Ich lerne am liebsten, indem ich Sachen baue. Ein Klick auf ein Projekt zeigt den Screenshot und den Code.',
+    en: 'I learn best by building things. A click on a project shows the screenshot and the code.',
   },
   search:       { de: 'Suchen...', en: 'Search...' },
   filter:       { de: 'Filter ▾', en: 'Filter ▾' },
@@ -157,7 +179,7 @@ export const ui = {
     en: 'Every company has its own account. Here I can see who actually looked at my application.',
   },
   adminLoading:  { de: 'Wird geladen...', en: 'Loading...' },
-  adminNoRight:  { de: 'Dafür fehlen dir die Rechte.', en: 'You do not have permission for this.' },
+  adminNoRight:  { de: 'Dafür fehlen die Rechte.', en: 'Permission is missing for this.' },
   adminNoServer: { de: 'Der Server antwortet nicht.', en: 'The server is not responding.' },
   adminCompanies: { de: 'Lehrbetriebe', en: 'Companies' },
   adminAttempts:  { de: 'Letzte Anmeldeversuche', en: 'Recent sign-in attempts' },
@@ -228,8 +250,8 @@ export const ui = {
     en: 'Really delete this account? The access log will be kept.',
   },
   accAdminHint: {
-    de: 'Dein eigenes Konto. Der Anmeldename bleibt, auch wenn du den Anzeigenamen änderst.',
-    en: 'Your own account. The login name stays the same even if you change the display name.',
+    de: 'Eigenes Konto. Der Anmeldename bleibt, auch wenn der Anzeigename geändert wird.',
+    en: 'Own account. The login name stays the same even if the display name changes.',
   },
 
   // Seite nicht gefunden

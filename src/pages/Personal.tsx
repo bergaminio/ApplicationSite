@@ -24,8 +24,8 @@ const hobbys: Hobby[] = [
   {
     titel: { de: 'Klavier', en: 'Piano' },
     text: {
-      de: 'Ich spiele Klavier, weil es mich fordert. Ein Stück, das beim ersten Durchlesen unmöglich aussieht, sitzt nach ein paar Wochen, und dieses Gefühl mag ich. Dazu höre ich gerne klassische Musik, da liegt es nahe, sie auch selbst zu spielen.',
-      en: 'I play the piano because it challenges me. A piece that looks impossible at first sight sits after a few weeks, and I like that feeling. I also enjoy listening to classical music, so playing it myself was the obvious next step.',
+      de: 'Ich spiele Klavier, weil es mich fordert. Ein Stück, das beim ersten Durchlesen unmöglich aussieht, sitzt nach ein paar Wochen, und dieses Gefühl mag ich. Dazu höre ich gerne klassische Musik, da liegt es nahe, sie auch selbst zu spielen. Man kommt weiter, indem man eine schwierige Stelle herauslöst und einzeln übt, bis sie sitzt. Beim Programmieren mache ich es genauso.',
+      en: 'I play the piano because it challenges me. A piece that looks impossible at first sight sits after a few weeks, and I like that feeling. I also enjoy listening to classical music, so playing it myself was the obvious next step. You get ahead by taking one difficult passage out and practising it on its own until it works. I do exactly the same when programming.',
     },
     audio: '/audio/klavier.mp3',
     skizze: 'klavier',
@@ -41,16 +41,16 @@ const hobbys: Hobby[] = [
   {
     titel: { de: 'Gaming', en: 'Gaming' },
     text: {
-      de: 'Gaming ist mein Zeitvertreib, mit Kollegen oder allein. Meistens Multiplayer im Ranked-Modus, dazwischen Arcade-Spiele wie Rhythm und Fighting.',
-      en: 'Gaming is how I unwind, with friends or on my own. Mostly ranked multiplayer, with arcade games in between, like rhythm and fighting.',
+      de: 'Gaming ist mein Zeitvertreib, mit Kollegen oder allein. Meistens Multiplayer im Ranked-Modus, dazwischen Arcade-Spiele wie Rhythm und Fighting. Irgendwann wollte ich wissen, wie so ein Spiel von innen aussieht, und habe angefangen, selbst eines zu bauen: Aschenreich, ein Rollenspiel im Browser.',
+      en: 'Gaming is how I unwind, with friends or on my own. Mostly ranked multiplayer, with arcade games in between, like rhythm and fighting. At some point I wanted to know what a game looks like from the inside, so I started building one myself: Aschenreich, a role-playing game in the browser.',
     },
     skizze: 'controller',
   },
   {
     titel: { de: 'Fotografieren', en: 'Photography' },
     text: {
-      de: 'Dazu sagen die Bilder mehr als ich schreiben könnte.',
-      en: 'The photos say more about this than I could write.',
+      de: 'Dazu sagen die Bilder mehr als ich schreiben könnte. Meistens draussen, meistens Landschaft, und meistens dann, wenn das Licht gerade stimmt.',
+      en: 'The photos say more about this than I could write. Mostly outdoors, mostly landscapes, and mostly when the light happens to be right.',
     },
     skizze: 'kamera',
     // Leg deine Bilder in public/fotos/ ab und trage die Dateinamen

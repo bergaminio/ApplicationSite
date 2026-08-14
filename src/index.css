@@ -1,7 +1,36 @@
 @import "tailwindcss";
 
-/* Hintergrund und Schrift fuer die ganze Seite.
-   Die Schrift "Sniglet" wird in index.html von Google Fonts geladen. */
+/* ---- Die beiden Schriften -----------------------------------------
+   Beide liegen als Datei im Projekt (src/assets/fonts/) und werden
+   nicht mehr von Google geladen. Zwei Vorteile: die Seite ist schneller,
+   und es gehen keine Besucherdaten an einen Dritten - das erspart einen
+   Absatz im Impressum.
+
+   font-display: swap heisst - zeig den Text sofort in der Ersatzschrift
+   und tausch ihn aus, sobald die richtige da ist. Ohne das bleibt der
+   Text bis zu drei Sekunden unsichtbar.
+
+   Achtung bei beiden Schriften: es gibt nur EINEN Schnitt, kein Fett.
+   Wer font-weight: bold setzt, bekommt vom Browser ein nachgerechnetes
+   Fett, das matschig aussieht. Rangordnung darum ueber Groesse und
+   Farbe machen, nicht ueber Fettschrift. */
+
+@font-face {
+  font-family: "The Blue Wave";
+  src: url("./assets/fonts/TheBlueWave.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Darling Letter";
+  src: url("./assets/fonts/DarlingLetter.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Beim Blaettern dreht sich die Seite kurz im Raum und ragt dabei
    seitlich hinaus. Ohne das hier blitzt bei jedem Seitenwechsel
    eine waagrechte Scrollleiste auf.
@@ -51,12 +80,31 @@ body {
 
 body {
   background-color: var(--papier);
-  font-family: "Sniglet", system-ui;
+  font-family: "Darling Letter", system-ui, sans-serif;
 }
 
-/* Fuer Ueberschriften und alles was dick sein soll. */
-.sniglet-bold {
-  font-weight: 800;
+/* Alles was als Ueberschrift gilt, bekommt die Titelschrift.
+   Bewusst NICHT der Fliesstext: The Blue Wave ist eine Pinselschrift
+   und wird in kleinen Groessen muehsam zu lesen.
+
+   Warum zwei Namen fuer fast dasselbe? ".sniglet-bold" steht an ueber
+   zwanzig Stellen im Code und heisst dort schlicht "das ist eine
+   Ueberschrift". Statt alle anzufassen, bekommt die Klasse hier ihre
+   neue Bedeutung. ".schrift-titel" ist fuer die grossen Titel, die
+   zusaetzlich etwas Luft zwischen den Buchstaben brauchen.
+
+   Der Name ".sniglet-bold" passt jetzt nicht mehr zum Inhalt - Sniglet
+   ist weg und fett ist es auch nicht. Umbenennen waere sauberer, aber
+   das sind ueber zwanzig Aenderungen ohne sichtbaren Nutzen. */
+.sniglet-bold,
+.schrift-titel {
+  font-family: "The Blue Wave", "Darling Letter", system-ui, sans-serif;
+}
+
+.schrift-titel {
+  /* Die Pinselstriche stehen eng beieinander. Ein Hauch Luft macht
+     lange Ueberschriften ruhiger. */
+  letter-spacing: 0.015em;
 }
 
 /* Runder Rahmen - fuer Filter-Knoepfe und Tech-Labels. */

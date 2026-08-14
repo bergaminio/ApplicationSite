@@ -18,7 +18,7 @@ function PageTitle({ title, color, skizze }: PageTitleProps) {
       <div className="flex items-center justify-between gap-4">
         {/* Auf dem Handy kleiner, auf grossen Schirmen gross.
             sm: ab 640px, md: ab 768px Bildschirmbreite. */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl sniglet-bold leading-tight">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl schrift-titel leading-tight">
           {title}
         </h1>
 

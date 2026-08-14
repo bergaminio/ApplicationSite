@@ -155,7 +155,7 @@ function Buchdeckel() {
           }}
         >
           <span
-            className="sniglet-bold"
+            className="schrift-titel"
             style={{ fontSize: 'clamp(2.5rem, 9vw, 5rem)', color: 'white', lineHeight: 1.1 }}
           >
             {t(ui.deckelTitel)}

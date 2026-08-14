@@ -2,12 +2,11 @@
   <rect width="640" height="360" fill="#ffffff"/>
   <rect x="12" y="12" width="616" height="336" rx="8"
         fill="none" stroke="#333" stroke-width="2" stroke-dasharray="10 8"/>
-  <text x="320" y="176" text-anchor="middle"
-        font-family="Sniglet, system-ui" font-size="26" fill="#333">
+  <!-- Diese Grafik sehen Besucher, wenn ein Screenshot fehlt. Hier
+       stand frueher ein Hinweis an mich selbst ("Bild in public/demos/
+       ablegen") - der gehoert nicht auf eine Bewerbungsseite. -->
+  <text x="320" y="190" text-anchor="middle"
+        font-family="system-ui, sans-serif" font-size="26" fill="#333">
     Screenshot folgt
-  </text>
-  <text x="320" y="210" text-anchor="middle"
-        font-family="Sniglet, system-ui" font-size="15" fill="#888">
-    Bild in public/demos/ ablegen und den Pfad eintragen
   </text>
 </svg>
