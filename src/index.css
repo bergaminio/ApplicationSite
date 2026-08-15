@@ -252,3 +252,15 @@ button.pill {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Die Sofortbilder auf dem Buchdeckel. Steht hier und nicht als
+   inline-Style, weil ein inline-Style jede Klasse schlaegt - dann
+   liesse sich .nur-gross unten nicht mehr durchsetzen. */
+.pinnwand-foto { display: block; }
+
+/* Auf schmalen Bildschirmen weglassen. Wird auf der Pinnwand des
+   Buchdeckels benutzt: fuenf Sofortbilder sind auf einem Handy zu
+   voll, drei reichen. */
+@media (max-width: 640px) {
+  .nur-gross { display: none; }
+}

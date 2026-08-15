@@ -16,7 +16,7 @@ import { useId } from 'react'
 export type SkizzenArt =
   | 'klavier' | 'bogen' | 'controller' | 'kamera' | 'laeufer' | 'stift'
   | 'buch' | 'bildschirm' | 'gluehbirne' | 'brief' | 'schluessel'
-  | 'urkunde' | 'fragezeichen' | 'kaffee' | 'wegweiser'
+  | 'urkunde' | 'fragezeichen' | 'kaffee' | 'wegweiser' | 'zielscheibe'
 
 const ZEICHNUNGEN: Record<SkizzenArt, React.ReactNode> = {
   // Ein Stueck Klaviatur, leicht schraeg von oben.
@@ -176,6 +176,20 @@ const ZEICHNUNGEN: Record<SkizzenArt, React.ReactNode> = {
       <path d="M74 44 C 88 44, 88 62, 74 62" />
       <path d="M38 18 C 34 24, 42 26, 38 32" />
       <path d="M54 16 C 50 22, 58 24, 54 30" />
+    </>
+  ),
+
+  // Zielscheibe mit Pfeil in der Mitte. Fuer den Buchdeckel.
+  zielscheibe: (
+    <>
+      <circle cx="46" cy="54" r="34" />
+      <circle cx="46" cy="54" r="22" />
+      <circle cx="46" cy="54" r="9" />
+      {/* Der Schaft kommt von rechts oben und endet in der Mitte */}
+      <path d="M92 10 L52 48" />
+      {/* Die Federn am hinteren Ende */}
+      <path d="M92 10 L82 12" />
+      <path d="M92 10 L90 20" />
     </>
   ),
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { useSprache } from '../context/LanguageContext'
 import { ui } from '../texts'
+import Skizze from './Skizze'
 
 // Die Farbe des Einbands. Ein sehr dunkles Grau statt reinem Schwarz:
 // auf einem hellen Bildschirm wirkt #000 hart, und der Buchruecken
@@ -50,6 +51,28 @@ function schonGeoeffnet() {
     return false
   }
 }
+
+// Die Pinnwand auf dem Deckel.
+//
+// Michaels eigene Fotos als Sofortbilder, dazwischen die gezeichnete
+// Zielscheibe fuers Bogenschiessen. Wer die Seite oeffnet, sieht in
+// der ersten Sekunde einen Menschen mit Interessen und nicht nur eine
+// dunkle Flaeche mit "Willkommen" darauf.
+//
+// Die Bilder kommen aus public/fotos/klein/ und nicht aus dem
+// Hauptordner: die grossen sind zusammen 1.8 MB, die kleinen 197 KB.
+// Fuer ein 190px breites Sofortbild reichen 460px Vorlage locker, und
+// der Deckel ist das Erste, was geladen wird.
+//
+// x und y sind Prozent des Deckels. "nurGross" heisst: auf schmalen
+// Bildschirmen weglassen, dort waere es zu voll.
+const PINNWAND = [
+  { bild: '/fotos/klein/foto01.jpg', x: 6,  y: 10, dreh: -7,  breite: 200, nurGross: false },
+  { bild: '/fotos/klein/foto05.jpg', x: 74, y: 6,  dreh: 6,   breite: 170, nurGross: false },
+  { bild: '/fotos/klein/foto07.jpg', x: 80, y: 55, dreh: -5,  breite: 180, nurGross: true },
+  { bild: '/fotos/klein/foto03.jpg', x: 3,  y: 58, dreh: 4,   breite: 210, nurGross: true },
+  { bild: '/fotos/klein/foto09.jpg', x: 42, y: 78, dreh: -3,  breite: 165, nurGross: true },
+] as const
 
 // Beide Seiten des Deckels liegen genau uebereinander.
 const SEITE = {
@@ -140,12 +163,8 @@ function Buchdeckel() {
         <span
           style={{
             ...SEITE,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '1.5rem',
-            textAlign: 'center',
+            display: 'block',
+            overflow: 'hidden',
             background: EINBAND,
             // Der Buchruecken links. Auf dunklem Grund muss er heller
             // sein statt dunkler, sonst sieht man ihn nicht.
@@ -154,24 +173,78 @@ function Buchdeckel() {
             boxShadow: offen ? '60px 0 90px rgba(0, 0, 0, 0.3)' : 'none',
           }}
         >
-          <span
-            className="schrift-titel"
-            style={{ fontSize: 'clamp(2.5rem, 9vw, 5rem)', color: 'white', lineHeight: 1.1 }}
-          >
-            {t(ui.deckelTitel)}
+          {/* Die Fotos. aria-hidden, weil sie schmuecken und nichts
+              erklaeren - ein Screenreader wuerde sonst fuenfmal "Bild"
+              vorlesen, bevor der Titel kommt. */}
+          <span aria-hidden style={{ position: 'absolute', inset: 0 }}>
+            {PINNWAND.map(p => (
+              <img
+                key={p.bild}
+                src={p.bild}
+                alt=""
+                className={p.nurGross ? 'pinnwand-foto nur-gross' : 'pinnwand-foto'}
+                style={{
+                  position: 'absolute',
+                  left: `${p.x}%`,
+                  top: `${p.y}%`,
+                  width: `${p.breite}px`,
+                  maxWidth: '38vw',
+                  transform: `rotate(${p.dreh}deg)`,
+                  // Der weisse Rand macht aus dem Foto ein Sofortbild,
+                  // unten breiter als oben - wie beim echten Polaroid.
+                  background: 'white',
+                  padding: '10px 10px 26px 10px',
+                  boxShadow: '0 10px 24px rgba(0,0,0,0.45)',
+                  // display steht bewusst NICHT hier, sondern in
+                  // index.css. Ein inline-Style schlaegt jede Klasse,
+                  // und dann liesse sich das Bild per .nur-gross auf
+                  // dem Handy nicht mehr ausblenden.
+                }}
+              />
+            ))}
+
+            {/* Die Zielscheibe zwischen den Fotos */}
+            <span style={{ position: 'absolute', left: '30%', top: '30%', opacity: 0.5 }}>
+              <Skizze art="zielscheibe" farbe="#ffffff" groesse={120} />
+            </span>
           </span>
 
-          <span style={{ fontSize: 'clamp(1rem, 3vw, 1.4rem)', color: 'rgba(255,255,255,0.9)' }}>
-            {t(ui.deckelName)}
-          </span>
-
-          {/* Ohne diesen Hinweis steht man vor einer roten Flaeche und
-              weiss nicht, dass man klicken soll. */}
+          {/* Titel und Hinweis, ueber den Fotos. Der dunkle Schleier
+              dahinter haelt die Schrift lesbar, egal welches Foto
+              gerade darunterliegt. */}
           <span
-            className="pill"
-            style={{ background: 'white', marginTop: '1rem', fontSize: '0.9rem' }}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '1.2rem',
+              textAlign: 'center',
+              padding: '0 1.5rem',
+              background: 'radial-gradient(ellipse at center, rgba(22,22,22,0.92) 0%, rgba(22,22,22,0.72) 45%, rgba(22,22,22,0.25) 75%)',
+            }}
           >
-            {t(ui.deckelHinweis)}
+            <span
+              className="schrift-titel"
+              style={{ fontSize: 'clamp(2.5rem, 9vw, 5rem)', color: 'white', lineHeight: 1.1 }}
+            >
+              {t(ui.deckelTitel)}
+            </span>
+
+            <span style={{ fontSize: 'clamp(1rem, 3vw, 1.4rem)', color: 'rgba(255,255,255,0.9)' }}>
+              {t(ui.deckelName)}
+            </span>
+
+            {/* Ohne diesen Hinweis steht man vor einer Flaeche und
+                weiss nicht, dass man klicken soll. */}
+            <span
+              className="pill"
+              style={{ background: 'white', marginTop: '0.6rem', fontSize: '1rem' }}
+            >
+              {t(ui.deckelHinweis)}
+            </span>
           </span>
         </span>
 
