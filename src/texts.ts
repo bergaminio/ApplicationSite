@@ -86,6 +86,7 @@ export const ui = {
   close:         { de: 'Schliessen ✕', en: 'Close ✕' },
   learned:       { de: 'Dabei gelernt', en: 'What I learned' },
   viewOnGithub:  { de: 'Auf GitHub ansehen →', en: 'View on GitHub →' },
+  viewLive:      { de: 'Live ausprobieren →', en: 'Try it live →' },
   noDescription: { de: 'Noch keine Beschreibung auf GitHub.', en: 'No description on GitHub yet.' },
 
   // Bereiche (fuer den Filter)

@@ -1,3 +1,4 @@
+import { pageColors } from '../styles/colors'
 import { GITHUB_USER } from '../api/github'
 import { useSprache } from '../context/LanguageContext'
 import { ui } from '../texts'
@@ -102,18 +103,35 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
           </div>
         )}
 
-        {/* Link zu GitHub - nur wenn es das Projekt dort gibt */}
-        {githubUrl && (
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pill"
-            style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
-          >
-            {t(ui.viewOnGithub)}
-          </a>
-        )}
+        {/* Die Links unten. Die Live-Fassung steht zuerst und ist
+            farbig: sie kann man anklicken und sofort ausprobieren,
+            waehrend der Code erst gelesen werden will. */}
+        <div className="flex flex-wrap gap-3">
+          {project.demo && (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pill"
+              style={{ background: pageColors.projects, padding: '8px 20px', fontSize: '20px' }}
+            >
+              {t(ui.viewLive)}
+            </a>
+          )}
+
+          {/* Link zu GitHub - nur wenn es das Projekt dort gibt */}
+          {githubUrl && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pill"
+              style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
+            >
+              {t(ui.viewOnGithub)}
+            </a>
+          )}
+        </div>
 
       </div>
     </div>

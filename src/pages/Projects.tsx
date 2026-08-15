@@ -29,6 +29,23 @@ const myProjects: Project[] = [
     image: '/demos/bewerbungsseite.png',
   },
   {
+    id: 'combotrainer',
+    name: { de: 'Combo Trainer Lab', en: 'Combo Trainer Lab' },
+    repo: '',
+    demo: 'https://combo-trainer-lab.netlify.app/',
+    text: {
+      de: 'Ein Übungswerkzeug für Kampfspiele. Man wählt einen von dreizehn Charakteren, legt zuerst die eigene Tastenbelegung fest und drillt danach Combos Schritt für Schritt. Die Belegung bleibt im Browser gespeichert und ist beim nächsten Besuch wieder da.',
+      en: 'A practice tool for fighting games. You pick one of thirteen characters, set up your own key layout first, then drill combos step by step. The layout is stored in the browser and is still there on your next visit.',
+    },
+    learned: ['React', 'React Router', 'Vite', 'localStorage', 'Netlify'],
+    // OFFEN: bitte pruefen. React laesst sich von aussen erkennen,
+    // ob der Quelltext TypeScript oder JavaScript ist aber nicht -
+    // im Browser sieht man nur das fertige Buendel.
+    language: 'JavaScript',
+    scene: 'privat',
+    image: '/demos/combotrainer.png',
+  },
+  {
     id: 'bolt',
     name: { de: 'Bolt, die Sprint-App', en: 'Bolt, the sprint app' },
     repo: '',
