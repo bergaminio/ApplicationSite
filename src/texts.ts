@@ -276,6 +276,22 @@ export const ui = {
     de: 'Die beiden Passwörter sind nicht gleich',
     en: "The two passwords don't match",
   },
+  // Neues Konto fuer einen Lehrbetrieb anlegen
+  accAddTitle:    { de: 'Neuen Lehrbetrieb aufnehmen', en: 'Add a new company' },
+  accAddHint: {
+    de: 'Der Anmeldename lässt sich später nicht mehr ändern, weil er im Zugriffsprotokoll steht. Am besten etwas Kurzes wie "swisscom" oder "bbc-buempliz".',
+    en: 'The login name cannot be changed later because it appears in the access log. Something short works best, like "swisscom" or "bbc-buempliz".',
+  },
+  accAddUsername: { de: 'Anmeldename, z.B. swisscom', en: 'Login name, e.g. swisscom' },
+  accAddDisplay:  { de: 'Anzeigename, z.B. Swisscom AG', en: 'Display name, e.g. Swisscom AG' },
+  accAddPassword: { de: 'Passwort, mindestens 8 Zeichen', en: 'Password, at least 8 characters' },
+  accAddButton:   { de: 'Konto anlegen', en: 'Create account' },
+  accAddDone: {
+    de: 'Konto angelegt. Diese Zugangsdaten kommen in die Bewerbung für den Betrieb.',
+    en: 'Account created. These credentials go into the application for that company.',
+  },
+  accAddIncomplete: { de: 'Bitte alle drei Felder ausfüllen.', en: 'Please fill in all three fields.' },
+
   accSave:        { de: 'Speichern', en: 'Save' },
   accCancel:      { de: 'Abbrechen', en: 'Cancel' },
   accConfirmDelete: {

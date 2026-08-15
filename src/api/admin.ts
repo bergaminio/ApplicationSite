@@ -48,6 +48,25 @@ async function hole<T>(pfad: string): Promise<T> {
   return antwort.json()
 }
 
+// Legt ein Konto fuer einen neuen Lehrbetrieb an.
+//
+// Der Benutzername muss eindeutig sein. Gibt es ihn schon, antwortet
+// das Backend mit 409 und einer Meldung, die direkt angezeigt werden
+// kann - besser als ein allgemeines "hat nicht geklappt".
+export async function neuesKonto(username: string, password: string, displayName: string) {
+  const antwort = await fetch(`${API}/api/admin/accounts`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify({ username, password, displayName }),
+    signal: AbortSignal.timeout(ZEITLIMIT),
+  })
+  if (!antwort.ok) {
+    const daten = await antwort.json().catch(() => null)
+    throw new Error(daten?.message ?? 'Anlegen fehlgeschlagen')
+  }
+  return antwort.json()
+}
+
 // Aendert Anzeigename und/oder Passwort eines Kontos.
 // Was leer bleibt, wird nicht angefasst.
 export async function aendereKonto(username: string, displayName: string, password: string) {

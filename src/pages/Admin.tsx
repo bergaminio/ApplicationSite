@@ -3,7 +3,7 @@ import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
-import { ladeKonten, ladeAnmeldeversuche, aendereKonto, loescheKonto, AdminFehler } from '../api/admin'
+import { ladeKonten, ladeAnmeldeversuche, neuesKonto, aendereKonto, loescheKonto, AdminFehler } from '../api/admin'
 import type { KontoUebersicht, Anmeldeversuch } from '../api/admin'
 import { ladeDokumente, ladeHoch, loescheDokument, aendereDokument } from '../api/documents'
 import type { Dokument } from '../api/documents'
@@ -48,6 +48,13 @@ function Admin() {
   // rein - das Passwort ist dann verschluesselt gespeichert und
   // niemand kann es zurueckrechnen.
   const [wiederholung, setWiederholung] = useState('')
+
+  // Felder fuer einen neuen Lehrbetrieb.
+  const [neuBenutzername, setNeuBenutzername] = useState('')
+  const [neuAnzeigename, setNeuAnzeigename] = useState('')
+  const [neuPasswort, setNeuPasswort] = useState('')
+  const [anlegenFehler, setAnlegenFehler] = useState('')
+  const [anlegenOk, setAnlegenOk] = useState(false)
   const [zeigePasswort, setZeigePasswort] = useState(false)
   const [kontoFehler, setKontoFehler] = useState('')
 
@@ -154,6 +161,35 @@ function Admin() {
       setWiederholung('')
     } catch (e) {
       setKontoFehler(e instanceof Error ? e.message : t(ui.docFailed))
+    }
+  }
+
+  async function legeKontoAn() {
+    setAnlegenFehler('')
+    setAnlegenOk(false)
+
+    const benutzer = neuBenutzername.trim()
+    const anzeige = neuAnzeigename.trim()
+    if (!benutzer || !anzeige || !neuPasswort) {
+      setAnlegenFehler(t(ui.accAddIncomplete))
+      return
+    }
+    if (neuPasswort.length < 8) {
+      setAnlegenFehler('Passwort muss mindestens 8 Zeichen haben')
+      return
+    }
+
+    try {
+      await neuesKonto(benutzer, neuPasswort, anzeige)
+      // Die Liste neu holen statt den neuen Eintrag von Hand
+      // anzuhaengen: so stimmt auch die Anzahl der Anmeldungen.
+      setKonten(await ladeKonten())
+      setNeuBenutzername('')
+      setNeuAnzeigename('')
+      setNeuPasswort('')
+      setAnlegenOk(true)
+    } catch (e) {
+      setAnlegenFehler(e instanceof Error ? e.message : t(ui.docFailed))
     }
   }
 
@@ -285,6 +321,65 @@ function Admin() {
             </div>
           </div>
         ))}
+
+        {/* Neuen Lehrbetrieb aufnehmen.
+            Steht unter der Liste, weil man die Liste haeufiger
+            anschaut als man ein Konto anlegt. */}
+        <form
+          onSubmit={e => { e.preventDefault(); legeKontoAn() }}
+          className="box p-4"
+          style={{ borderStyle: 'dashed' }}
+        >
+          <p className="sniglet-bold mb-1">{t(ui.accAddTitle)}</p>
+          <p className="text-xs text-gray-400 mb-3">{t(ui.accAddHint)}</p>
+
+          <div className="flex flex-col sm:flex-row gap-3 mb-3">
+            <input
+              type="text"
+              placeholder={t(ui.accAddUsername)}
+              value={neuBenutzername}
+              onChange={e => setNeuBenutzername(e.target.value)}
+              className="box flex-1 px-3 py-2"
+              style={{ background: 'transparent', fontFamily: 'inherit' }}
+            />
+            <input
+              type="text"
+              placeholder={t(ui.accAddDisplay)}
+              value={neuAnzeigename}
+              onChange={e => setNeuAnzeigename(e.target.value)}
+              className="box flex-1 px-3 py-2"
+              style={{ background: 'transparent', fontFamily: 'inherit' }}
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 mb-3">
+            <input
+              // Absichtlich sichtbar: dieses Passwort muss Michael
+              // abtippen und in die Bewerbung schreiben. Ein Feld
+              // voller Punkte waere hier hinderlich, nicht sicherer.
+              type="text"
+              placeholder={t(ui.accAddPassword)}
+              value={neuPasswort}
+              onChange={e => setNeuPasswort(e.target.value)}
+              className="box flex-1 px-3 py-2"
+              style={{ background: 'transparent', fontFamily: 'inherit' }}
+            />
+            <button
+              type="submit"
+              className="pill"
+              style={{ cursor: 'pointer', background: pageColors.login, color: 'white', padding: '6px 14px' }}
+            >
+              {t(ui.accAddButton)}
+            </button>
+          </div>
+
+          {anlegenFehler && (
+            <p className="text-sm" style={{ color: pageColors.login }} role="alert">{anlegenFehler}</p>
+          )}
+          {anlegenOk && (
+            <p className="text-sm text-gray-600" role="status">{t(ui.accAddDone)}</p>
+          )}
+        </form>
 
         {/* Aendern-Formular, erscheint unter der Liste */}
         {bearbeiteKonto && (
