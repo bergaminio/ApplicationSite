@@ -40,7 +40,7 @@ const myProjects: Project[] = [
     learned: ['TypeScript', 'React', 'React Router', 'Vite', 'localStorage', 'Netlify'],
     language: 'TypeScript',
     scene: 'privat',
-    image: '/demos/combotrainer.png',
+    image: '/demos/combotrainer.jpg',
   },
   {
     id: 'bolt',
