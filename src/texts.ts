@@ -64,9 +64,12 @@ export const ui = {
     de: 'Angefangen hat es damit, dass mich etwas gestört hat: beim Sprinttraining stand immer jemand mit der Stoppuhr daneben. Also habe ich eine App gebaut, die das per GPS erledigt. Seither wird aus jedem Ärgernis ein Projekt. Am meisten lerne ich, wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss.',
     en: "It started with something that annoyed me: at sprint training, someone always had to stand there holding a stopwatch. So I built an app that does it via GPS. Since then, pretty much every annoyance turns into a project. I learn most when I'm building something of my own and have to make it work.",
   },
+  // Praktikum, nicht Lehrstelle. Die IMS schliesst mit einem
+  // Praktikumsjahr ab - das steht auch im Lebenslauf so. Vorher
+  // widersprachen sich die beiden Seiten.
   homeLooking: {
-    de: 'Ich suche eine Lehrstelle als Informatiker, Fachrichtung Applikationsentwicklung.',
-    en: 'I am looking for an apprenticeship in software development.',
+    de: 'Ich suche ein Praktikum in der Applikationsentwicklung.',
+    en: "I'm looking for an internship in software development.",
   },
 
   // Projekte

@@ -25,7 +25,7 @@ const hobbys: Hobby[] = [
   {
     titel: { de: 'Klavier', en: 'Piano' },
     text: {
-      de: 'Ich spiele Klavier, weil es mich fordert. Ein Stück, das beim ersten Durchlesen unmöglich aussieht, sitzt nach ein paar Wochen, und dieses Gefühl mag ich. Dazu höre ich gerne klassische Musik, da liegt es nahe, sie auch selbst zu spielen. Man kommt weiter, indem man eine schwierige Stelle herauslöst und einzeln übt, bis sie sitzt. Beim Programmieren mache ich es genauso.',
+      de: 'Ich spiele Klavier, weil es mich fordert. Ein Stück, das beim ersten Durchlesen unmöglich aussieht, sitzt nach ein paar Wochen, und dieses Gefühl mag ich. Dazu höre ich gerne klassische Musik, da liegt es nahe, sie auch selbst zu spielen. Man kommt weiter, indem man eine schwierige Stelle herauslöst und einzeln übt, bis sie sitzt. Beim Programmieren gehe ich genauso vor.',
       en: "I play the piano because it challenges me. A piece that looks impossible at first sight comes together after a few weeks, and I love that feeling. I also enjoy listening to classical music, so playing it myself was the obvious next step. You get ahead by taking one difficult passage out and practising it on its own until it works. That's exactly how I program.",
     },
     // .m4a und nicht .mp3: die Aufnahme kam als MP4-Container vom
@@ -39,8 +39,8 @@ const hobbys: Hobby[] = [
   {
     titel: { de: 'Bogenschiessen', en: 'Archery' },
     text: {
-      de: 'Bogenschiessen hilft mir bei Haltung und Fokus. Man steht ruhig da, zielt und lässt los. Viel mehr ist es nicht, und genau das macht es so angenehm.',
-      en: "Archery helps me with posture and focus. You stand still, aim and let go. There isn't much more to it, and that's exactly what I find so calming.",
+      de: 'Bogenschiessen hilft mir bei Haltung und Fokus. Man steht still da, zielt und lässt los. Viel mehr ist es nicht, und genau diese Einfachheit tut mir gut.',
+      en: "Archery helps me with posture and focus. You stand still, aim and let go. There isn't much more to it, and that simplicity is exactly what does me good.",
     },
     skizze: 'bogen',
   },

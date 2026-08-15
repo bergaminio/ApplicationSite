@@ -11,18 +11,18 @@ import { ui, type Text } from '../texts'
 
 const ueberMich: Text = {
   de:
-    'Ich mache die IMS an der BWD Bern. Mit dem Programmieren angefangen habe ich, ' +
+    'Ich besuche die IMS an der BWD Bern. Mit dem Programmieren angefangen habe ich, ' +
     'weil ich Sachen bauen wollte, die es so nicht gab: eine App, die meine Sprintzeiten ' +
     'per GPS stoppt, damit beim Training niemand mit der Stoppuhr danebenstehen muss. ' +
     'Danach kamen ein Rollenspiel im Browser und diese Website dazu. Am meisten lerne ich, ' +
     'wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss. Jetzt suche ich ein ' +
-    'Praktikum, in dem ich das an echten Projekten weitermache.',
+    'Praktikum, in dem ich das an echten Projekten vertiefen kann.',
   en:
-    'I am doing the IMS at BWD Bern. I started programming because I wanted to build things ' +
+    "I'm at the IMS at BWD Bern. I started programming because I wanted to build things " +
     'that did not exist yet: an app that times my sprints via GPS, so nobody has to stand ' +
     'there with a stopwatch during training. A browser role-playing game and this website ' +
-    'came after that. I learn the most when I am working on something of my own and have to ' +
-    'get it running. Now I am looking for an internship where I can keep doing that on real projects.',
+    "came after that. I learn most when I'm building something of my own and have to make it " +
+    "work. Now I'm looking for an internship where I can take that further on real projects.",
 }
 
 interface Eintrag {
