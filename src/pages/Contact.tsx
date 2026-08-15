@@ -81,7 +81,7 @@ function Contact() {
           // statt eines kaputten Bildsymbols.
           <div
             className="box flex items-center justify-center text-3xl"
-            style={{ width: '120px', height: '141px', background: pageColors.contact, flexShrink: 0 }}
+            style={{ width: '160px', height: '188px', background: pageColors.contact, flexShrink: 0 }}
           >
             MB
           </div>
@@ -92,8 +92,8 @@ function Contact() {
             onError={() => setFotoFehlt(true)}
             className="box"
             style={{
-              width: '120px',
-              height: '141px',
+              width: '160px',
+              height: '188px',
               objectFit: 'cover',
               flexShrink: 0,
               display: 'block',

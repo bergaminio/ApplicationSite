@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { pageColors, postitColors } from '../styles/colors'
 import Postit from '../components/Postit'
 import PageTitle from '../components/PageTitle'
@@ -8,7 +8,7 @@ import { useSprache } from '../context/LanguageContext'
 import { ui, type Text } from '../texts'
 
 // ---------------------------------------------------------------
-// Die Klavier-Aufnahme gehoert nach public/audio/klavier.mp3.
+// Die Klavier-Aufnahme liegt in public/audio/klavier.m4a.
 // Solange sie fehlt, steht dort ein Hinweis statt eines Abspielers.
 // ---------------------------------------------------------------
 
@@ -16,6 +16,7 @@ interface Hobby {
   titel: Text
   text: Text
   audio?: string      // Pfad zur Aufnahme, wenn es eine gibt
+  audioBis?: number   // Nur die ersten X Sekunden abspielen
   fotos?: string[]    // Bilder fuer die Diashow
   skizze?: SkizzenArt // Kleine Zeichnung neben der Ueberschrift
 }
@@ -27,7 +28,12 @@ const hobbys: Hobby[] = [
       de: 'Ich spiele Klavier, weil es mich fordert. Ein Stück, das beim ersten Durchlesen unmöglich aussieht, sitzt nach ein paar Wochen, und dieses Gefühl mag ich. Dazu höre ich gerne klassische Musik, da liegt es nahe, sie auch selbst zu spielen. Man kommt weiter, indem man eine schwierige Stelle herauslöst und einzeln übt, bis sie sitzt. Beim Programmieren mache ich es genauso.',
       en: "I play the piano because it challenges me. A piece that looks impossible at first sight comes together after a few weeks, and I love that feeling. I also enjoy listening to classical music, so playing it myself was the obvious next step. You get ahead by taking one difficult passage out and practising it on its own until it works. That's exactly how I program.",
     },
-    audio: '/audio/klavier.mp3',
+    // .m4a und nicht .mp3: die Aufnahme kam als MP4-Container vom
+    // Handy. Umwandeln braeuchte ein Werkzeug wie ffmpeg, und jeder
+    // heutige Browser spielt m4a ohnehin ab.
+    audio: '/audio/klavier.m4a',
+    // 1:25.1 - so lange soll die Aufnahme laufen.
+    audioBis: 85.1,
     skizze: 'klavier',
   },
   {
@@ -78,18 +84,68 @@ const hobbys: Hobby[] = [
 
 // Ein Abspieler fuer eine Tonaufnahme.
 // Fehlt die Datei, steht statt eines kaputten Abspielers ein Hinweis.
-function Tonaufnahme({ pfad }: { pfad: string }) {
+//
+// "bis" begrenzt die Wiedergabe auf die ersten X Sekunden. Die Datei
+// selbst bleibt ungekuerzt - zum Schneiden braeuchte es ein Werkzeug
+// wie ffmpeg, das hier nicht installiert ist. Der Browser stoppt
+// stattdessen selbst an der Stelle.
+function Tonaufnahme({ pfad, bis }: { pfad: string; bis?: number }) {
   const { t } = useSprache()
   const [fehlt, setFehlt] = useState(false)
+  // Merkt sich den laufenden Zeitgeber, damit man ihn abbrechen kann.
+  const zeitgeber = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   if (fehlt) {
     return <p className="text-sm text-gray-500 mt-4">{t(ui.audioFehlt)}</p>
   }
 
+  // Die Aufnahme an der Grenze anhalten.
+  //
+  // Zwei Wege gleichzeitig, weil jeder allein eine Luecke hat:
+  //
+  // Der Zeitgeber ist genau. Beim Start rechnen wir aus, wie viele
+  // Millisekunden noch bleiben, und halten dann an. Aber Browser
+  // bremsen Zeitgeber in Hintergrund-Tabs auf etwa eine Sekunde aus.
+  //
+  // timeupdate feuert nur rund viermal pro Sekunde, laeuft dafuer
+  // auch im Hintergrund zuverlaessig weiter.
+  //
+  // Zuerst hatte ich requestAnimationFrame genommen, weil es am
+  // genauesten ist. Das war falsch: es steht komplett still, sobald
+  // die Seite nicht gezeichnet wird. Wer waehrend des Abspielens den
+  // Tab wechselt, haette die Aufnahme bis zum Ende gehoert.
+  function stoppe(spieler: HTMLAudioElement) {
+    spieler.pause()
+    // Zurueck an den Anfang, damit ein zweiter Klick wieder von vorne
+    // startet statt am gesperrten Ende festzuhaengen.
+    spieler.currentTime = 0
+  }
+
+  function starteZeitgeber(e: React.SyntheticEvent<HTMLAudioElement>) {
+    if (!bis) return
+    const spieler = e.currentTarget
+    clearTimeout(zeitgeber.current)
+    const bleibt = (bis - spieler.currentTime) * 1000 / (spieler.playbackRate || 1)
+    zeitgeber.current = setTimeout(() => stoppe(spieler), Math.max(0, bleibt))
+  }
+
+  function pruefeNach(e: React.SyntheticEvent<HTMLAudioElement>) {
+    if (bis && e.currentTarget.currentTime >= bis) stoppe(e.currentTarget)
+  }
+
   return (
     <audio
       controls
-      src={pfad}
+      // Das #t=0,X sagt dem Browser schon beim Laden, welcher
+      // Ausschnitt gemeint ist. Nicht jeder Browser haelt sich an das
+      // Ende, darum die beiden Pruefungen oben.
+      src={bis ? `${pfad}#t=0,${bis}` : pfad}
+      onPlay={starteZeitgeber}
+      // Auch nach dem Spulen neu rechnen, sonst haelt der alte
+      // Zeitgeber an der falschen Stelle an.
+      onSeeked={starteZeitgeber}
+      onPause={() => clearTimeout(zeitgeber.current)}
+      onTimeUpdate={pruefeNach}
       onError={() => setFehlt(true)}
       className="mt-4 w-full"
     />
@@ -127,7 +183,7 @@ function Personal() {
             </div>
             <p className="text-gray-700">{t(hobby.text)}</p>
 
-            {hobby.audio && <Tonaufnahme pfad={hobby.audio} />}
+            {hobby.audio && <Tonaufnahme pfad={hobby.audio} bis={hobby.audioBis} />}
             {hobby.fotos && <Diashow bilder={hobby.fotos} />}
           </Postit>
         ))}

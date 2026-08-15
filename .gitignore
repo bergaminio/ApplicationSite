@@ -34,3 +34,6 @@ fotos-original/
 # Die ausgefuellte .env mit den echten Passwoertern.
 # .env.example gehoert ins Repo, diese hier auf keinen Fall.
 .env
+
+# Die Rohaufnahme. Die fertige Fassung liegt in public/audio/.
+Klavieraufnahme/
