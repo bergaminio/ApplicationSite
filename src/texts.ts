@@ -21,8 +21,14 @@ export const ui = {
   // Die Seite spricht den Besucher bewusst nirgends direkt an - weder
   // mit du noch mit Sie. Stattdessen Infinitiv ("ansehen") oder erste
   // Person ("ich"). Das bleibt hoeflich, ohne steif zu wirken.
-  homePostit: { de: 'Meine Projekte ansehen', en: 'A look at my projects' },
-  homeButton: { de: 'Projekte →', en: 'Projects →' },
+  // Die drei Zettel unten auf der Startseite. Je ein Satz, der sagt,
+  // was einen auf der Seite dahinter erwartet.
+  homePostit:       { de: 'Fünf Sachen, die ich gebaut habe.', en: "Five things I've built." },
+  homePostitCV:     { de: 'Wo ich herkomme und was ich kann.', en: 'Where I come from and what I can do.' },
+  homePostitKontakt: { de: 'So erreicht man mich.', en: 'How to reach me.' },
+  // Steht auf allen drei Zetteln. Vorher stand dort nochmal der
+  // Seitenname, der eine Zeile darueber schon steht.
+  homeOeffnen: { de: 'Öffnen →', en: 'Open →' },
 
   // Der Satz, der die Startseite traegt.
   //

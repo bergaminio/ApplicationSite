@@ -15,13 +15,20 @@ import { ui } from '../texts'
 // kommt. Der Name rueckt dafuer nach oben und wird kleiner - er ist
 // nicht die Nachricht, sondern die Unterschrift.
 
-// Die Verweise unter der Aussage. Als Liste, damit ein weiterer
-// Eintrag eine Zeile kostet und nicht drei.
-const verweise = [
-  { ziel: '/projects', text: ui.navProjects },
-  { ziel: '/cv', text: ui.navCV },
-  { ziel: '/contact', text: ui.navContact },
-]
+// Die drei Zettel unten auf der Startseite.
+//
+// Vorher standen hier drei schmale Knoepfe UND darunter noch ein
+// Post-it, das ebenfalls zu den Projekten fuehrte - derselbe Weg
+// zweimal. Jetzt ein Zettel pro Ziel, kein Ziel doppelt.
+//
+// Jeder traegt die Farbe der Seite, zu der er fuehrt, und liegt
+// leicht schief. Die Verzoegerung laesst sie nacheinander
+// hereinfallen statt alle gleichzeitig.
+const zettel = [
+  { ziel: '/projects', titel: ui.navProjects, text: ui.homePostit,        farbe: postitColors.yellow, drehung: -1.2, skizze: 'bildschirm' },
+  { ziel: '/cv',       titel: ui.navCV,       text: ui.homePostitCV,      farbe: postitColors.green,  drehung: 0.8,  skizze: 'wegweiser' },
+  { ziel: '/contact',  titel: ui.navContact,  text: ui.homePostitKontakt, farbe: postitColors.blue,   drehung: -0.5, skizze: 'brief' },
+] as const
 
 function Home() {
   const { t } = useSprache()
@@ -102,37 +109,32 @@ function Home() {
         {t(ui.homeLooking)}
       </p>
 
-      {/* Drei Wege weiter */}
-      <div className="flex flex-wrap gap-3 mt-8">
-        {verweise.map(v => (
-          <Link
-            key={v.ziel}
-            to={v.ziel}
-            className="pill"
-            style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
+      {/* Drei Wege weiter, als Zettel.
+          Auf dem Handy untereinander, ab 640px nebeneinander. */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 mt-12 sm:mt-16">
+        {zettel.map((z, i) => (
+          <Postit
+            key={z.ziel}
+            colors={z.farbe}
+            rotate={z.drehung}
+            verzoegerung={i * 110}
           >
-            {t(v.text)} →
-          </Link>
-        ))}
-      </div>
+            <div className="flex items-start justify-between gap-2 mb-3">
+              <p className="schrift-titel text-2xl">{t(z.titel)}</p>
+              <Skizze art={z.skizze} groesse={40} />
+            </div>
 
-      {/* Post-it mit dem Knopf zu den Projekten */}
-      <div className="mt-12 sm:mt-16" style={{ maxWidth: '320px' }}>
-        <Postit colors={postitColors.yellow} rotate={-1}>
-          <p className="text-gray-700 mb-6 text-lg">
-            {t(ui.homePostit)}
-          </p>
-          <div className="flex items-center justify-between gap-3">
+            <p className="text-gray-700 mb-6">{t(z.text)}</p>
+
             <Link
-              to="/projects"
-              className="pill"
-              style={{ background: 'white', padding: '8px 24px', fontSize: '20px' }}
+              to={z.ziel}
+              className="pill inline-block"
+              style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
             >
-              {t(ui.homeButton)}
+              {t(ui.homeOeffnen)}
             </Link>
-            <Skizze art="buch" groesse={44} />
-          </div>
-        </Postit>
+          </Postit>
+        ))}
       </div>
 
     </div>

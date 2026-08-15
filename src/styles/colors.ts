@@ -22,4 +22,10 @@ export const pageColors = {
 export const postitColors = {
   yellow: { main: '#ffe2a4', shadow: '#e5dcc4', corner: '#cbbf9c' },
   orange: { main: '#f8cdb2', shadow: '#e6d5c8', corner: '#c9ab95' },
+  // Fuer die drei Zettel auf der Startseite. Jeder traegt die Farbe
+  // der Seite, zu der er fuehrt - gruen fuer den Lebenslauf, blau
+  // fuer den Kontakt. Genauso hell gehalten wie die beiden oberen,
+  // sonst wirkt das weisse Papier daneben eingefaerbt.
+  green:  { main: '#c9f0da', shadow: '#d6e5db', corner: '#a5c9b4' },
+  blue:   { main: '#c8eafd', shadow: '#d5e3ea', corner: '#a3c4d5' },
 }
