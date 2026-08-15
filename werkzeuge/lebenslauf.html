@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Lebenslauf Michael Bergamin</title>
+<!--
+  Vorlage fuer das PDF unter public/lebenslauf.pdf.
+
+  Erzeugen mit:
+    .\werkzeuge\lebenslauf-pdf.ps1
+
+  Diese Datei liegt bewusst in werkzeuge/ und nicht in public/. Sonst
+  waere sie zusaetzlich als Webseite abrufbar, und es gaebe zwei
+  Fassungen desselben Lebenslaufs im Umlauf.
+
+  Die Angaben sind aus src/pages/CV.tsx und src/pages/Contact.tsx
+  uebernommen. Aendert sich dort etwas, gehoert es auch hier hinein.
+
+  KEINE Telefonnummer: das PDF liegt oeffentlich auf der Website, und
+  Michael hat die Nummer dort bewusst hinter die Anmeldung gelegt. Fuer
+  Bewerbungen, die er direkt verschickt, gibt es die zweite Fassung.
+-->
+<style>
+  @page { size: A4; margin: 0; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --dunkel: #3d3d3d;
+    --dunkel-linie: #5a5a5a;
+    --tinte: #1e1e1e;
+    --grau: #6a6a6a;
+    --linie: #d8d8d8;
+    --hell: #f2f2f2;
+  }
+
+  html, body {
+    width: 210mm;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 8.9pt;
+    line-height: 1.44;
+    color: var(--tinte);
+    /* Ohne das druckt der Browser den dunklen Balken weiss. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .seite {
+    display: grid;
+    grid-template-columns: 66mm 1fr;
+    min-height: 297mm;
+  }
+
+  /* ---------- linke Spalte ---------- */
+  .links {
+    background: var(--dunkel);
+    color: #ffffff;
+    padding: 0 0 14mm;
+  }
+
+  /* Die Vorlage ist 265x312 Pixel, also hochkant. Der Rahmen ist
+     fast quadratisch, deshalb schneidet cover oben und unten etwas
+     weg. object-position schiebt den Ausschnitt nach oben, sonst
+     fehlt der Kopf. */
+  .foto {
+    width: 66mm;
+    height: 68mm;
+    object-fit: cover;
+    object-position: center 12%;
+    display: block;
+  }
+
+  .links-inhalt { padding: 9mm 8mm 0; }
+
+  .links h2 {
+    font-size: 8.4pt;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 8mm 0 3mm;
+    color: #ffffff;
+  }
+  .links-inhalt > h2:first-child { margin-top: 0; }
+
+  .zeile { display: grid; grid-template-columns: 5mm 1fr; gap: 2mm; margin-bottom: 2.5mm; align-items: start; }
+  .zeile svg { width: 3.6mm; height: 3.6mm; margin-top: 0.7mm; fill: none; stroke: #ffffff; stroke-width: 1.8; }
+  .zeile span { word-break: break-word; font-size: 8.8pt; }
+
+  .sprache { margin-bottom: 3mm; }
+  .sprache-kopf { display: flex; justify-content: space-between; align-items: baseline; font-size: 8.8pt; }
+  .sprache-kopf b { font-weight: 600; }
+  .sprache-kopf em { font-style: normal; font-size: 8pt; color: #cfcfcf; }
+  .sprache small { display: block; color: #cfcfcf; font-size: 7.8pt; margin-top: 0.3mm; }
+  .balken { height: 1.6mm; background: var(--dunkel-linie); margin-top: 1.2mm; }
+  .balken > i { display: block; height: 100%; background: #ffffff; }
+
+  .liste { list-style: none; }
+  .liste li { position: relative; padding-left: 3.6mm; margin-bottom: 1.6mm; font-size: 8.8pt; }
+  .liste li::before {
+    content: "";
+    position: absolute; left: 0; top: 1.7mm;
+    width: 1.3mm; height: 1.3mm; background: #ffffff;
+  }
+
+  /* ---------- rechte Spalte ---------- */
+  .rechts { padding: 10mm 11mm 6mm 9mm; }
+
+  h1 {
+    font-size: 22pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 1mm;
+  }
+  .rolle { color: var(--grau); font-size: 9.6pt; margin-bottom: 5mm; }
+
+  /* Abschnitt mit Symbol links und durchgehender Linie, wie in der
+     Vorlage. Die Linie ist ein Rahmen am Inhalt, damit sie exakt
+     zwischen den Symbolen durchlaeuft. */
+  .abschnitt { display: grid; grid-template-columns: 7mm 1fr; gap: 4mm; }
+  .marke {
+    width: 7mm; height: 7mm;
+    background: var(--dunkel);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .marke svg { width: 3.8mm; height: 3.8mm; fill: none; stroke: #ffffff; stroke-width: 1.9; }
+  .strang { border-left: 0.4mm solid var(--linie); margin-left: 3.3mm; }
+  .abschnitt-inhalt { padding-bottom: 3.4mm; }
+
+  .rechts h2 {
+    font-size: 9pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 3mm;
+    padding-top: 1mm;
+  }
+
+  .posten { margin-bottom: 2.8mm; }
+  .posten:last-child { margin-bottom: 0; }
+  .posten-kopf { font-weight: 700; font-size: 9.6pt; }
+  .posten-ort { color: var(--grau); font-size: 8.6pt; margin-bottom: 1.2mm; }
+  .posten ul { list-style: none; }
+  .posten li { position: relative; padding-left: 3.4mm; margin-bottom: 0.8mm; }
+  .posten li::before {
+    content: "";
+    position: absolute; left: 0; top: 1.6mm;
+    width: 1.2mm; height: 1.2mm; background: var(--tinte);
+  }
+
+  .projekt { margin-bottom: 2.6mm; }
+  .projekt b { font-size: 9.4pt; }
+  .projekt .technik { color: var(--grau); font-size: 8pt; }
+
+  .hobbys { display: flex; flex-wrap: wrap; gap: 2mm 4mm; }
+  .hobbys span { font-size: 9pt; }
+
+  .fuss { color: var(--grau); font-size: 7.6pt; margin-top: 2.5mm; }
+</style>
+</head>
+<body>
+<div class="seite">
+
+  <!-- ================= linke Spalte ================= -->
+  <aside class="links">
+    <img class="foto" src="../public/fotos/portrait.jpg" alt="Michael Bergamin">
+
+    <div class="links-inhalt">
+      <h2>Kontakt</h2>
+      <div class="zeile">
+        <svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        <span>3232 Ins, Schweiz</span>
+      </div>
+      <div class="zeile">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        <span>michael.bergamin@proton.me</span>
+      </div>
+      <div class="zeile">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/></svg>
+        <span>bergamin.ch</span>
+      </div>
+      <div class="zeile">
+        <svg viewBox="0 0 24 24"><path d="M9 19c-4 1.2-4-2.2-5.6-2.8M15 21v-3.3c0-.9.3-1.6.8-2 -3-.3-6.1-1.4-6.1-6.3 0-1.4.5-2.5 1.3-3.4-.1-.3-.6-1.6.1-3.3 0 0 1.1-.3 3.5 1.3a12 12 0 0 1 6.4 0c2.4-1.6 3.5-1.3 3.5-1.3.7 1.7.2 3 .1 3.3.8.9 1.3 2 1.3 3.4 0 4.9-3.1 6-6.1 6.3.5.4.9 1.2.9 2.4V21"/></svg>
+        <span>github.com/bergaminio</span>
+      </div>
+
+      <h2>Sprachen</h2>
+      <div class="sprache">
+        <div class="sprache-kopf"><b>Deutsch</b><em>C2</em></div>
+        <small>Muttersprache</small>
+        <div class="balken"><i style="width:100%"></i></div>
+      </div>
+      <div class="sprache">
+        <div class="sprache-kopf"><b>Französisch</b><em>B2</em></div>
+        <small>Zertifizierung März 2026</small>
+        <div class="balken"><i style="width:68%"></i></div>
+      </div>
+      <div class="sprache">
+        <div class="sprache-kopf"><b>Englisch</b><em>B2</em></div>
+        <small>Zertifizierung März 2026</small>
+        <div class="balken"><i style="width:68%"></i></div>
+      </div>
+
+      <h2>IT-Kenntnisse</h2>
+      <ul class="liste">
+        <li>TypeScript, JavaScript, React</li>
+        <li>Java, Spring Boot</li>
+        <li>Python</li>
+        <li>Flutter, Dart</li>
+        <li>PostgreSQL</li>
+        <li>Git, GitLab</li>
+        <li>Docker, CI/CD</li>
+      </ul>
+
+      <h2>Hobbys</h2>
+      <ul class="liste">
+        <li>Klavier spielen</li>
+        <li>Bogenschiessen</li>
+        <li>Gaming</li>
+        <li>Fotografieren</li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- ================= rechte Spalte ================= -->
+  <main class="rechts">
+    <h1>Michael Bergamin</h1>
+    <p class="rolle">Informatikmittelschule BWD Bern &middot; sucht ein Praktikum in der Applikationsentwicklung</p>
+
+    <!-- Zusammenfassung -->
+    <div class="abschnitt">
+      <div>
+        <div class="marke"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+        <div class="strang" style="height:calc(100% - 7mm)"></div>
+      </div>
+      <div class="abschnitt-inhalt">
+        <h2>Kurz über mich</h2>
+        <!-- Kuerzer als auf der Website. Der Satz ueber das
+             Rollenspiel und die Website stand doppelt: die Projekte
+             kommen direkt darunter ohnehin ausfuehrlich. -->
+        <p>Ich besuche die IMS an der BWD Bern. Mit dem Programmieren angefangen habe ich, weil ich Sachen bauen wollte, die es so nicht gab: eine App, die meine Sprintzeiten per GPS stoppt, damit beim Training niemand mit der Stoppuhr danebenstehen muss. Am meisten lerne ich, wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss. Jetzt suche ich ein Praktikum, in dem ich das an echten Projekten vertiefen kann.</p>
+      </div>
+    </div>
+
+    <!-- Projekte -->
+    <div class="abschnitt">
+      <div>
+        <div class="marke"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="strang" style="height:calc(100% - 7mm)"></div>
+      </div>
+      <div class="abschnitt-inhalt">
+        <h2>Eigene Projekte</h2>
+
+        <div class="projekt">
+          <b>Bewerbungswebsite bergamin.ch</b>
+          <div class="technik">React, TypeScript, Java Spring Boot, PostgreSQL, Docker</div>
+          Von Grund auf gebaut, ohne Vorlage. Mit eigener Anmeldung, verschlüsselten Passwörtern und einem Zugriffsprotokoll, das zeigt, welcher Betrieb die Unterlagen angeschaut hat.
+        </div>
+
+        <div class="projekt">
+          <b>Combo Trainer Lab</b>
+          <div class="technik">TypeScript, React, React Router, Netlify</div>
+          Übungswerkzeug für Kampfspiele mit dreizehn Charakteren und frei belegbaren Tasten. Läuft unter combo-trainer-lab.netlify.app.
+        </div>
+
+        <div class="projekt">
+          <b>Bolt, Sprint-App</b>
+          <div class="technik">Flutter, Dart, GPS</div>
+          Misst Sprintzeiten. Startet automatisch und stoppt per GPS nach einer festen Distanz.
+        </div>
+
+        <div class="projekt">
+          <b>Aschenreich, 3D-Rollenspiel</b>
+          <div class="technik">JavaScript, Three.js, Electron</div>
+          Dark-Fantasy-Rollenspiel, das direkt im Browser läuft.
+        </div>
+
+        <div class="projekt" style="margin-bottom:0">
+          <b>Bomberman</b>
+          <div class="technik">Java, objektorientierte Programmierung</div>
+          Im Unterricht an der gibb nachgebaut, um OOP zu üben.
+        </div>
+      </div>
+    </div>
+
+    <!-- Erfahrung -->
+    <div class="abschnitt">
+      <div>
+        <div class="marke"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/></svg></div>
+        <div class="strang" style="height:calc(100% - 7mm)"></div>
+      </div>
+      <div class="abschnitt-inhalt">
+        <h2>Erfahrung</h2>
+
+        <!-- Ohne Aufzaehlungspunkte: bei einem einzigen Satz pro
+             Eintrag kostet ein Punkt nur Platz und bringt nichts. -->
+        <div class="posten">
+          <div class="posten-kopf">Schnupperlehre Informatik &middot; 2023</div>
+          <div class="posten-ort">BBC Bümpliz, Bern</div>
+          Einblick in den Berufsalltag der Informatik und erste praktische Erfahrungen.
+        </div>
+
+        <div class="posten">
+          <div class="posten-kopf">Tontechnik bei einem Konzert &middot; 2023</div>
+          Bedienung des Audiopults während der Veranstaltung.
+        </div>
+
+        <div class="posten">
+          <div class="posten-kopf">Service bei einer Theateraufführung &middot; 2024</div>
+          Bewirtung der Gäste während der Vorstellung.
+        </div>
+      </div>
+    </div>
+
+    <!-- Ausbildung -->
+    <div class="abschnitt">
+      <div>
+        <div class="marke"><svg viewBox="0 0 24 24"><path d="M12 4L2 9l10 5 10-5-10-5z"/><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg></div>
+      </div>
+      <div class="abschnitt-inhalt" style="padding-bottom:0">
+        <h2>Ausbildung</h2>
+
+        <div class="posten">
+          <div class="posten-kopf">Informatikmittelschule (IMS) EFZ &middot; 2024 – heute</div>
+          <div class="posten-ort">BWD Bern &middot; Berufsfachschule gibb Bern</div>
+          Softwareentwicklung, DevOps, agile Methoden und Geschäftsprozesse.
+        </div>
+
+        <div class="posten">
+          <div class="posten-kopf">Oberstufenzentrum &middot; 2021 – 2024</div>
+          <div class="posten-ort">OSZ Ins</div>
+        </div>
+
+        <div class="posten">
+          <div class="posten-kopf">Primarschule &middot; 2014 – 2020</div>
+          <div class="posten-ort">Primarschule BTM, Brüttelen &middot; Treiten &middot; Müntschemier</div>
+        </div>
+
+        <p class="fuss">Notenausweise auf Anfrage oder im geschützten Bereich auf bergamin.ch</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>

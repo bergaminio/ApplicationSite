@@ -189,12 +189,16 @@ function CV() {
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
       <PageTitle title={t(ui.cvTitle)} color={pageColors.story} skizze="wegweiser" />
 
-      {/* Sobald public/lebenslauf.pdf da ist, hier den Knopf einhängen:
-          <a href="/lebenslauf.pdf" download className="pill"
-             style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}>
-            Als PDF herunterladen ↓
-          </a>
-      */}
+      {/* Das PDF entsteht aus werkzeuge/lebenslauf.html.
+          Neu erzeugen nach einer Änderung: .\werkzeuge\lebenslauf-pdf.ps1 */}
+      <a
+        href="/lebenslauf.pdf"
+        download
+        className="pill inline-block mb-8"
+        style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
+      >
+        {t(ui.cvDownload)}
+      </a>
 
       {/* Der Laeufer neben dem Text: ein Lebenslauf ist ein Weg,
           kein Stillstand. Reine Verzierung, darum aria-hidden

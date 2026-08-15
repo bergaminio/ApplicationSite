@@ -98,6 +98,7 @@ export const ui = {
 
   // Lebenslauf
   cvTitle:    { de: 'Lebenslauf', en: 'CV' },
+  cvDownload: { de: 'Als PDF herunterladen ↓', en: 'Download as PDF ↓' },
   education:  { de: 'Ausbildung', en: 'Education' },
   experience: { de: 'Erfahrung', en: 'Experience' },
   sideJobs:   { de: 'Nebenjobs & Freiwilligenarbeit', en: 'Side jobs & volunteer work' },
