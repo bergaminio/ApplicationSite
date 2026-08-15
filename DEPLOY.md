@@ -4,6 +4,13 @@ Alles läuft in drei Containern: Datenbank, Backend, Website.
 Auf dem Server muss nur Docker installiert sein — kein Java, kein
 Node, kein PostgreSQL.
 
+> Dieselbe Anleitung gibt es als Webseite zum Weiterschicken:
+> https://claude.ai/code/artifact/39089594-6ff8-4290-af20-6a344e8813c5
+
+**Vorher prüfen:** `docker compose version` muss antworten. Dazu rund
+1 GB freien Arbeitsspeicher und etwa 3 GB Platz auf der Platte — der
+erste Bau lädt Java und Node herunter.
+
 ---
 
 ## Kurzfassung
@@ -58,7 +65,11 @@ laufen soll:
 docker compose up -d db backend
 ```
 
-`API_URL` darf dann leer bleiben.
+`API_URL` darf dann leer bleiben — aber die **Zeile muss in der `.env`
+stehen**. Compose liest immer die ganze Datei, auch wenn man nur zwei
+Dienste startet. Fehlt der Wert ganz, bricht es mit
+`required variable API_URL is missing a value` ab, obwohl man das
+Frontend gar nicht hochfahren wollte.
 
 ---
 

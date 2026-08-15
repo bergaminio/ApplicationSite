@@ -88,7 +88,19 @@ services:
         # Beim Bauen eingebacken, nicht beim Starten - siehe die
         # Erklaerung im Dockerfile. Wer diesen Wert aendert, muss neu
         # bauen: docker compose up -d --build frontend
-        VITE_API_URL: ${API_URL:?API_URL fehlt in der .env}
+        #
+        # Absichtlich OHNE :? - der Wert darf leer sein.
+        #
+        # Grund: Compose liest immer die ganze Datei, auch bei
+        # "docker compose up -d db backend". Mit :? koennte man das
+        # Backend allein gar nicht starten, ohne vorher eine Adresse
+        # fuer eine Website einzutragen, die man gar nicht hostet.
+        #
+        # Bleibt der Wert leer, zeigt die Website statt des
+        # Anmeldeformulars den Hinweis "Fertig gebaut, noch nicht
+        # aufgeschaltet". Das ist ein sichtbarer Zustand und kein
+        # stiller Fehler.
+        VITE_API_URL: ${API_URL:-}
     restart: unless-stopped
     depends_on:
       - backend
