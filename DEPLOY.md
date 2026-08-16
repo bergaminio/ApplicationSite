@@ -4,9 +4,6 @@ Alles läuft in drei Containern: Datenbank, Backend, Website.
 Auf dem Server muss nur Docker installiert sein — kein Java, kein
 Node, kein PostgreSQL.
 
-> Dieselbe Anleitung gibt es als Webseite zum Weiterschicken:
-> https://claude.ai/code/artifact/39089594-6ff8-4290-af20-6a344e8813c5
-
 **Vorher prüfen:** `docker compose version` muss antworten. Dazu rund
 1 GB freien Arbeitsspeicher und etwa 3 GB Platz auf der Platte — der
 erste Bau lädt Java und Node herunter.
