@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Lebenslauf Michael Bergamin</title>
 <!--
-  Vorlage fuer das PDF unter public/lebenslauf.pdf.
+  Vorlage fuer lebenslauf.pdf im Projektordner.
 
   Erzeugen mit:
     .\werkzeuge\lebenslauf-pdf.ps1
@@ -16,9 +16,9 @@
   Die Angaben sind aus src/pages/CV.tsx und src/pages/Contact.tsx
   uebernommen. Aendert sich dort etwas, gehoert es auch hier hinein.
 
-  KEINE Telefonnummer: das PDF liegt oeffentlich auf der Website, und
-  Michael hat die Nummer dort bewusst hinter die Anmeldung gelegt. Fuer
-  Bewerbungen, die er direkt verschickt, gibt es die zweite Fassung.
+  KEINE Telefonnummer: diese Fassung ist die allgemeine. Fuer
+  Bewerbungen, die Michael direkt verschickt, erzeugt das Skript mit
+  -MitTelefon eine zweite Fassung mit Nummer.
 -->
 <style>
   @page { size: A4; margin: 0; }
@@ -283,32 +283,19 @@
       </div>
     </div>
 
-    <!-- Erfahrung -->
+    <!-- Referenzen
+         OFFEN: Michael muss Namen, Rolle, Betrieb und Kontakt
+         liefern. Bis dahin steht hier nur der Hinweis. Die
+         Erfahrungs-Eintraege (Schnupperlehre, Tontechnik, Service)
+         hat ein Bewerbungscoach gestrichen. -->
     <div class="abschnitt">
       <div>
-        <div class="marke"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/></svg></div>
+        <div class="marke"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
         <div class="strang" style="height:calc(100% - 7mm)"></div>
       </div>
       <div class="abschnitt-inhalt">
-        <h2>Erfahrung</h2>
-
-        <!-- Ohne Aufzaehlungspunkte: bei einem einzigen Satz pro
-             Eintrag kostet ein Punkt nur Platz und bringt nichts. -->
-        <div class="posten">
-          <div class="posten-kopf">Schnupperlehre Informatik &middot; 2023</div>
-          <div class="posten-ort">BBC Bümpliz, Bern</div>
-          Einblick in den Berufsalltag der Informatik und erste praktische Erfahrungen.
-        </div>
-
-        <div class="posten">
-          <div class="posten-kopf">Tontechnik bei einem Konzert &middot; 2023</div>
-          Bedienung des Audiopults während der Veranstaltung.
-        </div>
-
-        <div class="posten">
-          <div class="posten-kopf">Service bei einer Theateraufführung &middot; 2024</div>
-          Bewirtung der Gäste während der Vorstellung.
-        </div>
+        <h2>Referenzen</h2>
+        <div class="posten">Referenzen gebe ich auf Anfrage gerne an.</div>
       </div>
     </div>
 
@@ -331,10 +318,9 @@
           <div class="posten-ort">OSZ Ins</div>
         </div>
 
-        <div class="posten">
-          <div class="posten-kopf">Primarschule &middot; 2014 – 2020</div>
-          <div class="posten-ort">Primarschule BTM, Brüttelen &middot; Treiten &middot; Müntschemier</div>
-        </div>
+        <!-- Primarschule auf Anraten des Bewerbungscoachs gestrichen:
+             die hat jeder besucht, sie sagt nichts aus. -->
+
 
         <p class="fuss">Notenausweise auf Anfrage oder im geschützten Bereich auf bergamin.ch</p>
       </div>

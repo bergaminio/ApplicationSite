@@ -18,7 +18,11 @@ param(
 
 $basis = Split-Path $PSScriptRoot -Parent
 $quelle = Join-Path $PSScriptRoot "lebenslauf.html"
-$ziel = Join-Path $basis "public\lebenslauf.pdf"
+# Bewusst NICHT nach public/. Was dort liegt, ist fuer jeden abrufbar,
+# der die Adresse kennt - auch ohne Anmeldung. Der Lebenslauf gehoert
+# seit August 2026 hinter den Login, also darf das PDF nicht mehr
+# oeffentlich herumliegen. Es ist zum Mitschicken bei Bewerbungen da.
+$ziel = Join-Path $basis "lebenslauf.pdf"
 
 if ($MitTelefon) {
     # Eine Kopie anlegen, Telefonzeile einsetzen, daraus drucken.

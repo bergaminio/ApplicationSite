@@ -98,10 +98,14 @@ export const ui = {
 
   // Lebenslauf
   cvTitle:    { de: 'Lebenslauf', en: 'CV' },
-  cvDownload: { de: 'Als PDF herunterladen ↓', en: 'Download as PDF ↓' },
+  cvLocked: {
+    de: 'Mein Lebenslauf steht nur nach dem Anmelden offen. Die Zugangsdaten stehen in meiner Bewerbung.',
+    en: 'My CV is only available after signing in. The credentials are in my application.',
+  },
+  cvToLogin: { de: 'Zur Anmeldung →', en: 'To the sign-in →' },
   education:  { de: 'Ausbildung', en: 'Education' },
-  experience: { de: 'Erfahrung', en: 'Experience' },
-  sideJobs:   { de: 'Nebenjobs & Freiwilligenarbeit', en: 'Side jobs & volunteer work' },
+  references: { de: 'Referenzen', en: 'References' },
+  referencesOnRequest: { de: 'Kontakt auf Anfrage', en: 'Contact on request' },
   languages:  { de: 'Sprachen', en: 'Languages' },
   itSkills:   { de: 'IT-Kenntnisse', en: 'IT skills' },
   hobbies:    { de: 'Hobbys', en: 'Hobbies' },

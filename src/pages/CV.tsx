@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom'
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import Skizze, { type SkizzenArt } from '../components/Skizze'
 import { useSprache } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
 import { ui, type Text } from '../texts'
 
 // ---------------------------------------------------------------
@@ -56,54 +58,40 @@ const ausbildung: Eintrag[] = [
     ort: { de: 'OSZ Ins', en: 'OSZ Ins' },
     text: leer,
   },
-  {
-    zeit: { de: '2014 – 2020', en: '2014 – 2020' },
-    titel: { de: 'Primarschule', en: 'Primary school' },
-    ort: {
-      de: 'Primarschule BTM (Brüttelen · Treiten · Müntschemier)',
-      en: 'Primary school BTM (Brüttelen · Treiten · Müntschemier)',
-    },
-    text: leer,
-  },
+  // Die Primarschule stand hier bis August 2026. Ein
+  // Bewerbungscoach hat sie gestrichen: in einem Lebenslauf beginnt
+  // die Ausbildung bei der Oberstufe, die Primarschule hat jeder
+  // besucht und sagt nichts aus.
 ]
 
-const erfahrung: Eintrag[] = [
-  {
-    zeit: { de: '2023', en: '2023' },
-    titel: { de: 'Schnupperlehre Informatik', en: 'Trial apprenticeship in IT' },
-    ort: { de: 'BBC Bümpliz, Bern', en: 'BBC Bümpliz, Bern' },
-    text: {
-      de: 'Einblick in den Berufsalltag der Informatik und erste praktische Erfahrungen.',
-      en: 'A look at everyday work in IT and first hands-on experience.',
-    },
-  },
-]
-
-// Nebenjobs und Freiwilligenarbeit. Die Checkliste der IMS fragt
-// ausdruecklich danach - auch Unbezahltes zaehlt.
+// Referenzen statt Erfahrung.
 //
-// OFFEN: Die Jahre sind aus dem Gedaechtnis - bitte nachpruefen.
-// Ein falsches Datum faellt spaetestens im Bewerbungsgespraech auf.
-// Der Ort fehlt noch; leer lassen geht, dann bleibt die Zeile weg.
-const nebenjobs: Eintrag[] = [
-  {
-    zeit: { de: '2023', en: '2023' },
-    titel: { de: 'Tontechnik bei einem Konzert', en: 'Sound engineering at a concert' },
-    ort: leer,
-    text: {
-      de: 'Bedienung des Audiopults während der Veranstaltung.',
-      en: 'Operating the mixing desk during the event.',
-    },
-  },
-  {
-    zeit: { de: '2024', en: '2024' },
-    titel: { de: 'Service bei einer Theateraufführung', en: 'Service at a theatre performance' },
-    ort: leer,
-    text: {
-      de: 'Bewirtung der Gäste während der Vorstellung.',
-      en: 'Serving guests during the performance.',
-    },
-  },
+// Bis August 2026 standen hier die Schnupperlehre bei BBC Buempliz
+// und zwei Nebenjobs (Tontechnik, Service). Ein Bewerbungscoach hat
+// beides gestrichen: fuer ein Praktikum in der Informatik sagt ein
+// Abend am Audiopult wenig, und wer buergt, sagt mehr als was man
+// gemacht hat.
+//
+// OFFEN: Michael muss die Angaben liefern. Solange die Liste leer
+// ist, erscheint der Abschnitt gar nicht - besser als eine leere
+// Ueberschrift.
+//
+// WICHTIG: vorher fragen. Niemand steht gern ungefragt mit Name und
+// Telefonnummer auf einer Website.
+interface Referenz {
+  name: string
+  rolle: Text      // z.B. "Berufsbildner Informatik"
+  betrieb: string  // z.B. "BBC Bümpliz, Bern"
+  kontakt: string  // Mail oder Telefon. Leer lassen = "auf Anfrage"
+}
+
+const referenzen: Referenz[] = [
+  // {
+  //   name: 'Vorname Nachname',
+  //   rolle: { de: 'Berufsbildner Informatik', en: 'IT training supervisor' },
+  //   betrieb: 'BBC Bümpliz, Bern',
+  //   kontakt: 'vorname.nachname@example.ch',
+  // },
 ]
 
 const sprachen: { name: Text; niveau: Text }[] = [
@@ -184,21 +172,60 @@ function EintragZeile({ zeit, titel, ort, text }: Eintrag) {
 
 function CV() {
   const { t } = useSprache()
+  const { benutzer, laedt } = useAuth()
+
+  // Solange noch unklar ist, ob jemand angemeldet ist, nichts zeigen.
+  // Ohne diese Zwischenstufe blitzt der Hinweis "erst nach dem
+  // Anmelden" auch bei Angemeldeten kurz auf.
+  if (laedt) {
+    return (
+      <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
+        <PageTitle title={t(ui.cvTitle)} color={pageColors.story} skizze="wegweiser" />
+        <p className="text-gray-400">{t(ui.adminLoading)}</p>
+      </div>
+    )
+  }
+
+  // Der Lebenslauf steht nur Angemeldeten offen.
+  //
+  // Ein Bewerbungscoach hat dazu geraten: hier stehen Wohnort,
+  // Schulen und Jahrgaenge beieinander, und das gehoert nicht frei
+  // ins Netz. Projekte und Startseite bleiben offen, die sollen ja
+  // gefunden werden.
+  if (!benutzer) {
+    return (
+      <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
+        <PageTitle title={t(ui.cvTitle)} color={pageColors.story} skizze="wegweiser" />
+        <p className="text-gray-700 mb-6" style={{ maxWidth: '34rem' }}>
+          {t(ui.cvLocked)}
+        </p>
+        <Link
+          to="/login"
+          className="pill inline-block"
+          style={{ background: pageColors.login, color: 'white', padding: '8px 20px', fontSize: '20px' }}
+        >
+          {t(ui.cvToLogin)}
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
       <PageTitle title={t(ui.cvTitle)} color={pageColors.story} skizze="wegweiser" />
 
-      {/* Das PDF entsteht aus werkzeuge/lebenslauf.html.
-          Neu erzeugen nach einer Änderung: .\werkzeuge\lebenslauf-pdf.ps1 */}
-      <a
-        href="/lebenslauf.pdf"
-        download
-        className="pill inline-block mb-8"
-        style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
-      >
-        {t(ui.cvDownload)}
-      </a>
+      {/* Hier stand ein Knopf "Als PDF herunterladen".
+          Er ist raus, weil er den Login unterlaufen haette: eine Datei
+          in public/ liefert der Webserver an jeden aus, der die
+          Adresse kennt - angemeldet oder nicht. Die Seite waere
+          geschuetzt gewesen, das PDF mit denselben Angaben nicht.
+
+          Das PDF entsteht weiterhin mit werkzeuge/lebenslauf-pdf.ps1
+          und wird Bewerbungen direkt beigelegt.
+
+          Soll es doch auf die Website, muss es das Backend ausliefern
+          wie die Notenausweise - dort prueft der Server bei jedem
+          Abruf das Anmelde-Token. */}
 
       {/* Der Laeufer neben dem Text: ein Lebenslauf ist ein Weg,
           kein Stillstand. Reine Verzierung, darum aria-hidden
@@ -216,17 +243,24 @@ function CV() {
         ))}
       </Abschnitt>
 
-      <Abschnitt titel={t(ui.experience)} skizze="bildschirm">
-        {erfahrung.map(eintrag => (
-          <EintragZeile key={eintrag.titel.de} {...eintrag} />
-        ))}
-      </Abschnitt>
-
-      <Abschnitt titel={t(ui.sideJobs)} skizze="kaffee">
-        {nebenjobs.map(eintrag => (
-          <EintragZeile key={eintrag.titel.de} {...eintrag} />
-        ))}
-      </Abschnitt>
+      {/* Erscheint erst, wenn oben Referenzen eingetragen sind.
+          Eine Ueberschrift ohne Inhalt sieht nach Baustelle aus. */}
+      {referenzen.length > 0 && (
+        <Abschnitt titel={t(ui.references)} skizze="brief">
+          {referenzen.map(r => (
+            <div key={r.name} className="flex flex-col sm:flex-row gap-1 sm:gap-6 mb-6">
+              <p className="text-sm text-gray-400 sm:w-28 sm:shrink-0">{t(r.rolle)}</p>
+              <div>
+                <p className="sniglet-bold">{r.name}</p>
+                <p className="text-sm text-gray-500">{r.betrieb}</p>
+                <p className="text-sm text-gray-700 mt-1">
+                  {r.kontakt || t(ui.referencesOnRequest)}
+                </p>
+              </div>
+            </div>
+          ))}
+        </Abschnitt>
+      )}
 
       <Abschnitt titel={t(ui.languages)}>
         {sprachen.map(sprache => (
