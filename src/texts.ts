@@ -103,6 +103,14 @@ export const ui = {
     en: 'My CV is only available after signing in. The credentials are in my application.',
   },
   cvToLogin: { de: 'Zur Anmeldung →', en: 'To the sign-in →' },
+  cvIntro: {
+    de: 'Mein vollständiger Lebenslauf als PDF. Ausbildung, Referenzen, Sprachen und was ich bisher gebaut habe.',
+    en: 'My full CV as a PDF. Education, references, languages and what I have built so far.',
+  },
+  cvMissing: {
+    de: 'Der Lebenslauf ist noch nicht hochgeladen.',
+    en: 'The CV has not been uploaded yet.',
+  },
   education:  { de: 'Ausbildung', en: 'Education' },
   references: { de: 'Referenzen', en: 'References' },
   referencesOnRequest: { de: 'Kontakt auf Anfrage', en: 'Contact on request' },
@@ -251,6 +259,7 @@ export const ui = {
   // Bewusst ohne Anbieter: die ueK waren bei mehreren, die Namen
   // stehen bei den einzelnen Dokumenten.
   areaUEK: { de: 'ÜK · Überbetriebliche Kurse', en: 'Inter-company courses' },
+  areaLebenslauf: { de: 'Lebenslauf', en: 'CV' },
 
   // Notenausweis hochladen (nur Admin)
   docAdd:       { de: 'Notenausweis hochladen', en: 'Upload grade report' },

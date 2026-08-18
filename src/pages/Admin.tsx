@@ -479,6 +479,7 @@ function Admin() {
             <option value="EFZ">EFZ</option>
             <option value="BM">BM</option>
             <option value="UEK">ÜK</option>
+            <option value="LEBENSLAUF">Lebenslauf</option>
           </select>
 
           <input
@@ -535,6 +536,7 @@ function Admin() {
                   <option value="EFZ">EFZ</option>
                   <option value="BM">BM</option>
                   <option value="UEK">ÜK</option>
+                  <option value="LEBENSLAUF">Lebenslauf</option>
                 </select>
                 <input
                   type="text"

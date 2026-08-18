@@ -112,7 +112,11 @@ public class AdminController {
     private static final List<String> ERLAUBTE_TYPEN = List.of(
             "image/jpeg", "image/png", "image/webp", "application/pdf");
 
-    private static final List<String> ERLAUBTE_BEREICHE = List.of("EFZ", "BM", "UEK");
+    // LEBENSLAUF kam im August 2026 dazu. Der Lebenslauf stand vorher
+    // fest im Quelltext - und der liegt oeffentlich auf GitHub, samt
+    // Wohnort, Schulen und Jahrgaengen. Jetzt liegt er als Datei in
+    // der Datenbank und wird nur an Angemeldete ausgeliefert.
+    private static final List<String> ERLAUBTE_BEREICHE = List.of("EFZ", "BM", "UEK", "LEBENSLAUF");
 
     // POST /api/admin/documents
     // Laedt einen Notenausweis hoch (Bild oder PDF).

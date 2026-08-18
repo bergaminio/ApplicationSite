@@ -45,3 +45,8 @@ lebenslauf-mit-telefon.pdf
 # Der fertige Lebenslauf. Enthaelt Wohnort, Schulen und Jahrgaenge -
 # das Repository ist oeffentlich, also bleibt er lokal.
 lebenslauf.pdf
+
+# Die Lebenslauf-Vorlage. Enthaelt Wohnort, Schulen und Jahrgaenge -
+# genau das, was seit August 2026 nicht mehr oeffentlich sein soll.
+# Als Geruest liegt lebenslauf.beispiel.html daneben.
+werkzeuge/lebenslauf.html

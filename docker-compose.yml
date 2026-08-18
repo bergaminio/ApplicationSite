@@ -68,6 +68,11 @@ services:
       # die falsche, bricht jede Anfrage mit "Failed to fetch" ab.
       APP_CORS_ALLOWED_ORIGINS: ${SITE_URL:?SITE_URL fehlt in der .env}
 
+      # Wohnort und Telefonnummer. Nicht im Quelltext, weil das
+      # Repository oeffentlich ist. Leer lassen ist erlaubt.
+      CONTACT_PLACE: ${CONTACT_PLACE:-}
+      CONTACT_PHONE: ${CONTACT_PHONE:-}
+
       # Auf dem Server nicht jede SQL-Abfrage mitschreiben.
       SPRING_JPA_SHOW_SQL: "false"
     ports:

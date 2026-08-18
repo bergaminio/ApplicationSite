@@ -6,7 +6,7 @@ const ZEITLIMIT = 15000   // Uploads duerfen laenger dauern als eine normale Anf
 export interface Dokument {
   id: number
   title: string
-  area: 'EFZ' | 'BM' | 'UEK'
+  area: 'EFZ' | 'BM' | 'UEK' | 'LEBENSLAUF'
   contentType: string
   size: number
   uploadedAt: string
@@ -92,4 +92,18 @@ export async function loescheDokument(id: number) {
 
 export function istBild(contentType: string) {
   return contentType.startsWith('image/')
+}
+
+// Wohnort und Telefonnummer.
+//
+// Beides steht nicht im Quelltext, sondern in der Umgebung des
+// Servers - das Repository ist oeffentlich. Der Server liefert die
+// Angaben nur mit gueltigem Token aus.
+export async function ladeKontakt(): Promise<{ place: string; phone: string }> {
+  const antwort = await fetch(`${API}/api/contact`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+    signal: AbortSignal.timeout(ZEITLIMIT),
+  })
+  if (!antwort.ok) throw new Error('Kontaktangaben nicht abrufbar')
+  return antwort.json()
 }

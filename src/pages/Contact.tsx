@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import Skizze from '../components/Skizze'
 import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
+import { ladeKontakt } from '../api/documents'
 import { ui, type Text } from '../texts'
 
 // ---------------------------------------------------------------
@@ -12,7 +13,6 @@ import { ui, type Text } from '../texts'
 // ---------------------------------------------------------------
 
 const NAME = 'Michael Bergamin'
-const ORT = '3232 Ins, Schweiz'
 const GITHUB = 'https://github.com/bergaminio/ApplicationSite'
 
 // Die E-Mail steht in zwei Teilen und wird erst im Browser
@@ -27,9 +27,6 @@ const GITHUB = 'https://github.com/bergaminio/ApplicationSite'
 // Kein perfekter Schutz: wer sich Muehe gibt, kommt trotzdem dran.
 // Wirklich sicher waere nur ein Kontaktformular ueber das Backend.
 const EMAIL_TEILE = ['michael.bergamin', 'proton.me']
-
-// Die Telefonnummer sieht nur, wer angemeldet ist.
-const TELEFON = '+41 76 537 56 30'
 
 // OFFEN: Sobald das Hosting steht, hier den Anbieter eintragen.
 // Solange der Text leer ist, bleibt die Zeile im Impressum weg.
@@ -65,6 +62,16 @@ function Contact() {
   // Fehlt die Bilddatei, zeigen wir wieder das Kuerzel statt eines
   // kaputten Bildsymbols.
   const [fotoFehlt, setFotoFehlt] = useState(false)
+
+  // Wohnort und Telefonnummer stehen nicht im Quelltext, sondern in
+  // der Umgebung des Servers - das Repository ist oeffentlich. Der
+  // Server rueckt sie nur mit gueltigem Token heraus.
+  const [kontakt, setKontakt] = useState({ place: '', phone: '' })
+
+  useEffect(() => {
+    if (!benutzer) return
+    ladeKontakt().then(setKontakt).catch(() => {})
+  }, [benutzer])
 
   return (
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
@@ -114,9 +121,9 @@ function Contact() {
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelPhone)}</p>
             {/* Nur fuer Angemeldete - sonst sammeln Bots die Nummer ein */}
-            {benutzer ? (
-              <a href={`tel:${TELEFON.replace(/\s/g, '')}`} className="underline hover:text-gray-500">
-                {TELEFON}
+            {benutzer && kontakt.phone ? (
+              <a href={`tel:${kontakt.phone.replace(/\s/g, '')}`} className="underline hover:text-gray-500">
+                {kontakt.phone}
               </a>
             ) : (
               <p className="text-gray-400 text-sm">{t(ui.phoneAfterLogin)}</p>
@@ -124,7 +131,9 @@ function Contact() {
           </div>
           <div>
             <p className="text-gray-400 text-xs mb-1">{t(ui.labelPlace)}</p>
-            <p>{ORT}</p>
+            {benutzer && kontakt.place
+              ? <p>{kontakt.place}</p>
+              : <p className="text-gray-400 text-sm">{t(ui.phoneAfterLogin)}</p>}
           </div>
         </div>
 
@@ -150,7 +159,7 @@ function Contact() {
 
         <Angabe titel={t(ui.imprintResponsible)}>
           <p>{NAME}</p>
-          <p>{ORT}</p>
+          {benutzer && kontakt.place && <p>{kontakt.place}</p>}
           <EmailLink />
         </Angabe>
 
