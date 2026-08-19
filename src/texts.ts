@@ -107,6 +107,10 @@ export const ui = {
     de: 'Mein vollständiger Lebenslauf als PDF. Ausbildung, Referenzen, Sprachen und was ich bisher gebaut habe.',
     en: 'My full CV as a PDF. Education, references, languages and what I have built so far.',
   },
+  cvPdfHint: {
+    de: 'Diesen Lebenslauf gibt es auch als PDF, zusammen mit den Notenausweisen unter',
+    en: 'This CV is also available as a PDF, together with the grade reports under',
+  },
   cvMissing: {
     de: 'Der Lebenslauf ist noch nicht hochgeladen.',
     en: 'The CV has not been uploaded yet.',

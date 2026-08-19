@@ -131,3 +131,31 @@ export async function ladeAlleAlsZip() {
   // liegen bis die Seite neu geladen wird.
   URL.revokeObjectURL(adresse)
 }
+
+// Die Lebenslauf-Angaben. Liegen als Datei auf dem Server, nicht im
+// Quelltext - das Repository ist oeffentlich.
+//
+// Der Aufbau steht in lebenslauf.beispiel.json. Fehlt die Datei auf
+// dem Server, antwortet er mit 404 und die Seite zeigt nur das PDF.
+export interface Zweisprachig { de: string; en: string }
+
+export interface Lebenslauf {
+  ueberMich: Zweisprachig
+  ausbildung: { zeit: Zweisprachig; titel: Zweisprachig; ort: Zweisprachig; text: Zweisprachig }[]
+  referenzen: { name: string; rolle: Zweisprachig; betrieb: string; zusatz: Zweisprachig; kontakt: string }[]
+  sprachen: { name: Zweisprachig; niveau: Zweisprachig }[]
+  itKenntnisse: string[]
+  hobbys: Zweisprachig[]
+}
+
+export async function ladeLebenslauf(): Promise<Lebenslauf | null> {
+  const antwort = await fetch(`${API}/api/cv`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+    signal: AbortSignal.timeout(ZEITLIMIT),
+  })
+  // 404 heisst: auf dem Server ist keine Datei hinterlegt. Das ist
+  // kein Fehler, die Seite zeigt dann einfach nur das PDF.
+  if (antwort.status === 404) return null
+  if (!antwort.ok) throw new Error('Lebenslauf nicht abrufbar')
+  return antwort.json()
+}

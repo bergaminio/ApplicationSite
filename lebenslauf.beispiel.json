@@ -1,0 +1,48 @@
+{
+  "ueberMich": {
+    "de": "Ich besuche die IMS an der BWD Bern. Mit dem Programmieren angefangen habe ich, weil ich Sachen bauen wollte, die es so nicht gab: eine App, die meine Sprintzeiten per GPS stoppt, damit beim Training niemand mit der Stoppuhr danebenstehen muss. Am meisten lerne ich, wenn ich an etwas Eigenem sitze und es zum Laufen bringen muss. Jetzt suche ich ein Praktikum, in dem ich das an echten Projekten vertiefen kann.",
+    "en": "I'm at the IMS at BWD Bern. I started programming because I wanted to build things that did not exist yet: an app that times my sprints via GPS, so nobody has to stand there with a stopwatch during training. I learn most when I'm building something of my own and have to make it work. Now I'm looking for an internship where I can take that further on real projects."
+  },
+  "ausbildung": [
+    {
+      "zeit": { "de": "2024 – heute", "en": "2024 – today" },
+      "titel": { "de": "Informatikmittelschule (IMS) EFZ", "en": "Informatikmittelschule (IMS), IT secondary school, EFZ" },
+      "ort": { "de": "BWD Bern (IMS) · [Schule] (Berufsschule)", "en": "BWD Bern (IMS) · gibb Bern (vocational school)" },
+      "text": { "de": "Softwareentwicklung, DevOps, agile Methoden und Geschäftsprozesse.", "en": "Software development, DevOps, agile methods and business processes." }
+    },
+    {
+      "zeit": { "de": "2021 – 2024", "en": "2021 – 2024" },
+      "titel": { "de": "Oberstufenzentrum (OSZ)", "en": "Lower secondary school (OSZ)" },
+      "ort": { "de": "[Schule]", "en": "[Schule]" },
+      "text": { "de": "", "en": "" }
+    }
+  ],
+  "referenzen": [
+    {
+      "name": "[Name Referenz 1]",
+      "rolle": { "de": "Lehrperson Informatik", "en": "IT teacher" },
+      "betrieb": "[Schule]",
+      "zusatz": { "de": "Module 293 Webauftritt erstellen und veröffentlichen · 322 Benutzerschnittstellen entwerfen und implementieren", "en": "Modules 293 web presence · 322 user interfaces" },
+      "kontakt": "[Mail oder Telefon]"
+    },
+    {
+      "name": "[Name Referenz 2]",
+      "rolle": { "de": "Lehrperson", "en": "Teacher" },
+      "betrieb": "[Schule]",
+      "zusatz": { "de": "", "en": "" },
+      "kontakt": "[Mail oder Telefon]"
+    }
+  ],
+  "sprachen": [
+    { "name": { "de": "Deutsch", "en": "German" }, "niveau": { "de": "Muttersprache", "en": "Native speaker" } },
+    { "name": { "de": "Französisch", "en": "French" }, "niveau": { "de": "B2 (Zertifizierung März 2027)", "en": "B2 (certification March 2027)" } },
+    { "name": { "de": "Englisch", "en": "English" }, "niveau": { "de": "B2 (Zertifizierung März 2027)", "en": "B2 (certification March 2027)" } }
+  ],
+  "itKenntnisse": ["TypeScript", "React", "Java", "Spring Boot", "PostgreSQL", "Python", "Flutter", "Git", "GitLab", "Docker", "CI/CD"],
+  "hobbys": [
+    { "de": "Klavier spielen", "en": "Playing piano" },
+    { "de": "Bogenschiessen", "en": "Archery" },
+    { "de": "Gaming", "en": "Gaming" },
+    { "de": "Fotografieren", "en": "Photography" }
+  ]
+}

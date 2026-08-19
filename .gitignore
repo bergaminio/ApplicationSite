@@ -50,3 +50,7 @@ lebenslauf.pdf
 # genau das, was seit August 2026 nicht mehr oeffentlich sein soll.
 # Als Geruest liegt lebenslauf.beispiel.html daneben.
 werkzeuge/lebenslauf.html
+
+# Die Lebenslauf-Angaben. Enthaelt Schulen, Jahrgaenge und die
+# Referenzen samt Nummern - das Repository ist oeffentlich.
+lebenslauf.json
