@@ -92,7 +92,7 @@ function CV() {
       {lebenslauf.length === 0 ? (
         <p className="text-gray-400">{t(ui.cvMissing)}</p>
       ) : (
-        lebenslauf.map(d => <DokumentAnsicht key={d.id} dokument={d} />)
+        lebenslauf.map(d => <DokumentAnsicht key={d.id} dokument={d} einbetten />)
       )}
     </>
   )

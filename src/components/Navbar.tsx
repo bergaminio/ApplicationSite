@@ -63,13 +63,21 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Angemeldet? Dann steht hier der Name statt "Login". */}
+        {/* Angemeldet? Dann steht hier der Name statt "Login".
+            Der Name wird abgeschnitten statt umzubrechen: ein langer
+            Betriebsname wie "Schweizerische Bundesbahnen SBB" hat sonst
+            auf dem Handy die ganze Leiste ueber den Rand geschoben und
+            waagrechtes Scrollen ausgeloest. */}
         <Link
           to="/login"
-          className="text-xs sm:text-sm border px-3 sm:px-4 py-1.5 sm:py-2 rounded hover:bg-gray-50 transition-colors"
-          style={benutzer
-            ? { borderColor: pageColors.login, color: pageColors.login }
-            : { borderColor: '#d1d5db' }}
+          title={benutzer ? benutzer.displayName : undefined}
+          className="text-xs sm:text-sm border px-3 sm:px-4 py-1.5 sm:py-2 rounded hover:bg-gray-50 transition-colors overflow-hidden text-ellipsis whitespace-nowrap"
+          style={{
+            maxWidth: '9rem',
+            ...(benutzer
+              ? { borderColor: pageColors.login, color: pageColors.login }
+              : { borderColor: '#d1d5db' }),
+          }}
         >
           {benutzer ? benutzer.displayName : t(ui.navLogin)}
         </Link>

@@ -8,11 +8,15 @@ import { ladeDokumente, ladeAlleAlsZip } from '../api/documents'
 import type { Dokument } from '../api/documents'
 import { ui } from '../texts'
 
-// Die drei Bereiche in der Reihenfolge, in der sie angezeigt werden.
+// Die Bereiche in der Reihenfolge, in der sie angezeigt werden.
 const bereiche = [
   { schluessel: 'EFZ', titel: ui.areaEFZ },
   { schluessel: 'BM', titel: ui.areaBM },
   { schluessel: 'UEK', titel: ui.areaUEK },
+  // Zum Schluss nochmal der Lebenslauf. Wer die Unterlagen
+  // durchgeht, hat ihn dann beisammen und muss nicht die Seite
+  // wechseln.
+  { schluessel: 'LEBENSLAUF', titel: ui.areaLebenslauf },
 ] as const
 
 function Grades() {

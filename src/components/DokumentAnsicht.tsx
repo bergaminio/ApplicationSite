@@ -9,7 +9,7 @@ import { ui } from '../texts'
 // Bilder erscheinen direkt, PDFs als Knopf zum Oeffnen.
 // Die Datei wird per fetch mit Token geholt - siehe api/documents.ts.
 
-function DokumentAnsicht({ dokument }: { dokument: Dokument }) {
+function DokumentAnsicht({ dokument, einbetten }: { dokument: Dokument; einbetten?: boolean }) {
   const { t } = useSprache()
   const [adresse, setAdresse] = useState('')
   const [fehler, setFehler] = useState(false)
@@ -53,6 +53,33 @@ function DokumentAnsicht({ dokument }: { dokument: Dokument }) {
           className="box"
           style={{ width: '100%', display: 'block', background: 'white' }}
         />
+      ) : einbetten ? (
+        // PDF direkt anzeigen statt nur zu verlinken.
+        //
+        // Auf der Lebenslauf-Seite soll man den Lebenslauf sehen und
+        // nicht erst einen Knopf druecken muessen. Das Seitenverhaeltnis
+        // ist das von A4, damit nichts abgeschnitten wirkt.
+        //
+        // Der Knopf bleibt trotzdem darunter: manche Handy-Browser
+        // zeigen PDFs in einem Rahmen gar nicht an, dort ist er der
+        // Rueckweg.
+        <>
+          <iframe
+            src={adresse}
+            title={dokument.title}
+            className="box"
+            style={{ width: '100%', aspectRatio: '1 / 1.414', display: 'block', background: 'white' }}
+          />
+          <a
+            href={adresse}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pill inline-block mt-3"
+            style={{ background: 'white', padding: '8px 20px', fontSize: '20px' }}
+          >
+            {t(ui.gradesOpenPdf)}
+          </a>
+        </>
       ) : (
         <a
           href={adresse}
