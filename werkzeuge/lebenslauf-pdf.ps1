@@ -65,8 +65,7 @@ if (-not $browser) {
 
 Write-Host "Drucke mit $(Split-Path $browser -Leaf) ..."
 
-# file:/// braucht Schraegstriche statt Backslashes.
-$adresse = "file:///" + ($quelle -replace '\', '/')
+$adresse = "file:///" + $quelle.Replace('\', '/')
 
 & $browser --headless --disable-gpu --no-pdf-header-footer `
     "--print-to-pdf=$ziel" $adresse 2>$null | Out-Null
