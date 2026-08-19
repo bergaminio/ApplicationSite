@@ -4,7 +4,7 @@ import PageTitle from '../components/PageTitle'
 import DokumentAnsicht from '../components/DokumentAnsicht'
 import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
-import { ladeDokumente } from '../api/documents'
+import { ladeDokumente, ladeAlleAlsZip } from '../api/documents'
 import type { Dokument } from '../api/documents'
 import { ui } from '../texts'
 
@@ -22,6 +22,23 @@ function Grades() {
   const [dokumente, setDokumente] = useState<Dokument[]>([])
   const [laedt, setLaedt] = useState(true)
   const [fehler, setFehler] = useState('')
+  // Der ZIP-Knopf. "laeuft" sperrt ihn waehrend des Packens, sonst
+  // klickt man dreimal und bekommt drei Archive.
+  const [zipLaeuft, setZipLaeuft] = useState(false)
+  const [zipFehler, setZipFehler] = useState(false)
+
+  async function holeZip() {
+    setZipFehler(false)
+    setZipLaeuft(true)
+    try {
+      await ladeAlleAlsZip()
+    } catch {
+      setZipFehler(true)
+    } finally {
+      setZipLaeuft(false)
+    }
+  }
+
 
   useEffect(() => {
     if (authLaedt) return
@@ -55,9 +72,36 @@ function Grades() {
     <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
       <PageTitle title={t(ui.gradesTitle)} color={pageColors.login} skizze="urkunde" />
 
-      <p className="text-gray-500 mb-10" style={{ maxWidth: '34rem' }}>
+      <p className="text-gray-500 mb-6" style={{ maxWidth: '34rem' }}>
         {t(ui.gradesIntro)}
       </p>
+
+      {/* Ein Lehrbetrieb will nicht neun Dateien einzeln anklicken.
+          Der Knopf packt alles zusammen, was hinter der Anmeldung
+          liegt - auch den Lebenslauf. */}
+      {dokumente.length > 0 && (
+        <div className="mb-10">
+          <button
+            onClick={holeZip}
+            disabled={zipLaeuft}
+            className="pill"
+            style={{
+              cursor: zipLaeuft ? 'default' : 'pointer',
+              background: zipLaeuft ? 'white' : pageColors.login,
+              color: zipLaeuft ? '#666' : 'white',
+              padding: '8px 20px',
+              fontSize: '20px',
+            }}
+          >
+            {zipLaeuft ? t(ui.gradesZipLaeuft) : t(ui.gradesZip)}
+          </button>
+          {zipFehler && (
+            <p className="text-sm mt-2" style={{ color: pageColors.login }} role="alert">
+              {t(ui.gradesZipFehler)}
+            </p>
+          )}
+        </div>
+      )}
 
       {dokumente.length === 0 ? (
         <p className="text-gray-400">{t(ui.gradesEmpty)}</p>

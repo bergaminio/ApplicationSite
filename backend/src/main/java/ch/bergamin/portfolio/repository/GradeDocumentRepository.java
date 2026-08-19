@@ -22,4 +22,7 @@ public interface GradeDocumentRepository extends JpaRepository<GradeDocument, Lo
     }
 
     List<Info> findAllByOrderByAreaAscUploadedAtDesc();
+
+    // Fuers ZIP brauchen wir die Dateien selbst, nicht nur die Angaben.
+    List<GradeDocument> findAllByOrderByAreaAscIdAsc();
 }

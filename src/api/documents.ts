@@ -107,3 +107,27 @@ export async function ladeKontakt(): Promise<{ place: string; phone: string }> {
   if (!antwort.ok) throw new Error('Kontaktangaben nicht abrufbar')
   return antwort.json()
 }
+
+// Holt alle Unterlagen auf einmal als ZIP und startet den Download.
+//
+// Warum nicht einfach ein <a href="...">? Weil der Server ein Token
+// im Kopf der Anfrage verlangt, und ein normaler Link schickt keins
+// mit. Also holen wir die Datei per fetch, machen daraus eine
+// Blob-Adresse und klicken einen unsichtbaren Link an.
+export async function ladeAlleAlsZip() {
+  const antwort = await fetch(`${API}/api/documents/zip`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+    signal: AbortSignal.timeout(ZEITLIMIT),
+  })
+  if (!antwort.ok) throw new Error('Archiv konnte nicht erstellt werden')
+
+  const adresse = URL.createObjectURL(await antwort.blob())
+  const link = document.createElement('a')
+  link.href = adresse
+  link.download = 'unterlagen-michael-bergamin.zip'
+  link.click()
+
+  // Die Adresse wieder freigeben, sonst bleibt die Datei im Speicher
+  // liegen bis die Seite neu geladen wird.
+  URL.revokeObjectURL(adresse)
+}
