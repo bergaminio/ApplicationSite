@@ -28,11 +28,16 @@ const GITHUB = 'https://github.com/bergaminio/ApplicationSite'
 // Wirklich sicher waere nur ein Kontaktformular ueber das Backend.
 const EMAIL_TEILE = ['michael.bergamin', 'proton.me']
 
-// OFFEN: Sobald das Hosting steht, hier den Anbieter eintragen.
-// Solange der Text leer ist, bleibt die Zeile im Impressum weg.
-// Die IMS-Checkliste fragt danach ("gehostet auf?"), also vor der
-// Abgabe ausfuellen.
-const HOSTING: Text = { de: '', en: '' }
+// Wo die Seite laeuft. Bleibt der Text leer, faellt die Zeile im
+// Impressum weg. Die IMS-Checkliste fragt danach ("gehostet auf?").
+//
+// Es sind zwei Orte, darum die zwei Saetze: die Website selbst liegt
+// beim Hoster, die Anmeldung und die Notenausweise laufen auf einem
+// eigenen Server. Cloudflare steht davor und liefert beides aus.
+const HOSTING: Text = {
+  de: 'Website: DNS-NET Services GmbH, Au ZH, Serverstandort Zürich. Auslieferung und DNS über Cloudflare Inc. Anmeldung und Notenausweise laufen auf einem privaten Server in der Schweiz, erreichbar über einen Cloudflare Tunnel.',
+  en: 'Website: DNS-NET Services GmbH, Au ZH, Switzerland, servers located in Zurich. Delivery and DNS via Cloudflare Inc. Login and grade reports run on a private server in Switzerland, reachable through a Cloudflare Tunnel.',
+}
 
 // Zeigt die E-Mail als anklickbaren Link. Die Adresse entsteht erst
 // hier, beim Anzeigen im Browser.
