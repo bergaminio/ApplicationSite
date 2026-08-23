@@ -17,6 +17,8 @@ git clone https://github.com/bergaminio/ApplicationSite.git
 cd ApplicationSite
 cp .env.example .env
 nano .env                 # die leeren Werte ausfüllen, siehe unten
+cp lebenslauf.beispiel.json lebenslauf.json
+nano lebenslauf.json      # Angaben eintragen, siehe unten
 docker compose up -d
 ```
 
@@ -38,6 +40,8 @@ Standardpasswort `admin` wäre schlimmer als einer, der nicht startet.
 | `ADMIN_PASSWORD` | Michaels erstes Anmeldepasswort. |
 | `SITE_URL` | Adresse der Website, z.B. `https://bergamin.ch` |
 | `API_URL` | Adresse des Backends, z.B. `https://api.bergamin.ch` |
+| `CONTACT_PLACE` | Wohnort für die Kontaktseite. Darf leer bleiben. |
+| `CONTACT_PHONE` | Telefonnummer für die Kontaktseite. Darf leer bleiben. |
 
 Passwörter erzeugen:
 
@@ -50,6 +54,53 @@ Adresse, lädt die Seite zwar, aber jede Anmeldung bricht mit
 „Failed to fetch" ab. Das Backend lässt Anfragen nur von der Adresse
 in `SITE_URL` zu (CORS), und die Website spricht genau die Adresse in
 `API_URL` an.
+
+---
+
+## Die `lebenslauf.json`
+
+Schulen, Referenzen, Sprachen und Hobbys stehen **nicht im Quelltext**,
+sondern in einer Datei auf dem Server. Grund: das Repository auf GitHub
+ist öffentlich. Stünden die Angaben dort, könnte sie jeder nachlesen —
+egal, dass die Website eine Anmeldung verlangt.
+
+Wohnort und Telefonnummer liegen aus demselben Grund in der `.env`
+(`CONTACT_PLACE`, `CONTACT_PHONE`).
+
+Die Datei gehört **neben** `docker-compose.yml`, also direkt ins
+geklonte Verzeichnis. Docker reicht sie ins Backend hinein, gelesen
+wird sie nur, nichts wird hineingeschrieben.
+
+**Sie muss vor dem ersten `docker compose up` da sein.** Fehlt sie,
+legt Docker an ihrer Stelle einen leeren **Ordner** an. Das Backend
+läuft dann zwar, aber die Lebenslaufseite bleibt leer — und der Fehler
+ist schwer zu finden, weil nirgends etwas rot wird.
+
+Passiert es doch:
+
+```bash
+docker compose down
+rm -rf lebenslauf.json
+cp lebenslauf.beispiel.json lebenslauf.json
+docker compose up -d
+```
+
+Nach einer Änderung an der Datei genügt ein Neustart, kein Neubau:
+
+```bash
+docker compose restart backend
+```
+
+Prüfen, ob das Backend sie gefunden hat — angemeldet im Browser die
+Lebenslaufseite öffnen, oder auf dem Server:
+
+```bash
+docker compose exec backend ls -l /app/lebenslauf.json
+```
+
+Steht dort `-rw...` und eine Grösse über null, stimmt es. Steht dort
+`drwx`, ist es der leere Ordner von oben.
+
 
 ---
 
@@ -155,6 +206,22 @@ curl -I -X OPTIONS https://api.bergamin.ch/api/auth/login \
 
 Es muss `Access-Control-Allow-Origin` zurückkommen.
 
+**Lebenslaufseite ist leer, obwohl man angemeldet ist.** Das Backend
+findet die `lebenslauf.json` nicht. Fast immer, weil sie beim ersten
+Start noch nicht da war und Docker einen leeren Ordner angelegt hat:
+
+```bash
+docker compose exec backend ls -ld /app/lebenslauf.json
+```
+
+Beginnt die Zeile mit `d`, ist es der Ordner. Siehe oben, Abschnitt
+„Die `lebenslauf.json`".
+
+**Kontaktseite zeigt keinen Wohnort und keine Nummer.**
+`CONTACT_PLACE` und `CONTACT_PHONE` sind leer. Das ist kein Fehler,
+die Angaben sind freiwillig. Nach dem Nachtragen in der `.env`:
+`docker compose up -d backend`.
+
 **Datenbank startet nicht.** Ab PostgreSQL 18 gehört der Mount auf
 `/var/lib/postgresql` und nicht mehr auf `/var/lib/postgresql/data`.
 In der `docker-compose.yml` steht es richtig — nur nicht „korrigieren".
@@ -178,3 +245,17 @@ Der ganze Stapel lief am 12.08.2026 lokal durch:
 - CORS lässt `SITE_URL` durch und weist fremde Herkunft mit 403 ab
 - Nach `docker compose down` und wieder `up` ist die Anmeldung noch
   gültig — die Daten überleben im Volume
+
+Dazu läuft eine Testreihe automatisch mit. Sie prüft vor allem, dass
+ohne Anmeldung nichts herausgegeben wird: Noten, Lebenslauf, ZIP,
+Kontaktangaben und der Admin-Bereich antworten allesamt mit 401, ein
+selbstgebautes Token wird abgewiesen, und ein Lehrbetrieb-Konto kommt
+zwar an die Unterlagen, aber nicht in den Admin-Bereich.
+
+```bash
+cd backend && ./mvnw test     # 9 Tests, Backend
+npm test                      # 16 Tests, Website
+```
+
+Die Tests brauchen keine Datenbank und kein Docker — das Backend
+startet dafür eine Datenbank im Arbeitsspeicher.

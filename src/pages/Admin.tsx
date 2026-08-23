@@ -354,9 +354,9 @@ function Admin() {
 
           <div className="flex flex-col sm:flex-row gap-3 mb-3">
             <input
-              // Absichtlich sichtbar: dieses Passwort muss Michael
-              // abtippen und in die Bewerbung schreiben. Ein Feld
-              // voller Punkte waere hier hinderlich, nicht sicherer.
+              // Absichtlich sichtbar: dieses Passwort wird abgetippt
+              // und in die Bewerbung geschrieben. Ein Feld voller
+              // Punkte waere hier hinderlich, nicht sicherer.
               type="text"
               placeholder={t(ui.accAddPassword)}
               value={neuPasswort}

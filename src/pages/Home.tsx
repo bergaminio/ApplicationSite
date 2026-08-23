@@ -7,19 +7,12 @@ import { ui } from '../texts'
 
 // Die Startseite.
 //
-// Frueher stand hier fast nichts: der Name gross, eine Zeile Beruf,
-// ein Post-it. Zusammen rund zwoelf Woerter. Wer die Seite oeffnete,
-// wusste danach nicht mehr als vorher.
-//
-// Jetzt traegt ein Satz die Seite, und darunter steht, woher das
-// kommt. Der Name rueckt dafuer nach oben und wird kleiner - er ist
-// nicht die Nachricht, sondern die Unterschrift.
+// Ein Satz traegt die Seite, darunter steht, woher er kommt. Der
+// Name steht klein darueber - er ist nicht die Nachricht, sondern
+// die Unterschrift.
 
-// Die drei Zettel unten auf der Startseite.
-//
-// Vorher standen hier drei schmale Knoepfe UND darunter noch ein
-// Post-it, das ebenfalls zu den Projekten fuehrte - derselbe Weg
-// zweimal. Jetzt ein Zettel pro Ziel, kein Ziel doppelt.
+// Die drei Zettel unten auf der Startseite. Ein Zettel pro Ziel,
+// kein Ziel doppelt.
 //
 // Jeder traegt die Farbe der Seite, zu der er fuehrt, und liegt
 // leicht schief. Die Verzoegerung laesst sie nacheinander

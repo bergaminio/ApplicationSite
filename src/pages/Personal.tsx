@@ -110,10 +110,9 @@ function Tonaufnahme({ pfad, bis }: { pfad: string; bis?: number }) {
   // timeupdate feuert nur rund viermal pro Sekunde, laeuft dafuer
   // auch im Hintergrund zuverlaessig weiter.
   //
-  // Zuerst hatte ich requestAnimationFrame genommen, weil es am
-  // genauesten ist. Das war falsch: es steht komplett still, sobald
-  // die Seite nicht gezeichnet wird. Wer waehrend des Abspielens den
-  // Tab wechselt, haette die Aufnahme bis zum Ende gehoert.
+  // requestAnimationFrame waere genauer, faellt hier aber aus: es
+  // steht still, sobald die Seite nicht gezeichnet wird. Wer den Tab
+  // wechselt, hoerte die Aufnahme sonst bis zum Ende.
   function stoppe(spieler: HTMLAudioElement) {
     spieler.pause()
     // Zurueck an den Anfang, damit ein zweiter Klick wieder von vorne

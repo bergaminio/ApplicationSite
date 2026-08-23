@@ -73,6 +73,10 @@ services:
       CONTACT_PLACE: ${CONTACT_PLACE:-}
       CONTACT_PHONE: ${CONTACT_PHONE:-}
 
+      # Die Lebenslauf-Angaben. Der Pfad zeigt in den Container, die
+      # Datei selbst wird unten als Volume hineingereicht.
+      CV_FILE: /app/lebenslauf.json
+
       # Auf dem Server nicht jede SQL-Abfrage mitschreiben.
       SPRING_JPA_SHOW_SQL: "false"
     ports:
@@ -80,6 +84,16 @@ services:
       # Nach aussen geht es ueber den Reverse Proxy oder den
       # Cloudflare Tunnel, nicht direkt.
       - "127.0.0.1:8080:8080"
+    volumes:
+      # Die Lebenslauf-Angaben liegen neben dieser Datei und werden
+      # nur hineingereicht, nicht ins Abbild gebacken - so muss man
+      # nach einer Aenderung nicht neu bauen, sondern nur neu starten.
+      #
+      # ACHTUNG: die Datei muss VOR dem ersten Start existieren. Fehlt
+      # sie, legt Docker an ihrer Stelle einen leeren Ordner an, und
+      # das Backend findet dann keine Datei.
+      #   cp lebenslauf.beispiel.json lebenslauf.json
+      - ./lebenslauf.json:/app/lebenslauf.json:ro
 
   # ---- Die Website ------------------------------------------------
   #

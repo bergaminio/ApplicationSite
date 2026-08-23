@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { SpracheProvider } from './context/LanguageContext'
@@ -14,6 +14,7 @@ import Login from './pages/Login'
 import Grades from './pages/Grades'
 import Admin from './pages/Admin'
 import NotFound from './pages/NotFound'
+import { wechselFuer } from './buch'
 
 // Feine Linien am linken Rand, die andeuten, dass dort ein Stapel
 // Papier liegt statt einer einzelnen starren Flaeche.
@@ -38,43 +39,11 @@ const WINKEL = -78
 // sie gleich viele Schatten haben. Sonst springt er sofort auf den
 // Zielwert.
 //
-// Genau daran ist es frueher gescheitert: OHNE_SCHATTEN war nur die
-// Falzkante (drei Lagen), MIT_SCHATTEN hatte einen aeusseren dazu
-// (vier). Vorwaerts sprang der Schatten sofort AN - das faellt nicht
-// auf, die Seite klappt ja gerade hoch. Rueckwaerts sprang er sofort
-// AUS, und die hereinfallende Seite hatte auf dem ganzen Weg gar
-// keinen Schatten. Sie sah flach aufgeklebt aus statt ueber dem
-// Stapel schwebend.
-//
 // Darum steht auch im flachen Zustand ein aeusserer Schatten - nur
 // eben ohne Versatz, ohne Weichzeichnung und durchsichtig. Man sieht
 // ihn nicht, aber er ist da und laesst sich weich hochfahren.
 const OHNE_SCHATTEN = `0px 0px 0px rgba(0, 0, 0, 0), ${FALZKANTE}`
 const MIT_SCHATTEN = `28px 0px 55px rgba(0, 0, 0, 0.22), ${FALZKANTE}`
-
-// Hoechstens so viele Zwischenblaetter zeigen. Bei vier Seiten waeren
-// mehr ohnehin nicht moeglich, und viele duenne Blaetter wirken unruhig.
-const MAX_BLAETTER = 3
-
-// Die Reihenfolge der Seiten im "Buch". Daraus ergibt sich, in welche
-// Richtung und wie weit geblaettert wird.
-//
-// Login, Noten und Uebersicht stehen hinten - wie ein Anhang. Dadurch
-// blaettert es vom Login zurueck zur Startseite auch wirklich zurueck.
-const seitenReihenfolge = [
-  '/', '/projects', '/cv', '/personal', '/contact',
-  '/login', '/grades', '/admin',
-]
-
-// Wie viele Seiten liegen zwischen den beiden? 1 = direkt nebeneinander,
-// negativ heisst rueckwaerts. 0 heisst: eine der beiden gehoert nicht
-// ins Buch, zum Beispiel eine Adresse die es gar nicht gibt.
-function abstand(von: string, nach: string) {
-  const a = seitenReihenfolge.indexOf(von)
-  const b = seitenReihenfolge.indexOf(nach)
-  if (a === -1 || b === -1) return 0
-  return b - a
-}
 
 // Wie sich eine Seite verhaelt. Welcher Zustand gilt, haengt von der
 // Richtung ab - darum sind es Funktionen statt fester Werte.
@@ -100,17 +69,11 @@ const seitenVarianten = {
   // zu animieren und meldet sofort "fertig" - die Seite wuerde schon
   // beim Start ausgehaengt und man saehe den Hintergrund durch.
   //
-  // Frueher stand hier brightness(0.88), damit ueberhaupt etwas
-  // passiert. Das war der Fehler: die untere Seite wurde beim
-  // Zurueckblaettern sichtbar dunkler, und zwar von der ersten
-  // Millisekunde an - also schon dann, wenn die neue Seite noch
-  // hochkant steht und gar nichts verdeckt. Vorwaerts gab es nichts
-  // Vergleichbares, darum sah nur eine der beiden Richtungen komisch
-  // aus.
-  //
-  // Jetzt ein Wert, den man nicht sehen kann: 0.999 statt 1. Motion
-  // hat etwas zu tun und haelt die Seite bis zum Schluss, das Auge
-  // merkt nichts.
+  // Der Wert ist mit Absicht unsichtbar: 0.999 statt 1. Motion hat
+  // damit etwas zu animieren und haelt die Seite bis zum Schluss,
+  // ohne dass man eine Aenderung sieht. Etwas Sichtbares wie
+  // brightness waere hier falsch - die untere Seite wuerde sich
+  // beim Zurueckblaettern grundlos verdunkeln.
   geht: (vorwaerts: boolean) =>
     vorwaerts
       ? { rotateY: WINKEL, boxShadow: MIT_SCHATTEN, opacity: 1 }
@@ -128,9 +91,6 @@ function Seiten() {
   // bekommt den Wechsel ohne Animation.
   const wenigerBewegung = useReducedMotion()
 
-  // Welche Seite vorher offen war.
-  const letzterPfad = useRef(location.pathname)
-
   // Wie der aktuelle Wechsel aussieht - einmal pro Adresse berechnet
   // und dann gemerkt.
   //
@@ -138,42 +98,50 @@ function Seiten() {
   // neu ausrechnen, spraenge sie mitten in der Animation um. Sobald die
   // Seite aus irgendeinem Grund neu gezeichnet wird, ist der "vorherige"
   // Pfad naemlich schon der aktuelle - und der Abstand damit null.
-  const wechsel = useRef({ pfad: location.pathname, vorwaerts: true, blaetter: 0 })
+  //
+  // "pfad" ist dabei die Seite, von der wir gekommen sind. Deshalb
+  // braucht es keinen zweiten Merker fuer den vorherigen Pfad.
+  const [wechsel, setWechsel] = useState({
+    pfad: location.pathname,
+    vorwaerts: true,
+    blaetter: 0,
+  })
 
-  if (wechsel.current.pfad !== location.pathname) {
-    const schritte = abstand(letzterPfad.current, location.pathname)
-    wechsel.current = {
-      pfad: location.pathname,
-      vorwaerts: schritte >= 0,
-      // Beim Sprung ueber mehrere Seiten fliegen leere Blaetter mit -
-      // wie wenn man im Buch mehrere Seiten auf einmal umschlaegt.
-      // Sie sind absichtlich leer: echte Zwischenseiten einzubauen
-      // wuerde deren Daten laden, nur damit sie eine halbe Sekunde
-      // vorbeifliegen.
-      blaetter: Math.min(Math.abs(schritte) - 1, MAX_BLAETTER),
-    }
-    letzterPfad.current = location.pathname
-  }
-
-  const vorwaerts = wechsel.current.vorwaerts
-  const anzahlBlaetter = wechsel.current.blaetter
-
+  // Zustand mitten im Zeichnen setzen ist hier richtig und kein
+  // Fehler: React verwirft diesen Durchlauf sofort und zeichnet noch
+  // einmal, bevor irgendetwas auf dem Bildschirm landet. Ein Effekt
+  // waere zu spaet - die Seite waere dann schon einmal mit der alten
+  // Richtung gezeichnet worden.
   const [zeigeBlaetter, setZeigeBlaetter] = useState(false)
 
   const dauer = wenigerBewegung ? 0 : 0.55
+
+  if (wechsel.pfad !== location.pathname) {
+    // Beim Sprung ueber mehrere Seiten fliegen leere Blaetter mit -
+    // wie wenn man im Buch mehrere Seiten auf einmal umschlaegt.
+    const neu = wechselFuer(wechsel.pfad, location.pathname)
+    setWechsel({ pfad: location.pathname, ...neu })
+    // Gleich hier und nicht in einem Effekt: die Blaetter muessen im
+    // selben Durchlauf erscheinen wie die neue Seite, sonst sieht man
+    // sie einen Wimpernschlag zu spaet.
+    setZeigeBlaetter(neu.blaetter >= 1 && !wenigerBewegung)
+  }
+
+  const vorwaerts = wechsel.vorwaerts
+  const anzahlBlaetter = wechsel.blaetter
 
   useEffect(() => {
     // Nach dem Blaettern oben anfangen, sonst landet man mitten
     // auf der neuen Seite.
     window.scrollTo(0, 0)
+  }, [location.pathname])
 
-    if (anzahlBlaetter < 1 || wenigerBewegung) return
-
-    setZeigeBlaetter(true)
+  // Die Blaetter wieder wegnehmen, wenn die Bewegung durch ist.
+  useEffect(() => {
+    if (!zeigeBlaetter) return
     const timer = setTimeout(() => setZeigeBlaetter(false), dauer * 1000 + 200)
     return () => clearTimeout(timer)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname])
+  }, [zeigeBlaetter, dauer])
 
   return (
     // perspective gehoert auf die Eltern-Schicht, sonst wirkt die
@@ -193,10 +161,9 @@ function Seiten() {
             key={`blatt-${location.key}-${i}`}
             aria-hidden
             // Der Schatten laeuft mit der Drehung mit: aufgeklappt
-            // wirft das Blatt einen, flach liegend nicht. Vorher stand
-            // er fest im style und war auch dann noch da, wenn das
-            // Blatt schon flach lag - beim Zurueckblaettern blieb also
-            // am Ende ein Schatten stehen, der zu nichts gehoerte.
+            // wirft das Blatt einen, flach liegend nicht. Fest im
+            // style bliebe er auch am Ende stehen und gehoerte dann
+            // zu nichts.
             initial={{
               rotateY: vorwaerts ? 0 : WINKEL,
               boxShadow: vorwaerts ? OHNE_SCHATTEN : MIT_SCHATTEN,

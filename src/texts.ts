@@ -26,8 +26,8 @@ export const ui = {
   homePostit:       { de: 'Fünf Sachen, die ich gebaut habe.', en: "Five things I've built." },
   homePostitCV:     { de: 'Wo ich herkomme und was ich kann.', en: 'Where I come from and what I can do.' },
   homePostitKontakt: { de: 'So erreicht man mich.', en: 'How to reach me.' },
-  // Steht auf allen drei Zetteln. Vorher stand dort nochmal der
-  // Seitenname, der eine Zeile darueber schon steht.
+  // Steht auf allen drei Zetteln - nicht nochmal der Seitenname,
+  // der eine Zeile darueber schon steht.
   homeOeffnen: { de: 'Öffnen →', en: 'Open →' },
 
   // Der Satz, der die Startseite traegt.
@@ -36,16 +36,11 @@ export const ui = {
   // "ich bin motiviert und lernbereit" schreibt, klingt wie zwanzig
   // andere Bewerbungen. Wer den Moment beschreibt, in dem etwas zum
   // ersten Mal funktioniert, trifft jemanden, der ihn selbst kennt.
-  //
-  // Frueher stand hier "Ich baue Sachen, die es noch nicht gab" -
-  // richtig, aber Standardsprache, die man auf jeder zweiten Seite
-  // liest.
   homeClaim: {
     de: 'Es gibt diesen einen Moment, in dem der Bildschirm zum ersten Mal zeigt, was ich im Kopf hatte.',
-    // "finally" hiess endlich, das deutsche "zum ersten Mal" heisst
-    // aber erstmals - zwei verschiedene Aussagen. Und "what was in my
-    // head" ist zwar richtig, klingt aber steif. "what I had pictured"
-    // trifft beides: den Zeitpunkt und den Ton.
+    // "what I had pictured" statt "what was in my head": trifft den
+    // Ton besser. Und "for the first time" statt "finally" - der
+    // deutsche Satz meint erstmals, nicht endlich.
     en: 'There is that one moment when the screen shows exactly what I had pictured.',
   },
   homeClaimZwei: {
@@ -134,8 +129,8 @@ export const ui = {
   deckelHinweis: { de: 'Klicken zum Aufschlagen', en: 'Click to open' },
   deckelOeffnen: { de: 'Buch aufschlagen', en: 'Open the book' },
 
-  // Steht als alt-Text am Bild. Michael wollte hier ausdruecklich
-  // den Hinweis statt einer Beschreibung des Motivs.
+  // Steht als alt-Text am Bild: absichtlich der Hinweis und keine
+  // Beschreibung des Motivs.
   fotoAlt: {
     de: 'Dieses Bild konnte nicht geladen werden.',
     en: 'This image could not be loaded.',

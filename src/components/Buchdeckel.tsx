@@ -15,9 +15,7 @@ const EINBAND = '#161616'
 // auf - dieselbe Bewegung wie beim Blaettern: Falz links, Drehung um
 // die senkrechte Achse.
 //
-// Zwei Dinge braucht so eine Drehung, damit sie nach etwas aussieht.
-// Beide haben hier zuerst gefehlt und die Bewegung sah falsch aus,
-// ohne dass man sagen konnte warum:
+// Zwei Dinge braucht so eine Drehung, damit sie nach etwas aussieht:
 //
 // 1. perspective am ELTERN-Element. Ohne sie rechnet der Browser
 //    ohne Fluchtpunkt: der Deckel dreht sich nicht weg, er wird nur
@@ -27,8 +25,7 @@ const EINBAND = '#161616'
 //
 // 2. Zwei getrennte Seiten. Dreht man ueber 90 Grad hinaus, schaut man
 //    auf die Rueckseite - und die zeigt dieselbe Flaeche spiegelver-
-//    kehrt. "Willkommen" stand also die halbe Animation lang seiten-
-//    verkehrt da. Jetzt gibt es eine Vorder- und eine Rueckseite, beide
+//    kehrt, samt Schrift. Darum eine Vorder- und eine Rueckseite, beide
 //    mit backfaceVisibility: hidden. Ab 90 Grad uebernimmt die
 //    Rueckseite, und die ist die Innenseite des Deckels: liniertes
 //    Papier, wie im echten Buch.
@@ -54,10 +51,9 @@ function schonGeoeffnet() {
 
 // Die Pinnwand auf dem Deckel.
 //
-// Michaels eigene Fotos als Sofortbilder, dazwischen die gezeichnete
-// Zielscheibe fuers Bogenschiessen. Wer die Seite oeffnet, sieht in
-// der ersten Sekunde einen Menschen mit Interessen und nicht nur eine
-// dunkle Flaeche mit "Willkommen" darauf.
+// Fotos als Sofortbilder, dazwischen die gezeichnete Zielscheibe.
+// Wer die Seite oeffnet, sieht in der ersten Sekunde einen Menschen
+// mit Interessen und nicht nur eine dunkle Flaeche.
 //
 // Die Bilder kommen aus public/fotos/klein/ und nicht aus dem
 // Hauptordner: die grossen sind zusammen 1.8 MB, die kleinen 197 KB.

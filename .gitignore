@@ -54,3 +54,6 @@ werkzeuge/lebenslauf.html
 # Die Lebenslauf-Angaben. Enthaelt Schulen, Jahrgaenge und die
 # Referenzen samt Nummern - das Repository ist oeffentlich.
 lebenslauf.json
+
+# Lokale Einstellungen des Editors, gehen niemanden sonst etwas an
+.claude/

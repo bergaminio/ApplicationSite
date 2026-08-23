@@ -97,10 +97,10 @@ export async function me(): Promise<Benutzer | null> {
 
 // Schaut nach, ob das Backend ueberhaupt da ist.
 //
-// Fragt /api/ping - der Weg braucht keine Anmeldung und antwortet mit
-// 200. Frueher stand hier /api/auth/me, das ohne Token 401 liefert:
-// funktioniert auch, aber der Browser schreibt bei jedem Besuch einen
-// roten Fehler in die Konsole.
+// Fragt /api/ping: der Weg braucht keine Anmeldung und antwortet mit
+// 200. Ein Weg, der ohne Token 401 liefert, taete es auch - dann
+// schriebe der Browser aber bei jedem Besuch einen roten Fehler in
+// die Konsole.
 //
 // Dadurch passt sich die Login-Seite von selbst an: laeuft der Server
 // nicht, zeigt sie einen Hinweis statt eines Formulars, das ohnehin

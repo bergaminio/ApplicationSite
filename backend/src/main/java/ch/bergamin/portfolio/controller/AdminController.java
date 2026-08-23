@@ -112,10 +112,8 @@ public class AdminController {
     private static final List<String> ERLAUBTE_TYPEN = List.of(
             "image/jpeg", "image/png", "image/webp", "application/pdf");
 
-    // LEBENSLAUF kam im August 2026 dazu. Der Lebenslauf stand vorher
-    // fest im Quelltext - und der liegt oeffentlich auf GitHub, samt
-    // Wohnort, Schulen und Jahrgaengen. Jetzt liegt er als Datei in
-    // der Datenbank und wird nur an Angemeldete ausgeliefert.
+    // LEBENSLAUF gehoert dazu: das PDF liegt in der Datenbank statt
+    // im oeffentlichen Repository und geht nur an Angemeldete.
     private static final List<String> ERLAUBTE_BEREICHE = List.of("EFZ", "BM", "UEK", "LEBENSLAUF");
 
     // POST /api/admin/documents

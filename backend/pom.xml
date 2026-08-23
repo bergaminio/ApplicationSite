@@ -73,6 +73,15 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Nur fuer die Tests: eine Datenbank im Arbeitsspeicher.
+             So laufen sie ohne Docker und ohne PostgreSQL, und sie
+             hinterlassen nichts. -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

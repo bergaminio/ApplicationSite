@@ -19,8 +19,8 @@ import java.nio.file.Path;
 // ob die Seite eine Anmeldung verlangt.
 //
 // Die Angaben liegen als JSON-Datei auf dem Server. Der Pfad kommt
-// aus CV_FILE. Absichtlich eine Datei und keine Tabelle: Michael
-// aendert seinen Lebenslauf ein paarmal im Jahr, dafuer lohnt sich
+// aus CV_FILE. Absichtlich eine Datei und keine Tabelle: ein
+// Lebenslauf aendert sich ein paarmal im Jahr, dafuer lohnt sich
 // keine Verwaltungsmaske.
 //
 // Der Inhalt wird nicht ausgewertet, sondern unveraendert
@@ -43,7 +43,10 @@ public class CvController {
         }
 
         Path pfad = Path.of(datei);
-        if (!Files.isReadable(pfad)) {
+        // isRegularFile und nicht nur isReadable: fehlt die Datei beim
+        // Start, legt Docker an ihrer Stelle einen leeren Ordner an.
+        // Den koennte man lesen, nur eben nicht als Datei.
+        if (!Files.isRegularFile(pfad) || !Files.isReadable(pfad)) {
             return ResponseEntity.notFound().build();
         }
 

@@ -11,14 +11,10 @@ import { ui } from '../texts'
 
 // Die Lebenslauf-Seite.
 //
-// Die Angaben standen bis August 2026 fest im Quelltext. Das
-// Repository ist oeffentlich, also stand damit der halbe Lebenslauf
-// fuer jeden lesbar auf GitHub - unabhaengig davon, ob die Seite eine
-// Anmeldung verlangt.
-//
-// Jetzt kommen sie vom Server aus einer Datei, die dort liegt und
+// Die Angaben kommen vom Server aus einer Datei, die dort liegt und
 // nirgends sonst. Im Quelltext steht nur noch, WIE sie dargestellt
-// werden, nicht WAS drinsteht.
+// werden, nicht WAS drinsteht - das Repository ist oeffentlich, und
+// eine Anmeldung auf der Seite schuetzt nichts, was auf GitHub steht.
 
 // Ein Abschnitt, z.B. "Ausbildung": Ueberschrift mit gruenem Strich.
 function Abschnitt({ titel, skizze, children }: {
