@@ -1,5 +1,6 @@
 // Die Wege die nur ich als Admin aufrufen darf.
 import { getToken } from './auth'
+import type { Lebenslauf } from './documents'
 
 const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8080'
 const ZEITLIMIT = 5000
@@ -101,4 +102,32 @@ export function ladeKonten() {
 
 export function ladeAnmeldeversuche() {
   return hole<Anmeldeversuch[]>('/api/admin/logins')
+}
+
+// Den Lebenslauf holen und speichern.
+//
+// Der Aufbau steht in lebenslauf.beispiel.json, der Typ dazu in
+// api/documents.ts - dort wird er auch fuers Anzeigen gebraucht.
+//
+// Warum /api/admin/cv und nicht /api/cv? Weil unter /api/admin/ die
+// Rolle ADMIN verlangt wird. Ein Lehrbetrieb darf den Lebenslauf
+// lesen, aber nicht umschreiben.
+export function ladeLebenslaufZumBearbeiten() {
+  return hole<Lebenslauf>('/api/admin/cv')
+}
+
+export async function speichereLebenslauf(daten: Lebenslauf) {
+  const antwort = await fetch(`${API}/api/admin/cv`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify(daten),
+    // Mehr Zeit als sonst: hier wird eine Datei geschrieben.
+    signal: AbortSignal.timeout(15000),
+  })
+  if (!antwort.ok) {
+    const daten = await antwort.json().catch(() => null)
+    // 400 kommt von der Pruefung im Backend und nennt das Feld,
+    // 500 vom Schreiben und nennt den Grund.
+    throw new Error(daten?.error ?? daten?.message ?? 'Speichern fehlgeschlagen')
+  }
 }

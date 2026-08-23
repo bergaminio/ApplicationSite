@@ -68,8 +68,13 @@ Wohnort und Telefonnummer liegen aus demselben Grund in der `.env`
 (`CONTACT_PLACE`, `CONTACT_PHONE`).
 
 Die Datei gehört **neben** `docker-compose.yml`, also direkt ins
-geklonte Verzeichnis. Docker reicht sie ins Backend hinein, gelesen
-wird sie nur, nichts wird hineingeschrieben.
+geklonte Verzeichnis. Docker reicht sie ins Backend hinein.
+
+**Sie wird auch beschrieben.** Michael kann den Lebenslauf im
+Admin-Bereich der Website bearbeiten, gespeichert wird dann genau in
+diese Datei. Deshalb steht in der `docker-compose.yml` beim Einhängen
+kein `:ro` — mit Schreibschutz lässt sich die Seite zwar anzeigen,
+aber der Speichern-Knopf meldet einen Fehler.
 
 **Sie muss vor dem ersten `docker compose up` da sein.** Fehlt sie,
 legt Docker an ihrer Stelle einen leeren **Ordner** an. Das Backend
@@ -85,11 +90,15 @@ cp lebenslauf.beispiel.json lebenslauf.json
 docker compose up -d
 ```
 
-Nach einer Änderung an der Datei genügt ein Neustart, kein Neubau:
+Wird die Datei von Hand auf dem Server geändert, genügt ein Neustart,
+kein Neubau:
 
 ```bash
 docker compose restart backend
 ```
+
+Über den Admin-Bereich geänderte Angaben sind sofort da, ohne
+Neustart.
 
 Prüfen, ob das Backend sie gefunden hat — angemeldet im Browser die
 Lebenslaufseite öffnen, oder auf dem Server:
@@ -250,10 +259,11 @@ Dazu läuft eine Testreihe automatisch mit. Sie prüft vor allem, dass
 ohne Anmeldung nichts herausgegeben wird: Noten, Lebenslauf, ZIP,
 Kontaktangaben und der Admin-Bereich antworten allesamt mit 401, ein
 selbstgebautes Token wird abgewiesen, und ein Lehrbetrieb-Konto kommt
-zwar an die Unterlagen, aber nicht in den Admin-Bereich.
+zwar an die Unterlagen, aber nicht in den Admin-Bereich - und kann den
+Lebenslauf lesen, aber nicht umschreiben.
 
 ```bash
-cd backend && ./mvnw test     # 9 Tests, Backend
+cd backend && ./mvnw test     # 15 Tests, Backend
 npm test                      # 16 Tests, Website
 ```
 

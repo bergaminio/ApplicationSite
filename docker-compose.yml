@@ -87,13 +87,17 @@ services:
     volumes:
       # Die Lebenslauf-Angaben liegen neben dieser Datei und werden
       # nur hineingereicht, nicht ins Abbild gebacken - so muss man
-      # nach einer Aenderung nicht neu bauen, sondern nur neu starten.
+      # nach einer Aenderung nicht neu bauen.
+      #
+      # Absichtlich OHNE :ro. Der Admin-Bereich schreibt in diese
+      # Datei, wenn man den Lebenslauf dort aendert. Mit :ro laesst
+      # sich die Seite zwar anzeigen, aber nichts speichern.
       #
       # ACHTUNG: die Datei muss VOR dem ersten Start existieren. Fehlt
       # sie, legt Docker an ihrer Stelle einen leeren Ordner an, und
       # das Backend findet dann keine Datei.
       #   cp lebenslauf.beispiel.json lebenslauf.json
-      - ./lebenslauf.json:/app/lebenslauf.json:ro
+      - ./lebenslauf.json:/app/lebenslauf.json
 
   # ---- Die Website ------------------------------------------------
   #

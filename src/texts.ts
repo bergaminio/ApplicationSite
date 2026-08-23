@@ -224,6 +224,47 @@ export const ui = {
     en: 'Every company has its own account. Here I can see who actually looked at my application.',
   },
   adminLoading:  { de: 'Wird geladen...', en: 'Loading...' },
+  // Den Lebenslauf im Admin-Bereich bearbeiten.
+  //
+  // Bewusst nuechterne Feldnamen: das sieht ausser mir niemand, und
+  // ein Formular mit dreissig Feldern wird nicht besser, wenn die
+  // Beschriftungen originell sind.
+  cvEditSection: { de: 'Lebenslauf', en: 'CV' },
+  cvEditIntro: {
+    de: 'Was hier steht, sehen angemeldete Betriebe auf der Lebenslauf-Seite. Gespeichert wird direkt auf dem Server, ein Neustart ist nicht nötig.',
+    en: 'What you enter here is what signed-in companies see on the CV page. It is saved directly on the server, no restart needed.',
+  },
+  cvEditAbout:      { de: 'Über mich', en: 'About me' },
+  cvEditAboutField: { de: 'Der Text zuoberst auf der Seite', en: 'The text at the top of the page' },
+  cvEditPeriod:     { de: 'Zeitraum', en: 'Period' },
+  cvEditTitleField: { de: 'Bezeichnung', en: 'Title' },
+  cvEditPlace:      { de: 'Ort oder Schule', en: 'Place or school' },
+  cvEditDetails:    { de: 'Beschreibung (darf leer bleiben)', en: 'Description (may stay empty)' },
+  cvEditName:       { de: 'Name', en: 'Name' },
+  cvEditRole:       { de: 'Funktion', en: 'Role' },
+  cvEditSchool:     { de: 'Schule oder Betrieb', en: 'School or company' },
+  cvEditExtra:      { de: 'Zusatz, z.B. Module (darf leer bleiben)', en: 'Extra, e.g. modules (may stay empty)' },
+  cvEditContact:    { de: 'Kontakt (leer = nur auf Anfrage)', en: 'Contact (empty = on request only)' },
+  cvEditLanguage:   { de: 'Sprache', en: 'Language' },
+  cvEditLevel:      { de: 'Niveau', en: 'Level' },
+  cvEditCommaHint:  { de: 'Mit Komma getrennt', en: 'Separated by commas' },
+  cvEditAdd:        { de: '+ Hinzufügen', en: '+ Add' },
+  cvEditRemove:     { de: 'Entfernen', en: 'Remove' },
+  cvEditSave:       { de: 'Speichern', en: 'Save' },
+  cvEditSaving:     { de: 'Wird gespeichert...', en: 'Saving...' },
+  cvEditSaved:      { de: 'Gespeichert.', en: 'Saved.' },
+  cvEditLoadFailed: {
+    de: 'Der Lebenslauf konnte nicht geladen werden.',
+    en: 'The CV could not be loaded.',
+  },
+  cvEditSaveFailed: {
+    de: 'Speichern hat nicht geklappt.',
+    en: 'Saving did not work.',
+  },
+  cvEditNoFile: {
+    de: 'Auf dem Server liegt noch keine lebenslauf.json. Siehe DEPLOY.md.',
+    en: 'There is no lebenslauf.json on the server yet. See DEPLOY.md.',
+  },
   adminNoRight:  { de: 'Dafür fehlen die Rechte.', en: 'Permission is missing for this.' },
   adminNoServer: { de: 'Der Server antwortet nicht.', en: 'The server is not responding.' },
   adminCompanies: { de: 'Lehrbetriebe', en: 'Companies' },

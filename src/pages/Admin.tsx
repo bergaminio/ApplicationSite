@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { pageColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
+import LebenslaufFormular from '../components/LebenslaufFormular'
 import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 import { ladeKonten, ladeAnmeldeversuche, neuesKonto, aendereKonto, loescheKonto, AdminFehler } from '../api/admin'
@@ -586,6 +587,13 @@ function Admin() {
           </div>
         )}
       </div>
+
+      {/* ---- Der Lebenslauf ---- */}
+      <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
+        {t(ui.cvEditSection).toUpperCase()}
+      </p>
+
+      <LebenslaufFormular />
 
       {/* ---- Das rohe Protokoll ---- */}
       <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
