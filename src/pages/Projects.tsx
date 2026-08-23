@@ -37,8 +37,8 @@ const myProjects: Project[] = [
     name: { de: 'Diese Portfolio-Website', en: 'This portfolio website' },
     repo: 'ApplicationSite',
     text: {
-      de: 'Von Null gebaut, ohne Vorlage: React im Browser, dahinter ein Spring-Boot-Server mit PostgreSQL, Anmeldung und Docker. Die Notenausweise liegen in einem geschützten Bereich, jeder Lehrbetrieb bekommt sein eigenes Konto. Entwickelt habe ich sie zusammen mit Claude Code, einer KI: ich entscheide, was gebaut wird, prüfe jede Änderung im Browser und suche die Fehler mit, die dabei auftauchen.',
-      en: 'Built from scratch, no template: React in the browser, a Spring Boot server with PostgreSQL behind it, login and Docker. The grade reports sit in a protected area and every company gets its own account. I developed it together with Claude Code, an AI: I decide what gets built, check every change in the browser and help track down the bugs that show up.',
+      de: 'Von Null gebaut, ohne Vorlage: React im Browser, dahinter ein Spring-Boot-Server mit PostgreSQL, Anmeldung und Docker. Die Notenausweise liegen in einem geschützten Bereich, jeder Lehrbetrieb bekommt sein eigenes Konto. Entwickelt habe ich sie zusammen mit dem KI-Assistenten Claude Code.',
+      en: 'Built from scratch, no template: React in the browser, a Spring Boot server with PostgreSQL behind it, login and Docker. The grade reports sit in a protected area and every company gets its own account. I developed it together with the AI assistant Claude Code.',
     },
     learned: ['React', 'TypeScript', 'Spring Boot', 'Java', 'PostgreSQL', 'Docker', 'Claude Code'],
     language: 'TypeScript',
@@ -50,8 +50,8 @@ const myProjects: Project[] = [
     name: { de: 'Aschenreich, ein 3D-Rollenspiel', en: 'Aschenreich, a 3D role-playing game' },
     repo: '',
     text: {
-      de: 'Ein Dark-Fantasy-Rollenspiel, das direkt im Browser läuft, ohne Spielmotor von der Stange. Der Fähigkeitenbaum ändert nicht bloss Zahlen, sondern wie sich das Spiel anfühlt. Auch hier arbeite ich mit Claude Code und teste jede Änderung sofort selbst.',
-      en: 'A dark fantasy role-playing game that runs right in the browser, without an off-the-shelf game engine. The skill tree does not just change numbers, it changes how the game feels. Here too I work with Claude Code and test every change myself right away.',
+      de: 'Ein Dark-Fantasy-Rollenspiel, das direkt im Browser läuft, ohne Spielmotor von der Stange. Der Fähigkeitenbaum ändert nicht bloss Zahlen, sondern wie sich das Spiel anfühlt. Auch hier mit dem KI-Assistenten Claude Code entwickelt.',
+      en: 'A dark fantasy role-playing game that runs right in the browser, without an off-the-shelf game engine. The skill tree does not just change numbers, it changes how the game feels. Developed with the AI assistant Claude Code as well.',
     },
     learned: ['JavaScript', 'Three.js', 'Electron', '3D', 'Claude Code'],
     language: 'JavaScript',
