@@ -11,22 +11,52 @@ import type { Project } from '../types'
 
 // Meine gepflegten Projekte.
 //
+// Die Reihenfolge ist keine Kleinigkeit: was zuoberst steht, wird
+// angeschaut, der Rest oft nicht mehr. Darum vorne das, worauf ich
+// selbst am meisten Zeit verwendet habe, und nicht das Neueste.
+//
 // Neues Projekt? Einfach einen Block kopieren und anpassen.
 // Beim Bild: leg deinen Screenshot in public/demos/ ab (z.B. bolt.png)
 // und trage hier '/demos/bolt.png' ein - dann erscheint er im Fenster.
 const myProjects: Project[] = [
   {
+    id: 'bolt',
+    name: { de: 'Bolt, die Sprint-App', en: 'Bolt, the sprint app' },
+    repo: '',
+    text: {
+      de: 'Misst Sprints. Die App startet automatisch und stoppt per GPS nach einer festen Distanz, zum Beispiel 100 oder 400 Meter. Entstanden ist sie, weil eine Stoppuhr von Hand immer die Reaktionszeit mitmisst und die Zeiten dadurch nie stimmen.',
+      en: 'Measures sprints. The app starts automatically and stops via GPS after a set distance, for example 100 or 400 metres. It exists because a hand-held stopwatch always measures your reaction time as well, so the times are never right.',
+    },
+    learned: ['Flutter', 'Dart', 'GPS', 'Android'],
+    language: 'Dart',
+    scene: 'privat',
+    image: '/demos/bolt.png',
+  },
+  {
     id: 'portfolio',
     name: { de: 'Diese Portfolio-Website', en: 'This portfolio website' },
     repo: 'ApplicationSite',
     text: {
-      de: 'Von Null gebaut, ohne Vorlage. Jede Seite hat ihre eigene Farbe und einen handgezeichneten Look.',
-      en: 'Built from scratch, no template. Every page has its own colour and a hand-drawn look.',
+      de: 'Von Null gebaut, ohne Vorlage: React im Browser, dahinter ein Spring-Boot-Server mit PostgreSQL, Anmeldung und Docker. Die Notenausweise liegen in einem geschützten Bereich, jeder Lehrbetrieb bekommt sein eigenes Konto. Entwickelt habe ich sie zusammen mit Claude Code, einer KI: ich entscheide, was gebaut wird, prüfe jede Änderung im Browser und suche die Fehler mit, die dabei auftauchen.',
+      en: 'Built from scratch, no template: React in the browser, a Spring Boot server with PostgreSQL behind it, login and Docker. The grade reports sit in a protected area and every company gets its own account. I developed it together with Claude Code, an AI: I decide what gets built, check every change in the browser and help track down the bugs that show up.',
     },
-    learned: ['React', 'TypeScript', 'HTML', 'CSS', 'Tailwind', 'Vite'],
+    learned: ['React', 'TypeScript', 'Spring Boot', 'Java', 'PostgreSQL', 'Docker', 'Claude Code'],
     language: 'TypeScript',
     scene: 'privat',
     image: '/demos/bewerbungsseite.png',
+  },
+  {
+    id: 'aschenreich',
+    name: { de: 'Aschenreich, ein 3D-Rollenspiel', en: 'Aschenreich, a 3D role-playing game' },
+    repo: '',
+    text: {
+      de: 'Ein Dark-Fantasy-Rollenspiel, das direkt im Browser läuft, ohne Spielmotor von der Stange. Der Fähigkeitenbaum ändert nicht bloss Zahlen, sondern wie sich das Spiel anfühlt. Auch hier arbeite ich mit Claude Code und teste jede Änderung sofort selbst.',
+      en: 'A dark fantasy role-playing game that runs right in the browser, without an off-the-shelf game engine. The skill tree does not just change numbers, it changes how the game feels. Here too I work with Claude Code and test every change myself right away.',
+    },
+    learned: ['JavaScript', 'Three.js', 'Electron', '3D', 'Claude Code'],
+    language: 'JavaScript',
+    scene: 'privat',
+    image: '/demos/aschenreich.jpg',
   },
   {
     id: 'combotrainer',
@@ -41,32 +71,6 @@ const myProjects: Project[] = [
     language: 'TypeScript',
     scene: 'privat',
     image: '/demos/combotrainer.jpg',
-  },
-  {
-    id: 'bolt',
-    name: { de: 'Bolt, die Sprint-App', en: 'Bolt, the sprint app' },
-    repo: '',
-    text: {
-      de: 'Misst Sprints. Die App startet automatisch und stoppt per GPS nach einer festen Distanz, zum Beispiel 100 oder 400 Meter.',
-      en: 'Measures sprints. The app starts automatically and stops via GPS after a set distance, for example 100 or 400 metres.',
-    },
-    learned: ['Flutter', 'Dart', 'GPS', 'Android'],
-    language: 'Dart',
-    scene: 'privat',
-    image: '/demos/bolt.png',
-  },
-  {
-    id: 'aschenreich',
-    name: { de: 'Aschenreich, ein 3D-Rollenspiel', en: 'Aschenreich, a 3D role-playing game' },
-    repo: '',
-    text: {
-      de: 'Ein Dark-Fantasy-Rollenspiel, das direkt im Browser läuft.',
-      en: 'A dark fantasy role-playing game that runs right in the browser.',
-    },
-    learned: ['JavaScript', 'Three.js', 'Electron', '3D'],
-    language: 'JavaScript',
-    scene: 'privat',
-    image: '/demos/aschenreich.jpg',
   },
   {
     id: 'bomberman',
