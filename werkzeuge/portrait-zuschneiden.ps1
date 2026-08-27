@@ -26,7 +26,20 @@ param(
 
     # Seitenverhaeltnis des Ausschnitts. 0.8 entspricht 4:5, dem
     # ueblichen Hochformat fuer Portraets.
-    [double]$Verhaeltnis = 0.8
+    [double]$Verhaeltnis = 0.8,
+
+    # Wie breit das fertige Bild wird.
+    #
+    # Die Seite zeigt es 160 px breit an, auf einem feinen Bildschirm
+    # also 320 px. 600 px sind reichlich und lassen Luft, falls es
+    # spaeter groesser dargestellt wird. Ein Foto direkt vom Handy
+    # waere hier ueber 1000 px breit und damit ein Vielfaches der
+    # Dateigroesse, ohne dass man etwas davon sieht.
+    #
+    # Vergroessert wird nie: ist der Ausschnitt schmaler als dieser
+    # Wert, bleibt er wie er ist. Hochgerechnet wird ein Bild nur
+    # unscharf.
+    [int]$Zielbreite = 600
 )
 
 Add-Type -AssemblyName System.Drawing
@@ -56,12 +69,19 @@ $links = [int](($original.Width - $breite) / 2)
 $feld = New-Object System.Drawing.Rectangle($links, $obenWeg, $breite, $hoehe)
 Write-Host "Ausschnitt: $breite x $hoehe px, ab ($links, $obenWeg)"
 
-# Bewusst NICHT vergroessern. Ein hochgerechnetes Bild wird unscharf,
-# und unscharf faellt auf einer Bewerbungsseite staerker auf als klein.
-$neu = New-Object System.Drawing.Bitmap($breite, $hoehe)
+# Auf die Zielbreite bringen. Verkleinert wird beim Zeichnen gleich
+# mit, das spart einen zweiten Durchgang und bleibt schaerfer.
+#
+# Nie vergroessern: ein hochgerechnetes Bild wird unscharf, und
+# unscharf faellt auf einer Bewerbungsseite staerker auf als klein.
+$endBreite = [Math]::Min($Zielbreite, $breite)
+$endHoehe  = [int]($endBreite / $Verhaeltnis)
+Write-Host "Fertige Groesse: $endBreite x $endHoehe px"
+
+$neu = New-Object System.Drawing.Bitmap($endBreite, $endHoehe)
 $zeichner = [System.Drawing.Graphics]::FromImage($neu)
 $zeichner.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
-$zeichner.DrawImage($original, (New-Object System.Drawing.Rectangle(0, 0, $breite, $hoehe)), $feld, [System.Drawing.GraphicsUnit]::Pixel)
+$zeichner.DrawImage($original, (New-Object System.Drawing.Rectangle(0, 0, $endBreite, $endHoehe)), $feld, [System.Drawing.GraphicsUnit]::Pixel)
 
 $jpg = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq 'image/jpeg' }
 $einstellungen = New-Object System.Drawing.Imaging.EncoderParameters(1)
@@ -75,4 +95,4 @@ $zeichner.Dispose(); $neu.Dispose(); $original.Dispose()
 
 $kb = [math]::Round((Get-Item $Ziel).Length / 1KB)
 Write-Host "Fertig: $Ziel  ($kb KB)" -ForegroundColor Green
-Write-Host "Groesser als $([int]($breite/2)) px sollte es auf der Seite nicht angezeigt werden, sonst wird es unscharf."
+Write-Host "Groesser als $([int]($endBreite/2)) px sollte es auf der Seite nicht angezeigt werden, sonst wird es unscharf."
