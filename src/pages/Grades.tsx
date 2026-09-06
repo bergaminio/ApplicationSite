@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { pageColors } from '../styles/colors'
+import { pageColors, textColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import DokumentAnsicht from '../components/DokumentAnsicht'
 import { useSprache } from '../context/LanguageContext'
@@ -57,7 +57,7 @@ function Grades() {
     return (
       <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
         <PageTitle title={t(ui.gradesTitle)} color={pageColors.login} skizze="urkunde" />
-        <p className="text-gray-400">{t(ui.adminLoading)}</p>
+        <p className="text-gray-500">{t(ui.adminLoading)}</p>
       </div>
     )
   }
@@ -67,7 +67,7 @@ function Grades() {
     return (
       <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
         <PageTitle title={t(ui.gradesTitle)} color={pageColors.login} skizze="urkunde" />
-        <p style={{ color: pageColors.login }}>{fehler || t(ui.adminNoRight)}</p>
+        <p style={{ color: textColors.login }}>{fehler || t(ui.adminNoRight)}</p>
       </div>
     )
   }
@@ -91,7 +91,7 @@ function Grades() {
             className="pill"
             style={{
               cursor: zipLaeuft ? 'default' : 'pointer',
-              background: zipLaeuft ? 'white' : pageColors.login,
+              background: zipLaeuft ? 'white' : textColors.login,
               color: zipLaeuft ? '#666' : 'white',
               padding: '8px 20px',
               fontSize: '20px',
@@ -100,7 +100,7 @@ function Grades() {
             {zipLaeuft ? t(ui.gradesZipLaeuft) : t(ui.gradesZip)}
           </button>
           {zipFehler && (
-            <p className="text-sm mt-2" style={{ color: pageColors.login }} role="alert">
+            <p className="text-sm mt-2" style={{ color: textColors.login }} role="alert">
               {t(ui.gradesZipFehler)}
             </p>
           )}
@@ -108,7 +108,7 @@ function Grades() {
       )}
 
       {dokumente.length === 0 ? (
-        <p className="text-gray-400">{t(ui.gradesEmpty)}</p>
+        <p className="text-gray-500">{t(ui.gradesEmpty)}</p>
       ) : (
         bereiche.map(bereich => {
           const eigene = dokumente.filter(d => d.area === bereich.schluessel)
@@ -116,9 +116,9 @@ function Grades() {
 
           return (
             <div key={bereich.schluessel} className="mb-12">
-              <p className="sniglet-bold text-sm text-gray-400 mb-4" style={{ letterSpacing: '0.12em' }}>
+              <h2 className="sniglet-bold text-sm text-gray-500 mb-4" style={{ letterSpacing: '0.12em' }}>
                 {t(bereich.titel).toUpperCase()}
-              </p>
+              </h2>
 
               {eigene.map(dokument => (
                 <DokumentAnsicht key={dokument.id} dokument={dokument} />

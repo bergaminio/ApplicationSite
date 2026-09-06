@@ -8,6 +8,20 @@ export const pageColors = {
   login: '#e91e8c',      // Pink
 }
 
+// Dieselben Farben, aber dunkel genug fuer Text.
+//
+// Das Pink der Anmeldeseite hat auf Weiss nur 4.17:1, gefordert sind
+// 4.5:1. Es als Flaeche zu behalten und nur fuer Schrift nachzudunkeln
+// ist der kleinstmoegliche Eingriff: die Seite sieht gleich aus, nur
+// die paar Stellen mit Text darauf werden lesbar.
+//
+// #d4157f liegt bei 4.98:1 und ist mit blossem Auge kaum vom
+// Original zu unterscheiden.
+export const textColors = {
+  login: '#d4157f',
+}
+
+
 // Ein Post-it braucht drei Toene:
 // main   = die Farbe vom Zettel
 // shadow = der Schatten dahinter

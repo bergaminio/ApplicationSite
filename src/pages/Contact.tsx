@@ -54,7 +54,7 @@ function EmailLink() {
 function Angabe({ titel, children }: { titel: string; children: React.ReactNode }) {
   return (
     <div className="mb-4">
-      <p className="text-gray-400 text-xs mb-1">{titel}</p>
+      <p className="text-gray-500 text-xs mb-1">{titel}</p>
       <div className="text-sm text-gray-700">{children}</div>
     </div>
   )
@@ -116,40 +116,44 @@ function Contact() {
         {/* Die Kontakt-Infos */}
         <div className="flex flex-col gap-3">
           <div>
-            <p className="text-gray-400 text-xs mb-1">{t(ui.labelName)}</p>
+            <p className="text-gray-500 text-xs mb-1">{t(ui.labelName)}</p>
             <p className="sniglet-bold">{NAME}</p>
           </div>
           <div>
-            <p className="text-gray-400 text-xs mb-1">{t(ui.labelEmail)}</p>
+            <p className="text-gray-500 text-xs mb-1">{t(ui.labelEmail)}</p>
             <EmailLink />
           </div>
           <div>
-            <p className="text-gray-400 text-xs mb-1">{t(ui.labelPhone)}</p>
+            <p className="text-gray-500 text-xs mb-1">{t(ui.labelPhone)}</p>
             {/* Nur fuer Angemeldete - sonst sammeln Bots die Nummer ein */}
             {benutzer && kontakt.phone ? (
               <a href={`tel:${kontakt.phone.replace(/\s/g, '')}`} className="underline hover:text-gray-500">
                 {kontakt.phone}
               </a>
             ) : (
-              <p className="text-gray-400 text-sm">{t(ui.phoneAfterLogin)}</p>
+              <p className="text-gray-500 text-sm">{t(ui.phoneAfterLogin)}</p>
             )}
           </div>
           <div>
-            <p className="text-gray-400 text-xs mb-1">{t(ui.labelPlace)}</p>
+            <p className="text-gray-500 text-xs mb-1">{t(ui.labelPlace)}</p>
             {benutzer && kontakt.place
               ? <p>{kontakt.place}</p>
-              : <p className="text-gray-400 text-sm">{t(ui.phoneAfterLogin)}</p>}
+              : <p className="text-gray-500 text-sm">{t(ui.phoneAfterLogin)}</p>}
           </div>
         </div>
 
       </div>
 
-      {/* ---- Impressum ---- */}
-      <div className="mt-16">
+      {/* ---- Impressum ----
+
+          footer statt div: das Impressum ist genau das, wofuer es
+          diesen Bereich gibt. Vorlesesoftware bietet ihn als eigenen
+          Sprungpunkt an. */}
+      <footer className="mt-16">
         <div className="flex items-center gap-3">
-          <p className="sniglet-bold text-sm text-gray-400" style={{ letterSpacing: '0.12em' }}>
+          <h2 className="sniglet-bold text-sm text-gray-500" style={{ letterSpacing: '0.12em' }}>
             {t(ui.imprint).toUpperCase()}
-          </p>
+          </h2>
           <Skizze art="stift" farbe={pageColors.contact} groesse={34} />
         </div>
         <div style={{
@@ -188,7 +192,7 @@ function Contact() {
             {GITHUB.replace('https://', '')}
           </a>
         </Angabe>
-      </div>
+      </footer>
     </div>
   )
 }

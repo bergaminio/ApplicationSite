@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { SpracheProvider } from './context/LanguageContext'
+import { SpracheProvider, useSprache } from './context/LanguageContext'
+import { ui, type Text } from './texts'
 import { AuthProvider } from './context/AuthContext'
 import Navbar from './components/Navbar'
 import Buchdeckel from './components/Buchdeckel'
@@ -80,12 +81,46 @@ const seitenVarianten = {
       : { rotateY: 0, boxShadow: OHNE_SCHATTEN, opacity: 0.999 },
 }
 
+// Setzt den Titel im Browser-Tab passend zur Seite.
+//
+// Vorher stand auf allen Seiten derselbe Titel. Wer mehrere Tabs
+// offen hat, sieht dann sechsmal dasselbe, und eine Vorlesesoftware
+// sagt nach jedem Wechsel denselben Satz an.
+//
+// An einer Stelle statt in jeder Seite: so ist sichergestellt, dass
+// keine Seite es vergisst, und beim Umschalten der Sprache aendert
+// sich der Titel gleich mit.
+const seitenTitel: Record<string, Text> = {
+  '/':         ui.navHome,
+  '/projects': ui.projectsTitle,
+  '/cv':       ui.cvTitle,
+  '/personal': ui.personalTitle,
+  '/contact':  ui.contactTitle,
+  '/login':    ui.loginTitle,
+  '/grades':   ui.gradesTitle,
+  '/admin':    ui.adminTitle,
+}
+
+const NAME = 'Michael Bergamin'
+
+function useSeitentitel(pfad: string) {
+  const { t } = useSprache()
+  const eintrag = seitenTitel[pfad]
+  const titel = eintrag ? t(eintrag) : t(ui.notFoundTitle)
+
+  useEffect(() => {
+    document.title = `${titel}, ${NAME}`
+  }, [titel])
+}
+
 // Legt fest welche Adresse welche Seite zeigt - und wie geblaettert wird.
 //
 // Beide Seiten liegen uebereinander: ein Raster mit einer einzigen
 // Zelle, beide Seiten bekommen dieselbe zugewiesen.
 function Seiten() {
   const location = useLocation()
+  useSeitentitel(location.pathname)
+
 
   // Wer im Betriebssystem eingestellt hat, dass Bewegung stoert,
   // bekommt den Wechsel ohne Animation.
@@ -147,7 +182,15 @@ function Seiten() {
     // perspective gehoert auf die Eltern-Schicht, sonst wirkt die
     // Drehung flach statt raeumlich. Die Klasse regelt, welche der
     // Seiten obenauf liegt - siehe index.css.
-    <div
+    //
+    // Zugleich das <main> der Seite, damit der Sprunglink oben ein
+    // Ziel hat. Bewusst hier aussen und nicht in jeder Seite einzeln:
+    // waehrend des Blaetterns liegen zwei Seiten uebereinander, und
+    // zwei <main> nebeneinander waeren fuer eine Vorlesesoftware
+    // nicht mehr eindeutig.
+    <main
+      id="inhalt"
+      tabIndex={-1}
       className={vorwaerts ? 'buch-vor' : 'buch-zurueck'}
       style={{ display: 'grid', perspective: '1800px' }}
     >
@@ -234,7 +277,22 @@ function Seiten() {
           </Routes>
         </motion.div>
       </AnimatePresence>
-    </div>
+    </main>
+  )
+}
+
+// Der Sprunglink. Sichtbar erst, wenn er den Fokus bekommt.
+//
+// Ohne ihn muss man sich mit der Tastatur auf jeder einzelnen Seite
+// erst durch acht Links der Navigation arbeiten, bevor der Inhalt
+// drankommt. Bei einem Buch, durch das man ohnehin blaettert, faellt
+// das besonders auf.
+function Sprunglink() {
+  const { t } = useSprache()
+  return (
+    <a href="#inhalt" className="sprunglink">
+      {t(ui.zumInhalt)}
+    </a>
   )
 }
 
@@ -248,6 +306,10 @@ function App() {
           {/* Der Einband liegt beim ersten Besuch ueber allem und
               klappt auf Klick auf. Er steht ausserhalb von <Seiten>,
               damit er nicht selbst mitblaettert. */}
+          {/* Der Sprunglink muss das ERSTE fokussierbare Element der
+              Seite sein, sonst tabbt man erst durch die Navigation
+              und der Link kommt zu spaet. */}
+          <Sprunglink />
           <Buchdeckel />
           <Navbar />
           <Seiten />

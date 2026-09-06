@@ -183,8 +183,16 @@ function Projects() {
 
       {/* Suchfeld und der Knopf der die Filter auf- und zuklappt */}
       <div className="flex items-center gap-4 mb-4">
+        {/* Die Beschriftung steht da, sie ist nur nicht zu sehen.
+            Ein placeholder ist keine Beschriftung: er verschwindet,
+            sobald man tippt, und manche Vorlesesoftware liest ihn gar
+            nicht vor. Dann steht man vor einem Feld ohne Namen. */}
+        <label htmlFor="projekt-suche" className="nur-vorlesen">
+          {t(ui.search)}
+        </label>
         <input
-          type="text"
+          id="projekt-suche"
+          type="search"
           placeholder={t(ui.search)}
           value={search}
           onChange={event => setSearch(event.target.value)}
@@ -193,6 +201,10 @@ function Projects() {
         />
         <button
           onClick={() => setShowFilter(!showFilter)}
+          // Sagt an, ob die Filter gerade auf- oder zugeklappt sind.
+          // Auf dem Bildschirm sieht man das am Pfeil, ohne
+          // aria-expanded erfaehrt es sonst niemand.
+          aria-expanded={showFilter}
           className="box px-4 py-2 cursor-pointer"
           style={{
             background: showFilter ? pageColors.projects : 'transparent',
@@ -207,11 +219,14 @@ function Projects() {
       {showFilter && (
         <div className="box flex flex-wrap gap-6 sm:gap-8 p-4 mb-6">
           <div>
-            <p className="text-sm text-gray-400 mb-2">{t(ui.filterLang)}</p>
+            <p className="text-sm text-gray-500 mb-2">{t(ui.filterLang)}</p>
             {languages.map(language => (
               <button
                 key={language}
                 onClick={() => setSelectedLanguage(language)}
+                // Welcher Filter gilt, war vorher nur an der Farbe zu
+                // erkennen. Farbe allein ist keine Information.
+                aria-pressed={selectedLanguage === language}
                 className="pill block mb-1"
                 style={{ background: selectedLanguage === language ? pageColors.projects : 'transparent' }}
               >
@@ -220,11 +235,12 @@ function Projects() {
             ))}
           </div>
           <div>
-            <p className="text-sm text-gray-400 mb-2">{t(ui.filterScene)}</p>
+            <p className="text-sm text-gray-500 mb-2">{t(ui.filterScene)}</p>
             {scenes.map(scene => (
               <button
                 key={scene}
                 onClick={() => setSelectedScene(scene)}
+                aria-pressed={selectedScene === scene}
                 className="pill block mb-1"
                 style={{ background: selectedScene === scene ? pageColors.projects : 'transparent' }}
               >
@@ -238,17 +254,36 @@ function Projects() {
       {/* Auf dem Handy eine Spalte, ab 768px zwei */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {filtered.map((project, i) => (
-          <div
-            key={project.id}
-            onClick={() => setOpenProject(project)}
-            className="cursor-pointer"
-          >
+          // Vorher war die ganze Karte ein klickbares div: mit der
+          // Maus ging das, mit der Tastatur gar nicht. Auf dieser
+          // Seite waren zehn Dinge mit Tab erreichbar und kein
+          // einziges davon ein Projekt.
+          //
+          // Jetzt traegt der Titel den Knopf. Das ist etwas mehr
+          // Gerueste als ein Knopf um die ganze Karte, hat aber zwei
+          // Gruende: eine Ueberschrift darf nicht in einen Knopf
+          // hinein (h2 ist kein Text, sondern ein Block), und ohne
+          // Ueberschrift faende eine Vorlesesoftware die Projekte
+          // nicht mehr - sie springt von Ueberschrift zu Ueberschrift.
+          //
+          // Damit trotzdem die ganze Karte anklickbar bleibt, zieht
+          // die Klasse "karte-knopf" die Klickflaeche des Knopfes
+          // ueber die Karte. Siehe index.css.
+          <article key={project.id} style={{ position: 'relative' }}>
             <Postit
               colors={postitColors.yellow}
               rotate={i % 2 === 0 ? -0.8 : 0.8}
               verzoegerung={i * 70}
             >
-              <p className="sniglet-bold text-lg mb-2">{t(project.name)}</p>
+              <h2 className="sniglet-bold text-lg mb-2">
+                <button
+                  type="button"
+                  onClick={() => setOpenProject(project)}
+                  className="karte-knopf"
+                >
+                  {t(project.name)}
+                </button>
+              </h2>
               <p className="text-sm text-gray-700 mb-4">{t(project.text)}</p>
 
               {/* Was ich dabei gelernt habe */}
@@ -262,12 +297,12 @@ function Projects() {
                 </div>
               )}
             </Postit>
-          </div>
+          </article>
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-gray-400">{t(ui.nothingFound)}</p>
+        <p className="text-gray-500">{t(ui.nothingFound)}</p>
       )}
 
       {/* Das Fenster gibt es nur wenn ein Projekt angeklickt wurde */}

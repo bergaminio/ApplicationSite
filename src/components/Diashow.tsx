@@ -66,7 +66,7 @@ function Diashow({ bilder }: { bilder: string[] }) {
             ←
           </button>
 
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-gray-500">
             {index + 1} / {bilder.length}
           </span>
 

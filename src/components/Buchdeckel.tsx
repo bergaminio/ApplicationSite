@@ -135,7 +135,16 @@ function Buchdeckel() {
       <motion.button
         type="button"
         onClick={oeffnen}
-        aria-label={t(ui.deckelOeffnen)}
+        // Kein aria-label mehr.
+        //
+        // Vorher stand hier "Buch aufschlagen", sichtbar auf dem
+        // Deckel steht aber "Klicken zum Aufschlagen". Wer den
+        // Rechner per Sprache bedient und sagt "Klick Klicken zum
+        // Aufschlagen", trifft dann nichts: das Geraet sucht nach dem
+        // aria-label, und das kennt diese Woerter nicht.
+        //
+        // Ohne aria-label bildet der Browser den Namen aus dem, was
+        // draufsteht. Genau das ist hier richtig.
         animate={{
           rotateY: offen && !wenigerBewegung ? -168 : 0,
           opacity: offen && wenigerBewegung ? 0 : 1,

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { pageColors } from '../styles/colors'
+import { pageColors, textColors } from '../styles/colors'
 import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 import { ui } from '../texts'
@@ -22,7 +22,11 @@ function Navbar() {
   const { benutzer } = useAuth()
 
   return (
-    <nav className="flex items-center justify-between gap-3 px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200">
+    <header>
+    <nav
+      aria-label={t(ui.navLabel)}
+      className="flex items-center justify-between gap-3 px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200"
+    >
       <div className="flex flex-wrap gap-x-4 gap-y-2 sm:gap-8">
         {links.map(link => {
           const isActive = location.pathname === link.to
@@ -30,6 +34,10 @@ function Navbar() {
             <Link
               key={link.to}
               to={link.to}
+              // Ohne das ist die aktuelle Seite nur an der Farbe zu
+              // erkennen. Eine Vorlesesoftware sagt jetzt "aktuelle
+              // Seite" dazu.
+              aria-current={isActive ? 'page' : undefined}
               style={isActive ? { borderColor: link.color } : {}}
               className={`text-xs sm:text-sm transition-colors px-2 sm:px-3 py-1 ${
                 isActive
@@ -50,12 +58,20 @@ function Navbar() {
             <button
               key={kuerzel}
               onClick={() => setSprache(kuerzel)}
+              // "DE" und "EN" allein sagen einer Vorlesesoftware
+              // nichts. aria-pressed sagt ausserdem, welche der
+              // beiden gerade gilt - das war vorher nur die Farbe.
+              aria-label={kuerzel === 'de' ? 'Deutsch' : 'English'}
+              aria-pressed={sprache === kuerzel}
               className="pill"
               style={{
                 cursor: 'pointer',
                 background: sprache === kuerzel ? '#333' : 'transparent',
-                color: sprache === kuerzel ? 'white' : '#999',
-                borderColor: sprache === kuerzel ? '#333' : '#ccc',
+                // Vorher #999: das sind 2.84:1 auf Weiss und damit
+                // unter den geforderten 4.5:1. #6b6b6b liegt bei 5.3
+                // und sieht immer noch zurueckhaltend aus.
+                color: sprache === kuerzel ? 'white' : '#6b6b6b',
+                borderColor: sprache === kuerzel ? '#333' : '#9a9a9a',
               }}
             >
               {kuerzel.toUpperCase()}
@@ -75,7 +91,7 @@ function Navbar() {
           style={{
             maxWidth: '9rem',
             ...(benutzer
-              ? { borderColor: pageColors.login, color: pageColors.login }
+              ? { borderColor: pageColors.login, color: textColors.login }
               : { borderColor: '#d1d5db' }),
           }}
         >
@@ -83,6 +99,7 @@ function Navbar() {
         </Link>
       </div>
     </nav>
+    </header>
   )
 }
 

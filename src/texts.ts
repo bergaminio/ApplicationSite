@@ -127,7 +127,6 @@ export const ui = {
   deckelTitel:   { de: 'Willkommen', en: 'Welcome' },
   deckelName:    { de: 'Michael Bergamin', en: 'Michael Bergamin' },
   deckelHinweis: { de: 'Klicken zum Aufschlagen', en: 'Click to open' },
-  deckelOeffnen: { de: 'Buch aufschlagen', en: 'Open the book' },
 
   // Steht als alt-Text am Bild: absichtlich der Hinweis und keine
   // Beschreibung des Motivs.
@@ -156,6 +155,15 @@ export const ui = {
     de: 'Nach dem Anmelden sichtbar',
     en: 'Visible after signing in',
   },
+
+  // Der Sprunglink ganz oben, nur mit der Tastatur erreichbar.
+  zumInhalt: { de: 'Zum Inhalt springen', en: 'Skip to content' },
+  // Beschriftet die Navigationsleiste fuer Vorlesesoftware.
+  navLabel:  { de: 'Hauptnavigation', en: 'Main navigation' },
+  // Wird nur vorgelesen, steht nicht auf dem Bildschirm.
+  docArea:       { de: 'Bereich', en: 'Area' },
+  screenshotVon: { de: 'Bildschirmfoto von', en: 'Screenshot of' },
+  neuerTab:      { de: '(oeffnet einen neuen Tab)', en: '(opens a new tab)' },
 
   // Impressum - steht unten auf der Kontakt-Seite
   imprint:            { de: 'Impressum', en: 'Legal notice' },

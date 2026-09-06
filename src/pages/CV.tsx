@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { pageColors } from '../styles/colors'
+import { pageColors, textColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import Skizze, { type SkizzenArt } from '../components/Skizze'
 import { useSprache } from '../context/LanguageContext'
@@ -17,17 +17,22 @@ import { ui } from '../texts'
 // eine Anmeldung auf der Seite schuetzt nichts, was auf GitHub steht.
 
 // Ein Abschnitt, z.B. "Ausbildung": Ueberschrift mit gruenem Strich.
+//
+// section statt div: damit steht die Ueberschrift nicht bloss da,
+// sondern gehoert sichtbar zu dem, was darunter kommt. Eine
+// Vorlesesoftware kann so von Abschnitt zu Abschnitt springen statt
+// alles am Stueck vorzulesen.
 function Abschnitt({ titel, skizze, children }: {
   titel: string
   skizze?: SkizzenArt
   children: React.ReactNode
 }) {
   return (
-    <div className="mb-12">
+    <section className="mb-12">
       <div className="flex items-center gap-3">
-        <p className="sniglet-bold text-sm text-gray-400" style={{ letterSpacing: '0.12em' }}>
+        <h2 className="sniglet-bold text-sm text-gray-500" style={{ letterSpacing: '0.12em' }}>
           {titel.toUpperCase()}
-        </p>
+        </h2>
         {skizze && <Skizze art={skizze} farbe={pageColors.story} groesse={32} />}
       </div>
       <div style={{
@@ -40,7 +45,7 @@ function Abschnitt({ titel, skizze, children }: {
         marginBottom: '1.5rem',
       }} />
       {children}
-    </div>
+    </section>
   )
 }
 
@@ -54,7 +59,7 @@ function Zeile({ links, titel, ort, text }: {
 }) {
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-6 mb-6">
-      <p className="text-sm text-gray-400 sm:w-28 sm:shrink-0">{links}</p>
+      <p className="text-sm text-gray-500 sm:w-28 sm:shrink-0">{links}</p>
       <div>
         <p className="sniglet-bold">{titel}</p>
         {ort && <p className="text-sm text-gray-500">{ort}</p>}
@@ -98,7 +103,7 @@ function CV() {
   )
 
   if (authLaedt || laedt) {
-    return rahmen(<p className="text-gray-400">{t(ui.adminLoading)}</p>)
+    return rahmen(<p className="text-gray-500">{t(ui.adminLoading)}</p>)
   }
 
   // Ohne Anmeldung gibt es hier nichts zu sehen.
@@ -111,7 +116,7 @@ function CV() {
         <Link
           to="/login"
           className="pill inline-block"
-          style={{ background: pageColors.login, color: 'white', padding: '8px 20px', fontSize: '20px' }}
+          style={{ background: textColors.login, color: 'white', padding: '8px 20px', fontSize: '20px' }}
         >
           {t(ui.cvToLogin)}
         </Link>
@@ -178,7 +183,7 @@ function CV() {
       )}
 
       {/* Ohne Datei auf dem Server bleibt wenigstens das PDF. */}
-      {!daten && !pdf && <p className="text-gray-400">{t(ui.cvMissing)}</p>}
+      {!daten && !pdf && <p className="text-gray-500">{t(ui.cvMissing)}</p>}
 
       {/* Am Schluss der Hinweis aufs PDF. Es liegt bei den
           Notenausweisen, damit ein Betrieb alle Unterlagen an einem

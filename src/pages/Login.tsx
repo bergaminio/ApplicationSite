@@ -1,6 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { pageColors } from '../styles/colors'
+import { pageColors, textColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import { useSprache } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
@@ -55,7 +55,7 @@ function Login() {
         <PageTitle title={t(ui.loginTitle)} color={pageColors.login} skizze="schluessel" />
 
         <div className="box p-5 sm:p-8" style={{ maxWidth: '28rem' }}>
-          <p className="text-gray-400 text-xs mb-1">{t(ui.loggedInAs)}</p>
+          <p className="text-gray-500 text-xs mb-1">{t(ui.loggedInAs)}</p>
           <p className="sniglet-bold text-xl mb-6">{benutzer.displayName}</p>
 
           {/* Zu den Noten - das ist der Grund fuer den Login */}
@@ -63,7 +63,7 @@ function Login() {
             to="/grades"
             className="pill block mb-4"
             style={{
-              background: pageColors.login,
+              background: textColors.login,
               color: 'white',
               padding: '8px 20px',
               fontSize: '20px',
@@ -134,7 +134,7 @@ function Login() {
       {/* Solange die Pruefung laeuft, kein Formular zeigen - sonst
           blitzt es kurz auf und verschwindet wieder. */}
       {serverDa === null && (
-        <p className="text-gray-400">{t(ui.loginChecking)}</p>
+        <p className="text-gray-500">{t(ui.loginChecking)}</p>
       )}
 
       <form
@@ -143,26 +143,34 @@ function Login() {
         style={{ maxWidth: '28rem', display: serverDa ? undefined : 'none' }}
       >
         <label className="block mb-4">
-          <span className="text-gray-400 text-xs">{t(ui.loginUsername)}</span>
+          <span className="text-gray-500 text-xs">{t(ui.loginUsername)}</span>
           <input
             type="text"
             value={username}
             onChange={e => setUsername(e.target.value)}
             autoComplete="username"
             disabled={laeuft}
+            // Sagt der Vorlesesoftware, dass in diesem Feld etwas
+            // nicht stimmt, und welcher Satz dazu gehoert. Ohne das
+            // steht die Meldung zwar da, aber niemand erfaehrt, auf
+            // welches Feld sie sich bezieht.
+            aria-invalid={Boolean(fehler)}
+            aria-describedby={fehler ? 'login-fehler' : undefined}
             className="box w-full px-4 py-2 mt-1"
             style={{ background: 'transparent', fontFamily: 'inherit' }}
           />
         </label>
 
         <label className="block mb-6">
-          <span className="text-gray-400 text-xs">{t(ui.loginPassword)}</span>
+          <span className="text-gray-500 text-xs">{t(ui.loginPassword)}</span>
           <input
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             autoComplete="current-password"
             disabled={laeuft}
+            aria-invalid={Boolean(fehler)}
+            aria-describedby={fehler ? 'login-fehler' : undefined}
             className="box w-full px-4 py-2 mt-1"
             style={{ background: 'transparent', fontFamily: 'inherit' }}
           />
@@ -171,8 +179,9 @@ function Login() {
         {/* Fehlermeldung, nur wenn es eine gibt */}
         {fehler && (
           <p
+            id="login-fehler"
             className="text-sm mb-4"
-            style={{ color: pageColors.login }}
+            style={{ color: textColors.login }}
             role="alert"
           >
             {fehler}
@@ -185,7 +194,7 @@ function Login() {
           className="pill"
           style={{
             cursor: laeuft ? 'wait' : 'pointer',
-            background: laeuft ? 'white' : pageColors.login,
+            background: laeuft ? 'white' : textColors.login,
             color: laeuft ? '#333' : 'white',
             padding: '8px 24px',
             fontSize: '20px',

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { pageColors } from '../styles/colors'
+import { pageColors, textColors } from '../styles/colors'
 import PageTitle from '../components/PageTitle'
 import LebenslaufFormular from '../components/LebenslaufFormular'
 import { useSprache } from '../context/LanguageContext'
@@ -217,7 +217,7 @@ function Admin() {
     return (
       <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
         <PageTitle title={t(ui.adminTitle)} color={pageColors.login} skizze="buch" />
-        <p className="text-gray-400">{t(ui.adminLoading)}</p>
+        <p className="text-gray-500">{t(ui.adminLoading)}</p>
       </div>
     )
   }
@@ -226,7 +226,7 @@ function Admin() {
     return (
       <div className="px-4 sm:px-8 py-8 sm:py-16 max-w-3xl mx-auto">
         <PageTitle title={t(ui.adminTitle)} color={pageColors.login} skizze="buch" />
-        <p style={{ color: pageColors.login }}>{fehler || t(ui.adminNoRight)}</p>
+        <p style={{ color: textColors.login }}>{fehler || t(ui.adminNoRight)}</p>
       </div>
     )
   }
@@ -245,9 +245,9 @@ function Admin() {
       </p>
 
       {/* ---- Die Betriebe ---- */}
-      <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
+      <h2 className="sniglet-bold text-sm text-gray-500 mb-3" style={{ letterSpacing: '0.12em' }}>
         {t(ui.adminCompanies).toUpperCase()}
-      </p>
+      </h2>
 
       <div className="flex flex-col gap-3 mb-12">
         {betriebe.map(konto => {
@@ -262,7 +262,7 @@ function Admin() {
             >
               <div>
                 <p className="sniglet-bold">{konto.displayName}</p>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-500">
                   {t(ui.accLoginName)} <span className="sniglet-bold">{konto.username}</span>
                 </p>
               </div>
@@ -272,12 +272,12 @@ function Admin() {
                   {warDa ? (
                     <>
                       <p>{konto.loginCount}{t(ui.adminTimes)}</p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-500">
                         {t(ui.adminLastTime)}: {zeitpunkt(konto.lastLogin!, sprache)}
                       </p>
                     </>
                   ) : (
-                    <span className="pill" style={{ background: pageColors.login, color: 'white' }}>
+                    <span className="pill" style={{ background: textColors.login, color: 'white' }}>
                       {t(ui.adminNever)}
                     </span>
                   )}
@@ -308,7 +308,7 @@ function Admin() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <div>
                 <p className="sniglet-bold">{konto.displayName}</p>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-500">
                   {t(ui.accLoginName)} <span className="sniglet-bold">{konto.username}</span> · {t(ui.accAdminHint)}
                 </p>
               </div>
@@ -332,19 +332,27 @@ function Admin() {
           style={{ borderStyle: 'dashed' }}
         >
           <p className="sniglet-bold mb-1">{t(ui.accAddTitle)}</p>
-          <p className="text-xs text-gray-400 mb-3">{t(ui.accAddHint)}</p>
+          <p className="text-xs text-gray-500 mb-3">{t(ui.accAddHint)}</p>
 
           <div className="flex flex-col sm:flex-row gap-3 mb-3">
+            {/* Beschriftung nur fuer Vorlesesoftware. Ein placeholder
+                allein reicht nicht: er verschwindet beim Tippen. */}
+            <label htmlFor="feld-accaddusername" className="nur-vorlesen">{t(ui.accAddUsername)}</label>
             <input
               type="text"
+              id="feld-accaddusername"
               placeholder={t(ui.accAddUsername)}
               value={neuBenutzername}
               onChange={e => setNeuBenutzername(e.target.value)}
               className="box flex-1 px-3 py-2"
               style={{ background: 'transparent', fontFamily: 'inherit' }}
             />
+            {/* Beschriftung nur fuer Vorlesesoftware. Ein placeholder
+                allein reicht nicht: er verschwindet beim Tippen. */}
+            <label htmlFor="feld-accadddisplay" className="nur-vorlesen">{t(ui.accAddDisplay)}</label>
             <input
               type="text"
+              id="feld-accadddisplay"
               placeholder={t(ui.accAddDisplay)}
               value={neuAnzeigename}
               onChange={e => setNeuAnzeigename(e.target.value)}
@@ -354,11 +362,15 @@ function Admin() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 mb-3">
+            {/* Beschriftung nur fuer Vorlesesoftware. Ein placeholder
+                allein reicht nicht: er verschwindet beim Tippen. */}
+            <label htmlFor="feld-accaddpassword" className="nur-vorlesen">{t(ui.accAddPassword)}</label>
             <input
               // Absichtlich sichtbar: dieses Passwort wird abgetippt
               // und in die Bewerbung geschrieben. Ein Feld voller
               // Punkte waere hier hinderlich, nicht sicherer.
               type="text"
+              id="feld-accaddpassword"
               placeholder={t(ui.accAddPassword)}
               value={neuPasswort}
               onChange={e => setNeuPasswort(e.target.value)}
@@ -368,14 +380,14 @@ function Admin() {
             <button
               type="submit"
               className="pill"
-              style={{ cursor: 'pointer', background: pageColors.login, color: 'white', padding: '6px 14px' }}
+              style={{ cursor: 'pointer', background: textColors.login, color: 'white', padding: '6px 14px' }}
             >
               {t(ui.accAddButton)}
             </button>
           </div>
 
           {anlegenFehler && (
-            <p className="text-sm" style={{ color: pageColors.login }} role="alert">{anlegenFehler}</p>
+            <p className="text-sm" style={{ color: textColors.login }} role="alert">{anlegenFehler}</p>
           )}
           {anlegenOk && (
             <p className="text-sm text-gray-600" role="status">{t(ui.accAddDone)}</p>
@@ -392,21 +404,29 @@ function Admin() {
             className="box p-4"
             style={{ borderColor: pageColors.login }}
           >
-            <p className="text-xs text-gray-400 mb-2">
+            <p className="text-xs text-gray-500 mb-2">
               {t(ui.accLoginName)} <span className="sniglet-bold">{bearbeiteKonto}</span>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-3">
+              {/* Beschriftung nur fuer Vorlesesoftware. Ein placeholder
+                  allein reicht nicht: er verschwindet beim Tippen. */}
+              <label htmlFor="feld-accdisplayname" className="nur-vorlesen">{t(ui.accDisplayName)}</label>
               <input
                 type="text"
+                id="feld-accdisplayname"
                 placeholder={t(ui.accDisplayName)}
                 value={neuerName}
                 onChange={e => setNeuerName(e.target.value)}
                 className="box flex-1 px-3 py-2"
                 style={{ background: 'transparent', fontFamily: 'inherit' }}
               />
+              {/* Beschriftung nur fuer Vorlesesoftware. Ein placeholder
+                  allein reicht nicht: er verschwindet beim Tippen. */}
+              <label htmlFor="feld-accnewpassword" className="nur-vorlesen">{t(ui.accNewPassword)}</label>
               <input
                 type={zeigePasswort ? 'text' : 'password'}
+                id="feld-accnewpassword"
                 placeholder={t(ui.accNewPassword)}
                 value={neuesPasswort}
                 onChange={e => setNeuesPasswort(e.target.value)}
@@ -414,8 +434,12 @@ function Admin() {
                 className="box flex-1 px-3 py-2"
                 style={{ background: 'transparent', fontFamily: 'inherit' }}
               />
+              {/* Beschriftung nur fuer Vorlesesoftware. Ein placeholder
+                  allein reicht nicht: er verschwindet beim Tippen. */}
+              <label htmlFor="feld-accrepeatpassword" className="nur-vorlesen">{t(ui.accRepeatPassword)}</label>
               <input
                 type={zeigePasswort ? 'text' : 'password'}
+                id="feld-accrepeatpassword"
                 placeholder={t(ui.accRepeatPassword)}
                 value={wiederholung}
                 onChange={e => setWiederholung(e.target.value)}
@@ -427,7 +451,7 @@ function Admin() {
 
             {/* Wer sein eigenes Passwort setzt, will meistens sehen
                 was er tippt - sonst merkt man den Vertipper nie. */}
-            <label className="flex items-center gap-2 text-xs text-gray-400 mb-3" style={{ cursor: 'pointer' }}>
+            <label className="flex items-center gap-2 text-xs text-gray-500 mb-3" style={{ cursor: 'pointer' }}>
               <input
                 type="checkbox"
                 checked={zeigePasswort}
@@ -443,7 +467,7 @@ function Admin() {
               <button
                 type="submit"
                 className="pill"
-                style={{ cursor: 'pointer', background: pageColors.login, color: 'white', padding: '6px 14px' }}
+                style={{ cursor: 'pointer', background: textColors.login, color: 'white', padding: '6px 14px' }}
               >
                 {t(ui.accSave)}
               </button>
@@ -458,20 +482,22 @@ function Admin() {
             </div>
 
             {kontoFehler && (
-              <p className="text-sm mt-2" style={{ color: pageColors.login }} role="alert">{kontoFehler}</p>
+              <p className="text-sm mt-2" style={{ color: textColors.login }} role="alert">{kontoFehler}</p>
             )}
           </form>
         )}
       </div>
 
       {/* ---- Notenausweise hochladen ---- */}
-      <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
+      <h2 className="sniglet-bold text-sm text-gray-500 mb-3" style={{ letterSpacing: '0.12em' }}>
         {t(ui.docAdd).toUpperCase()}
-      </p>
+      </h2>
 
       <div className="box p-4 mb-12">
         <div className="flex flex-col sm:flex-row gap-3 mb-3">
+          <label htmlFor="feld-bereich" className="nur-vorlesen">{t(ui.docArea)}</label>
           <select
+            id="feld-bereich"
             value={bereich}
             onChange={e => setBereich(e.target.value)}
             className="box px-3 py-2"
@@ -483,8 +509,12 @@ function Admin() {
             <option value="LEBENSLAUF">Lebenslauf</option>
           </select>
 
+          {/* Beschriftung nur fuer Vorlesesoftware. Ein placeholder
+              allein reicht nicht: er verschwindet beim Tippen. */}
+          <label htmlFor="feld-doctitle" className="nur-vorlesen">{t(ui.docTitle)}</label>
           <input
             type="text"
+            id="feld-doctitle"
             placeholder={t(ui.docTitle)}
             value={titel}
             onChange={e => setTitel(e.target.value)}
@@ -507,7 +537,7 @@ function Admin() {
             className="pill"
             style={{
               cursor: laedtHoch ? 'wait' : 'pointer',
-              background: pageColors.login,
+              background: textColors.login,
               color: 'white',
               padding: '8px 16px',
             }}
@@ -516,10 +546,10 @@ function Admin() {
           </button>
         </div>
 
-        <p className="text-xs text-gray-400 mt-2">{t(ui.docTypes)}</p>
+        <p className="text-xs text-gray-500 mt-2">{t(ui.docTypes)}</p>
 
         {uploadFehler && (
-          <p className="text-sm mt-2" style={{ color: pageColors.login }} role="alert">{uploadFehler}</p>
+          <p className="text-sm mt-2" style={{ color: textColors.login }} role="alert">{uploadFehler}</p>
         )}
 
         {/* Was schon hochgeladen ist. Beim Umbenennen wird die Zeile
@@ -528,7 +558,9 @@ function Admin() {
           <div className="flex flex-col gap-2 mt-4">
             {dokumente.map(d => bearbeiteDok === d.id ? (
               <div key={d.id} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+                <label htmlFor="feld-neuer-bereich" className="nur-vorlesen">{t(ui.docArea)}</label>
                 <select
+                  id="feld-neuer-bereich"
                   value={neuerBereich}
                   onChange={e => setNeuerBereich(e.target.value)}
                   className="box px-2 py-1 text-sm"
@@ -551,7 +583,7 @@ function Admin() {
                 <button
                   onClick={() => speichereDokument(d.id)}
                   className="pill"
-                  style={{ cursor: 'pointer', fontSize: '15px', background: pageColors.login, color: 'white' }}
+                  style={{ cursor: 'pointer', fontSize: '15px', background: textColors.login, color: 'white' }}
                 >
                   {t(ui.docSave)}
                 </button>
@@ -565,9 +597,9 @@ function Admin() {
               </div>
             ) : (
               <div key={d.id} className="flex items-center justify-between gap-3 text-sm">
-                <span className="text-gray-400 text-xs" style={{ width: '3rem' }}>{d.area}</span>
+                <span className="text-gray-500 text-xs" style={{ width: '3rem' }}>{d.area}</span>
                 <span className="flex-1">{d.title}</span>
-                <span className="text-gray-400 text-xs">{Math.round(d.size / 1024)} KB</span>
+                <span className="text-gray-500 text-xs">{Math.round(d.size / 1024)} KB</span>
                 <button
                   onClick={() => starteUmbenennen(d)}
                   className="pill"
@@ -589,25 +621,25 @@ function Admin() {
       </div>
 
       {/* ---- Der Lebenslauf ---- */}
-      <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
+      <h2 className="sniglet-bold text-sm text-gray-500 mb-3" style={{ letterSpacing: '0.12em' }}>
         {t(ui.cvEditSection).toUpperCase()}
-      </p>
+      </h2>
 
       <LebenslaufFormular />
 
       {/* ---- Das rohe Protokoll ---- */}
-      <p className="sniglet-bold text-sm text-gray-400 mb-3" style={{ letterSpacing: '0.12em' }}>
+      <h2 className="sniglet-bold text-sm text-gray-500 mb-3" style={{ letterSpacing: '0.12em' }}>
         {t(ui.adminAttempts).toUpperCase()}
-      </p>
+      </h2>
 
       {versuche.length === 0 ? (
-        <p className="text-gray-400 text-sm">{t(ui.adminNoAttempts)}</p>
+        <p className="text-gray-500 text-sm">{t(ui.adminNoAttempts)}</p>
       ) : (
         <div className="box p-4 flex flex-col gap-2">
           {versuche.slice(0, 20).map((v, i) => (
             <div key={i} className="flex justify-between gap-4 text-sm">
               <span className="sniglet-bold">{v.username}</span>
-              <span className="text-gray-400 text-xs">{zeitpunkt(v.time, sprache)}</span>
+              <span className="text-gray-500 text-xs">{zeitpunkt(v.time, sprache)}</span>
               <span
                 className="text-xs"
                 style={{ color: v.success ? '#4a9d6e' : pageColors.login, minWidth: '6rem', textAlign: 'right' }}

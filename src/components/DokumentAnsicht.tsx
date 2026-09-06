@@ -43,9 +43,9 @@ function DokumentAnsicht({ dokument, einbetten }: { dokument: Dokument; einbette
       <p className="sniglet-bold mb-2">{dokument.title}</p>
 
       {fehler ? (
-        <p className="text-sm text-gray-400">{t(ui.gradesFileFailed)}</p>
+        <p className="text-sm text-gray-500">{t(ui.gradesFileFailed)}</p>
       ) : !adresse ? (
-        <p className="text-sm text-gray-400">{t(ui.gradesLoadingFile)}</p>
+        <p className="text-sm text-gray-500">{t(ui.gradesLoadingFile)}</p>
       ) : istBild(dokument.contentType) ? (
         <img
           src={adresse}

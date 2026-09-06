@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { pageColors } from '../styles/colors'
 import { useSprache } from '../context/LanguageContext'
 import { ladeLebenslaufZumBearbeiten, speichereLebenslauf } from '../api/admin'
@@ -20,6 +20,14 @@ const FELD = 'box w-full px-3 py-2'
 const FELD_STIL = { background: 'transparent', fontFamily: 'inherit' } as const
 
 // Ein Text in beiden Sprachen nebeneinander.
+//
+// Beide Felder brauchen eine eigene Beschriftung. Sichtbar steht der
+// Titel nur einmal darueber - fuer eine Vorlesesoftware waeren das
+// sonst zwei Felder, von denen keines sagt, welche Sprache es meint.
+// Darum ein <label> pro Feld, das zweite Wort davon nur vorgelesen.
+//
+// useId erzeugt Nummern, die auch dann eindeutig bleiben, wenn dieses
+// Feldpaar zwanzigmal auf derselben Seite steht.
 function Paar({ titel, wert, aendern, mehrzeilig }: {
   titel: string
   wert: Zweisprachig
@@ -27,26 +35,38 @@ function Paar({ titel, wert, aendern, mehrzeilig }: {
   mehrzeilig?: boolean
 }) {
   const Eingabe = mehrzeilig ? 'textarea' : 'input'
+  const nummer = useId()
+  const idDe = `${nummer}-de`
+  const idEn = `${nummer}-en`
+
   return (
     <div className="mb-3">
-      <p className="text-xs text-gray-400 mb-1">{titel}</p>
+      <p className="text-xs text-gray-500 mb-1" aria-hidden>{titel}</p>
       <div className="flex flex-col sm:flex-row gap-2">
-        <Eingabe
-          value={wert.de}
-          onChange={e => aendern({ ...wert, de: e.target.value })}
-          className={FELD}
-          style={FELD_STIL}
-          rows={mehrzeilig ? 5 : undefined}
-          placeholder="Deutsch"
-        />
-        <Eingabe
-          value={wert.en}
-          onChange={e => aendern({ ...wert, en: e.target.value })}
-          className={FELD}
-          style={FELD_STIL}
-          rows={mehrzeilig ? 5 : undefined}
-          placeholder="English"
-        />
+        <div className="flex-1">
+          <label htmlFor={idDe} className="nur-vorlesen">{titel}, Deutsch</label>
+          <Eingabe
+            id={idDe}
+            value={wert.de}
+            onChange={e => aendern({ ...wert, de: e.target.value })}
+            className={FELD}
+            style={FELD_STIL}
+            rows={mehrzeilig ? 5 : undefined}
+            placeholder="Deutsch"
+          />
+        </div>
+        <div className="flex-1">
+          <label htmlFor={idEn} className="nur-vorlesen">{titel}, English</label>
+          <Eingabe
+            id={idEn}
+            value={wert.en}
+            onChange={e => aendern({ ...wert, en: e.target.value })}
+            className={FELD}
+            style={FELD_STIL}
+            rows={mehrzeilig ? 5 : undefined}
+            placeholder="English"
+          />
+        </div>
       </div>
     </div>
   )
@@ -59,10 +79,11 @@ function Einzeln({ titel, wert, aendern }: {
   wert: string
   aendern: (neu: string) => void
 }) {
+  const id = useId()
   return (
     <div className="mb-3">
-      <p className="text-xs text-gray-400 mb-1">{titel}</p>
-      <input value={wert} onChange={e => aendern(e.target.value)} className={FELD} style={FELD_STIL} />
+      <label htmlFor={id} className="block text-xs text-gray-500 mb-1">{titel}</label>
+      <input id={id} value={wert} onChange={e => aendern(e.target.value)} className={FELD} style={FELD_STIL} />
     </div>
   )
 }
@@ -71,9 +92,9 @@ function Einzeln({ titel, wert, aendern }: {
 function Block({ titel, children }: { titel: string; children: React.ReactNode }) {
   return (
     <div className="mb-8">
-      <p className="sniglet-bold text-sm text-gray-400 mb-1" style={{ letterSpacing: '0.12em' }}>
+      <h3 className="sniglet-bold text-sm text-gray-500 mb-1" style={{ letterSpacing: '0.12em' }}>
         {titel.toUpperCase()}
-      </p>
+      </h3>
       <div style={{
         width: '48px', height: '3px', background: pageColors.story,
         borderRadius: '2px', marginBottom: '1rem',
@@ -95,7 +116,7 @@ function Eintrag({ nummer, entfernen, children }: {
   return (
     <div className="box p-4 mb-3">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-xs text-gray-400">{nummer}</p>
+        <p className="text-xs text-gray-500">{nummer}</p>
         <button type="button" onClick={entfernen} className="pill" style={{ cursor: 'pointer', fontSize: '15px' }}>
           {t(ui.cvEditRemove)}
         </button>
@@ -151,7 +172,7 @@ function LebenslaufFormular() {
     }
   }
 
-  if (laedt) return <p className="text-gray-400 mb-12">{t(ui.adminLoading)}</p>
+  if (laedt) return <p className="text-gray-500 mb-12">{t(ui.adminLoading)}</p>
 
   if (!daten) {
     return (
@@ -265,7 +286,7 @@ function LebenslaufFormular() {
           pro Eintrag waere hier umstaendlich: einfacher ist eine
           Zeile, in der die Begriffe durch Komma getrennt stehen. */}
       <Block titel={t(ui.itSkills)}>
-        <p className="text-xs text-gray-400 mb-1">{t(ui.cvEditCommaHint)}</p>
+        <p className="text-xs text-gray-500 mb-1">{t(ui.cvEditCommaHint)}</p>
         <input
           value={daten.itKenntnisse.join(', ')}
           onChange={e => setze({
