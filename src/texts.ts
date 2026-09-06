@@ -162,6 +162,20 @@ export const ui = {
   navLabel:  { de: 'Hauptnavigation', en: 'Main navigation' },
   // Wird nur vorgelesen, steht nicht auf dem Bildschirm.
   docArea:       { de: 'Bereich', en: 'Area' },
+
+  // Die Seite ueber die Barrierefreiheits-Arbeit. Nur die kurzen
+  // Beschriftungen stehen hier, die langen Texte in der Seite selbst.
+  a11yTitle:    { de: 'Barrierefreiheit', en: 'Accessibility' },
+  a11yStart:    { de: 'Ausgangslage', en: 'Starting point' },
+  a11yKeyboard: { de: 'Was die Tastatur zeigte', en: 'What the keyboard showed' },
+  a11yChanged:  { de: 'Was ich geändert habe', en: 'What I changed' },
+  a11yOpen:     { de: 'Was offen bleibt', en: 'What is still open' },
+  a11yLearned:  { de: 'Was ich daraus mitnehme', en: 'What I take from it' },
+  a11yBefore:   { de: 'Vorher', en: 'Before' },
+  a11yAfter:    { de: 'Nachher', en: 'After' },
+  a11yPage:     { de: 'Seite', en: 'Page' },
+  a11yLink:     { de: 'Wie ich diese Seite barrierefrei gemacht habe →', en: 'How I made this site accessible →' },
+  a11yBackToProjects: { de: '← Zurück zu den Projekten', en: '← Back to the projects' },
   screenshotVon: { de: 'Bildschirmfoto von', en: 'Screenshot of' },
   neuerTab:      { de: '(oeffnet einen neuen Tab)', en: '(opens a new tab)' },
 

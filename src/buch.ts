@@ -13,7 +13,7 @@ export const MAX_BLAETTER = 3
 // Login, Noten und Uebersicht stehen hinten - wie ein Anhang. Dadurch
 // blaettert es vom Login zurueck zur Startseite auch wirklich zurueck.
 export const seitenReihenfolge = [
-  '/', '/projects', '/cv', '/personal', '/contact',
+  '/', '/projects', '/barrierefreiheit', '/cv', '/personal', '/contact',
   '/login', '/grades', '/admin',
 ]
 

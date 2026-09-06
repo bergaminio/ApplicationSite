@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { pageColors, postitColors } from '../styles/colors'
 import Postit from '../components/Postit'
 import PageTitle from '../components/PageTitle'
@@ -180,6 +181,15 @@ function Projects() {
         </p>
         <Skizze art="gluehbirne" farbe={pageColors.projects} groesse={54} />
       </div>
+
+      {/* Der Bericht ueber die Barrierefreiheits-Arbeit. Steht hier
+          und nicht in der Navigation: er gehoert zu den Projekten,
+          und die Leiste oben ist schon voll genug. */}
+      <p className="text-sm text-gray-500 mb-6">
+        <Link to="/barrierefreiheit" className="underline hover:text-gray-700">
+          {t(ui.a11yLink)}
+        </Link>
+      </p>
 
       {/* Suchfeld und der Knopf der die Filter auf- und zuklappt */}
       <div className="flex items-center gap-4 mb-4">

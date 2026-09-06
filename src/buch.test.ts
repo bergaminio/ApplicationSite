@@ -4,7 +4,9 @@ import { abstand, wechselFuer, seitenReihenfolge, MAX_BLAETTER } from './buch'
 describe('abstand', () => {
   it('zaehlt vorwaerts positiv', () => {
     expect(abstand('/', '/projects')).toBe(1)
-    expect(abstand('/', '/contact')).toBe(4)
+    // Fuenf Schritte: Projekte, Barrierefreiheit, Lebenslauf,
+    // Persoenliches, Kontakt.
+    expect(abstand('/', '/contact')).toBe(5)
   })
 
   it('zaehlt rueckwaerts negativ', () => {
@@ -29,7 +31,7 @@ describe('wechselFuer', () => {
   })
 
   it('legt bei Spruengen Zwischenblaetter dazwischen', () => {
-    expect(wechselFuer('/', '/personal').blaetter).toBe(2)
+    expect(wechselFuer('/', '/personal').blaetter).toBe(3)
   })
 
   it('zeigt nie mehr Blaetter als erlaubt', () => {

@@ -8,6 +8,7 @@ import Navbar from './components/Navbar'
 import Buchdeckel from './components/Buchdeckel'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
+import Barrierefreiheit from './pages/Barrierefreiheit'
 import CV from './pages/CV'
 import Personal from './pages/Personal'
 import Contact from './pages/Contact'
@@ -93,6 +94,7 @@ const seitenVarianten = {
 const seitenTitel: Record<string, Text> = {
   '/':         ui.navHome,
   '/projects': ui.projectsTitle,
+  '/barrierefreiheit': ui.a11yTitle,
   '/cv':       ui.cvTitle,
   '/personal': ui.personalTitle,
   '/contact':  ui.contactTitle,
@@ -264,6 +266,7 @@ function Seiten() {
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/barrierefreiheit" element={<Barrierefreiheit />} />
             <Route path="/cv" element={<CV />} />
             <Route path="/personal" element={<Personal />} />
             <Route path="/contact" element={<Contact />} />
