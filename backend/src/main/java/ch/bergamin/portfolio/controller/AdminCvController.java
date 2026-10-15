@@ -64,11 +64,17 @@ public class AdminCvController {
         }
 
         // Frueh und deutlich melden statt beim Schreiben scheitern.
-        // Passiert, wenn die Datei in der docker-compose.yml noch mit
-        // :ro eingehaengt ist, also nur zum Lesen.
+        //
+        // Zwei Ursachen sind moeglich, und beide gehoeren in die
+        // Meldung. Beim ersten Mal stand hier nur die erste, und das
+        // hat die Fehlersuche auf dem Server in die falsche Richtung
+        // geschickt.
         if (!datei.beschreibbar()) {
             return fehler("Die Datei ist auf dem Server schreibgeschuetzt. "
-                    + "In der docker-compose.yml darf beim Einhaengen kein :ro mehr stehen.");
+                    + "Entweder haengt sie in der docker-compose.yml noch mit :ro, "
+                    + "oder sie gehoert einem anderen Benutzer als dem im Container "
+                    + "(das Backend laeuft absichtlich nicht als root). "
+                    + "Siehe DEPLOY.md, Abschnitt \"Die lebenslauf.json\".");
         }
 
         try {

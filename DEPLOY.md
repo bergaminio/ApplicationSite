@@ -97,6 +97,30 @@ kein Neubau:
 docker compose restart backend
 ```
 
+**Die Datei muss dem Benutzer im Container gehören.** Das Backend läuft
+absichtlich nicht als root (siehe `backend/Dockerfile`, `USER portfolio`).
+Gehört die Datei auf dem Server root oder einem anderen Konto, kann das
+Backend sie lesen, aber nicht beschreiben — und das Speichern im
+Admin-Bereich scheitert mit einer Meldung über Schreibschutz.
+
+Prüfen und richtigstellen:
+
+```bash
+ls -l lebenslauf.json
+docker compose exec backend id -u
+sudo chown $(docker compose exec -T backend id -u) lebenslauf.json
+```
+
+**Nach jeder Änderung an der `docker-compose.yml` gilt:**
+
+```bash
+docker compose up -d backend
+```
+
+und nicht `docker compose restart`. Ein Neustart liest die
+`docker-compose.yml` nicht neu — eine geänderte Einhängung greift damit
+nicht, und der Container läuft weiter mit der alten.
+
 Über den Admin-Bereich geänderte Angaben sind sofort da, ohne
 Neustart.
 
